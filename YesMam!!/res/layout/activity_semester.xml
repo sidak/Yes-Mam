@@ -5,7 +5,7 @@
     tools:context="${packageName}.${activityClass}" >
 
     <TextView
-        android:id="@+id/showStartDate"
+        android:id="@+id/showHolidayDate"
         style="@android:style/Widget.Holo.Spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
         style="@android:style/Widget.Holo.Spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/showStartDate"
+        android:layout_alignLeft="@+id/showHolidayDate"
         android:layout_alignTop="@+id/endDate"
         android:height="40dp"
         android:text="@string/enterDate"
@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/semesterText"
         android:layout_marginTop="18dp"
-        android:layout_toLeftOf="@+id/showStartDate"
+        android:layout_toLeftOf="@+id/showHolidayDate"
         android:gravity="center"
         android:height="40dp"
         android:text="@string/startDate"
@@ -80,7 +80,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/startDate"
-        android:layout_toLeftOf="@+id/showStartDate"
+        android:layout_toLeftOf="@+id/showHolidayDate"
         android:gravity="center"
         android:height="40dp"
         android:text="@string/endDate"

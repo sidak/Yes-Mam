@@ -24,6 +24,14 @@
     <string name="menu_planned">Planned</string>
     <string name="menu_add">Add</string>
     <string name="addHoliday">"Add a Holiday "</string>
-    
-    
+    <string name="addHolidayHeading">Add a Holiday</string>
+    <string name="holidayType">Holiday Type</string>
+    <string name="typeInsti">Insti</string>
+    <string name="typePlanned">Planned</string>
+    <string name="holidayDesc">Description</string>
+    <string name="holidayDate">Date</string>
+    <string name="title_activity_add_holidays">AddHolidays</string>
+    <string name="descHint">About</string>
+    <string name="saveNewHoliday">Save New Holiday</string>
+
 </resources>

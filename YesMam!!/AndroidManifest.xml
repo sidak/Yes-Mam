@@ -38,6 +38,10 @@
             android:name="com.sidak.yesmam.HolidayList"
             android:label="@string/title_activity_holiday_list" >
         </activity>
+        <activity
+            android:name="com.sidak.yesmam.AddHolidays"
+            android:label="@string/title_activity_add_holidays" >
+        </activity>
     </application>
 
 </manifest>

@@ -1,0 +1,103 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${packageName}.${activityClass}" >
+
+    <TextView
+        android:id="@+id/addHolidayHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:gravity="center_horizontal"
+        android:text="@string/addHolidayHeading"
+        android:textSize="24sp" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/addHolidayHeading"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@+id/holidayType" >
+
+        <RadioButton
+            android:id="@+id/typeInsti"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/typeInsti" />
+
+        <RadioButton
+            android:id="@+id/typePlanned"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/typePlanned" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/holidayDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/holidayType"
+        android:layout_below="@+id/radioGroup1"
+        android:text="@string/holidayDesc"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/holidayType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/radioGroup1"
+        android:layout_marginLeft="33dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/holidayType"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/enterDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/holidayDesc"
+        android:layout_toRightOf="@+id/holidayType"
+        android:ems="10"
+        android:hint="@string/descHint" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/holidayDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/holidayDesc"
+        android:layout_below="@+id/enterDesc"
+        android:layout_marginTop="16dp"
+        android:text="@string/holidayDate"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/showHolidayDate"
+        style="@android:style/Widget.Holo.Spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/holidayDate"
+        android:layout_alignBottom="@+id/holidayDate"
+        android:layout_alignLeft="@+id/radioGroup1"
+        android:height="40dp"
+        android:text="@string/enterDate"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/saveNewHoliday"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/showHolidayDate"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="53dp"
+        android:text="@string/saveNewHoliday" />
+
+</RelativeLayout>

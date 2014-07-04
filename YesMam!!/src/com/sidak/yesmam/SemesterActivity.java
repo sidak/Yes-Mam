@@ -38,7 +38,7 @@ public class SemesterActivity extends Activity {
 
 		startDate = (TextView) findViewById(R.id.startDate);
 		endDate = (TextView)findViewById(R.id.endDate);
-		showStartDate = (TextView) findViewById(R.id.showStartDate);
+		showStartDate = (TextView) findViewById(R.id.showHolidayDate);
 		showEndDate = (TextView) findViewById(R.id.showEndDate);
 		enableSaturday = (CheckBox) findViewById(R.id.enableSaturday);
 		enableSunday = (CheckBox) findViewById(R.id.enableSunday);
@@ -92,7 +92,7 @@ public class SemesterActivity extends Activity {
 	
 	private void showDatePickerDialog(TextView tv) {
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
-		DialogFragment newFragment = new DatePickerFragment(tv);
+		DialogFragment newFragment = new DatePickerFragment(tv,1);
 		newFragment.show(ft, "datePicker");
 	}
 	public void resetFields(){

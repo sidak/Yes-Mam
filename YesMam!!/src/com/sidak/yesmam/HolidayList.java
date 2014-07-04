@@ -1,12 +1,16 @@
 package com.sidak.yesmam;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 
@@ -18,6 +22,8 @@ public class HolidayList extends ListActivity {
 	private List<Holiday> holidays;
 	private HolidaysDataSource datasource;
 	private Button addHoliday;
+	private Holiday holidayAdded;
+	private boolean inPlanned;
 	
 
 	@Override
@@ -45,9 +51,52 @@ public class HolidayList extends ListActivity {
 		}
 		refreshDisplay();
 		
-		
+		addHoliday.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				addHolidayInDatabase();
+			}
+
+			
+		});
+	}
+	private void addHolidayInDatabase() {
+		Intent intent= new Intent(HolidayList.this, AddHolidays.class);
+		startActivityForResult(intent, 1);		
 	}
 	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode==1){
+			if (resultCode==RESULT_OK){
+				holidayAdded= new Holiday();
+				holidayAdded.setDescription(data.getExtras().getString("desc"));
+				holidayAdded.setType(data.getExtras().getString("type"));
+				String date = data.getExtras().getString("date");
+				int[] dateEle=UIHelper.getDateFromText(date, this);
+//				Date d = UIHelper.getDateFromText(date, this);
+//				Calendar c = Calendar.getInstance();
+//				c.setTime(d);
+//				int day = c.get(Calendar.DATE);
+//				int month = c.get(Calendar.MONTH)+1;
+//				int year= c.get(Calendar.YEAR);
+				holidayAdded.setMonth(dateEle[0]);
+				holidayAdded.setDay(dateEle[1]);
+				holidayAdded.setYear(dateEle[2]);
+				datasource.create(holidayAdded);
+				if(inPlanned){
+					holidays = datasource.findFiltered("type = 'Planned'", null);
+					refreshDisplay();
+				}
+				else{
+					holidays = datasource.findAll();
+					refreshDisplay();
+				}
+				
+			}
+		}
+	}
 	private void createData() {
 		Holiday holiday1= new Holiday();
 		holiday1.setDay(20);
@@ -90,11 +139,13 @@ public class HolidayList extends ListActivity {
 		case R.id.menu_all:
 			holidays = datasource.findAll();
 			refreshDisplay();
+			inPlanned=false;
 			break;
 
 		case R.id.menu_planned:
 			holidays = datasource.findFiltered("type = 'Planned'", null);
 			refreshDisplay();
+			inPlanned=true;
 			break;
 			
 		default:
