@@ -6,5 +6,11 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_semester">SemesterActivity</string>
+    <string name="semesterHeading">semester</string>
+    <string name="startDate">start date</string>
+    <string name="enterDate">enter here</string>
+    <string name="endDate">end date</string>
+    <string name="enableSaturday">enable classes on Saturday</string>
+    <string name="enableSunday">enable classes on Sunday</string>
 
 </resources>

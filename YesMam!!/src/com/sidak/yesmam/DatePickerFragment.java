@@ -15,7 +15,6 @@ import android.widget.TextView;
 public class DatePickerFragment extends DialogFragment implements
 		DatePickerDialog.OnDateSetListener {
 	private TextView showStartDate;
-	
 	public DatePickerFragment(TextView tv){
 		showStartDate=tv;
 	}

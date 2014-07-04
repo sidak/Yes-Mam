@@ -11,7 +11,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="36dp"
-        android:text="semester"
+        android:text="@string/semesterHeading"
         android:textSize="24sp" />
 
     <TextView
@@ -22,18 +22,61 @@
         android:layout_marginTop="35dp"
         android:layout_toLeftOf="@+id/semesterText"
         android:gravity="center"
-        android:text="start date"
+        android:height="40dp"
+        android:text="@string/startDate"
         android:textSize="20sp" />
 
     <TextView
         android:id="@+id/showStartDate"
+        style="@android:style/Widget.Holo.Spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/startDate"
         android:layout_alignLeft="@+id/semesterText"
         android:layout_alignTop="@id/startDate"
         android:layout_marginLeft="72dp"
-        android:text="Enter here"
+        android:height="40dp"
+        android:text="@string/enterDate"
         android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/endDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/enableSaturday"
+        android:layout_below="@+id/startDate"
+        android:layout_marginTop="20dp"
+        android:layout_toLeftOf="@+id/showStartDate"
+        android:gravity="center"
+        android:height="40dp"
+        android:text="@string/endDate"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/showEndDate"
+        style="@android:style/Widget.Holo.Spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/showStartDate"
+        android:layout_alignTop="@+id/endDate"
+        android:height="40dp"
+        android:text="@string/enterDate"
+        android:textSize="20sp" />
+
+    <CheckBox
+        android:id="@+id/enableSaturday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/startDate"
+        android:layout_below="@+id/endDate"
+        android:text="@string/enableSaturday" />
+
+    <CheckBox
+        android:id="@+id/enableSunday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/enableSaturday"
+        android:layout_below="@+id/enableSaturday"
+        android:layout_marginTop="16dp"
+        android:text="@string/enableSunday" />
 
 </RelativeLayout>
