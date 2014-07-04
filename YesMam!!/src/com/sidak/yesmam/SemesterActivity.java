@@ -92,7 +92,7 @@ public class SemesterActivity extends Activity {
 	
 	private void showDatePickerDialog(TextView tv) {
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
-		DialogFragment newFragment = new DatePickerFragment(tv,1);
+		DialogFragment newFragment = new DatePickerFragment(tv);
 		newFragment.show(ft, "datePicker");
 	}
 	public void resetFields(){

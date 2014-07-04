@@ -47,7 +47,7 @@ public class AddHolidays extends Activity {
 	}
 	private void showDatePickerDialog(TextView tv) {
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
-		DialogFragment newFragment = new DatePickerFragment(tv,2);
+		DialogFragment newFragment = new DatePickerFragment(tv);
 		newFragment.show(ft, "datePicker");
 	}
 	private void sendData(){

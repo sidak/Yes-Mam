@@ -84,6 +84,7 @@ public class HolidayList extends ListActivity {
 				holidayAdded.setMonth(dateEle[0]);
 				holidayAdded.setDay(dateEle[1]);
 				holidayAdded.setYear(dateEle[2]);
+				datasource.open();//do it again since onstop was c/d
 				datasource.create(holidayAdded);
 				if(inPlanned){
 					holidays = datasource.findFiltered("type = 'Planned'", null);
