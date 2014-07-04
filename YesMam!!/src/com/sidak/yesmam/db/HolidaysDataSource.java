@@ -44,7 +44,7 @@ public static final String TAG=HolidaysDataSource.class.getSimpleName();
 		Log.i(TAG, "Database closed");		
 		dbhelper.close();
 	}
-	public void create(Holiday holiday) {
+	public Holiday create(Holiday holiday) {
 		Log.v(TAG, holiday.toString());
 
 		ContentValues values = new ContentValues();
@@ -57,8 +57,8 @@ public static final String TAG=HolidaysDataSource.class.getSimpleName();
 		long insertid = database.insert(DBOpenHelper.TABLE_HOLIDAYS, null, values);
 		Log.i(TAG, "in create in datasrc " +insertid);
 
-		//holiday.setId(insertid);
-		//return holiday;
+		holiday.setId(insertid);
+		return holiday;
 	}
 	public List<Holiday> findAll() {
 		

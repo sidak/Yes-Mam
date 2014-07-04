@@ -48,6 +48,6 @@ public class Holiday {
 	}
 	@Override
 	public String toString() {
-		return type+"\t"+ description+ "\n"+ day +"/"+ month+"/"+ year;
+		return type+": \n"+ description+ "\n"+ day +"/"+ month+"/"+ year;
 	}
 }

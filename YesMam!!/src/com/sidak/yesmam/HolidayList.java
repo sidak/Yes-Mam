@@ -2,13 +2,13 @@ package com.sidak.yesmam;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 
 import com.sidak.yesmam.db.HolidaysDataSource;
 import com.sidak.yesmam.model.Holiday;
@@ -17,11 +17,14 @@ public class HolidayList extends ListActivity {
 	public static final String TAG=HolidayList.class.getSimpleName();
 	private List<Holiday> holidays;
 	private HolidaysDataSource datasource;
+	private Button addHoliday;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_holiday_list);
+		addHoliday=(Button)findViewById(R.id.addHoliday);
 		Log.i(TAG, "in oncreate");
 		datasource = new HolidaysDataSource(this);
 		datasource.open();
@@ -41,6 +44,8 @@ public class HolidayList extends ListActivity {
 
 		}
 		refreshDisplay();
+		
+		
 	}
 	
 	private void createData() {

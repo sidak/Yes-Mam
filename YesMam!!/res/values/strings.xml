@@ -23,6 +23,7 @@
     <string name="menu_all">All</string>
     <string name="menu_planned">Planned</string>
     <string name="menu_add">Add</string>
+    <string name="addHoliday">"Add a Holiday "</string>
     
     
 </resources>
