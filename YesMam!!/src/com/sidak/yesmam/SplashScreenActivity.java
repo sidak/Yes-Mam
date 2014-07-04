@@ -20,7 +20,7 @@ public class SplashScreenActivity extends Activity {
 			@Override
 			public void run() {
 				// call main activity
-				Intent intent= new Intent(SplashScreenActivity.this, MainActivity.class);
+				Intent intent= new Intent(SplashScreenActivity.this, SemesterActivity.class);
 				// if u directly use 'this' for context, then this refers to the
 				// runnable and not the splashscreen activity
 				startActivity(intent);
