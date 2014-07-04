@@ -24,7 +24,6 @@ public class SemesterActivity extends Activity {
 	private Button reset;
 	private Button addCourses;
 	private Button planHolidays;
-	private Button selectHolidays;
 	private Date start;
 	private Date end;
 	
@@ -45,7 +44,6 @@ public class SemesterActivity extends Activity {
 		reset =(Button)findViewById(R.id.reset);
 		addCourses =(Button)findViewById(R.id.addCourses);
 		planHolidays =(Button)findViewById(R.id.planHolidays);
-		selectHolidays =(Button)findViewById(R.id.selectHolidays);
 
 		showStartDate.setOnClickListener(new View.OnClickListener() {
 
@@ -100,6 +98,9 @@ public class SemesterActivity extends Activity {
 
 	}
 	public Date getDateFromText(String date){
+		if(date==getString(R.string.enterDate)){
+			return null;
+		}
 		String[] dateElements=date.split("/");
 		int day =Integer.parseInt(dateElements[0]);
 		int month =Integer.parseInt(dateElements[1]);

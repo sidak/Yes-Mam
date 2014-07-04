@@ -75,16 +75,6 @@
         android:layout_alignLeft="@+id/enableSunday"
         android:text="@string/reset" />
 
-    <Button
-        android:id="@+id/planHolidays"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/selectHolidays"
-        android:layout_alignRight="@+id/selectHolidays"
-        android:layout_below="@+id/selectHolidays"
-        android:layout_marginTop="14dp"
-        android:text="@string/planHolidays" />
-
     <TextView
         android:id="@+id/endDate"
         android:layout_width="wrap_content"
@@ -105,12 +95,12 @@
         android:text="@string/enableSunday" />
 
     <Button
-        android:id="@+id/selectHolidays"
+        android:id="@+id/planHolidays"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/enableSunday"
-        android:layout_alignRight="@+id/showEndDate"
-        android:layout_below="@+id/enableSunday"
-        android:text="@string/selectHolidays" />
+        android:layout_above="@+id/addCourses"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="22dp"
+        android:text="@string/planHolidays" />
 
 </RelativeLayout>

@@ -16,5 +16,8 @@
     <string name="reset">Reset</string>
     <string name="selectHolidays">Select Holidays</string>
     <string name="planHolidays">Plan Your Holidays</string>
+    <string name="reqAttendance">Req. Attendance %</string>
+    <string name="title_activity_course_view">CourseView</string>
+    <string name="desiredAttendance">Desired Attendance %</string>
 
 </resources>

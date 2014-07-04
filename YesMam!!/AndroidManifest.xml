@@ -30,6 +30,10 @@
             android:name="com.sidak.yesmam.SemesterActivity"
             android:label="@string/title_activity_semester" >
         </activity>
+        <activity
+            android:name="com.sidak.yesmam.CourseView"
+            android:label="@string/title_activity_course_view" >
+        </activity>
     </application>
 
 </manifest>
