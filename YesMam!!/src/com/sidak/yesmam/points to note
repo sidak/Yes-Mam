@@ -1,0 +1,98 @@
+from a method name written in xml , u can go to it's defn by holding CTRL and clicking
+
+tag:ghj, filters the logcat messages by tag
+
+MODE_PRIVATE means our preferences are local to the application
+
+use ctrl + f11 to launch an android project	
+
+ctrl+ i reformats a part of code, while ctrl+ shift + f formats it completely
+
+if a line appears over ur text , it means the method or something else 
+has been deprecated
+
+by default getFileDir() gives a dir in the private storage part of the app
+this is as per the principle , if u want insecure storage , work harder, 
+and by default storage applies to secure path
+# use java.io for streams and not android.io
+#closing of streams is done in the reverse order of opening it
+# json can also be used to save structured data locally for persistence storage
+
+#jsonObject implements java map interface
+
+# json array is also dynamic
+
+#for calculating json array length , u do array.length() and not array.length
+ since it is a method
+ 
+#before writing to sd card ,u shld always check whether it is there or not
+
+# the 1st event that occurs while using xml pull parser, is the Start Of Document
+
+# xml pull parser is very high performing
+
+#android.R.layout.simple_list_item_1 is a built-in renderer, that knows how 
+to display a single list item
+
+# adding a library to the build path will ensure that is exported with it
+
+#sax builder is based on streaming , while dom model has the whole file present at a particular time
+
+# android has built in support for sqlites
+
+# calling getWritableDatabase,implicitly creates a database
+
+#instantiate the helper and database when the datasource is created
+
+# u can move lines of code up and down , by using alt + up/down arrow key
+
+#u can add as many calls to the open mthod if u want to
+the connection object in any activity is cached
+
+#always rem to close the database, while exiting out, otherwise there will be a 
+database connection leak
+
+# content values are again key -value pairs
+#the .db extension is not required while creating the database 
+# each time u change the structure of the database, u shld increment database_version by one
+
+-------------------------------------------------------------
+insert():
+table: the table to insert the row into
+nullColumnHack optional; may be null. SQL doesn't allow inserting a completely 
+empty row without naming at least one column name. If your provided values is empty,
+ no column names are known and an empty row can't be inserted. 
+ If not set to null, the nullColumnHack parameter provides the name of nullable column
+  name to explicitly insert a NULL into in the case where your values is empty.
+values this map contains the initial column values for the row.
+The keys should be the column names and the values the column values
+Returns:
+the row ID of the newly inserted row, or -1 if an error occurred
+
+--------------------------------------------------------------------
+#oncreate and onupgrade are automatically called by the sdk
+and shld not be called directly
+
+# ONLY EXCEPTION TO THE ABOVE WLD BE WHEN WE CALL ONCREATE FROM ONUPGRADE
+
+by default the id returned by the database of a row, is a long
+
+# for cursor.get....() methods, u need to pass in a col index	
+
+# modify the toString method of the model class, so as to edit wht to receive in array adapter
+
+# describeContents() of parcelable interface , tell what kind of specific 
+objects does the class contain
+
+# in parcels , u have to pass the data in and out in the same sequence
+
+# each class , which has implements a parcelable interface, 
+shld hv a static field CREATOR
+
+# can only increment a database version and not decrement it
+
+# since the col id is a primary key , it means u can't hv same value of it in the table again
+# thus if insert() returns -1 , it means that element is already there
+
+# delete method of the database , returns an int not a long as like insert
+# calling the finish method of the activity takes u back to the original activity
