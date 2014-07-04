@@ -1,18 +1,13 @@
 package com.sidak.yesmam;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 import android.app.Activity;
-import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.DatePicker;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 public class SemesterActivity extends Activity {
@@ -23,6 +18,12 @@ public class SemesterActivity extends Activity {
 	private TextView showEndDate;
 	private CheckBox enableSaturday;
 	private CheckBox enableSunday;
+	private Button reset;
+	private Button addCourses;
+	private Button planHolidays;
+	private Button selectHolidays;
+	
+	public final String TAG =SemesterActivity.class.getSimpleName();
 	
 
 	@Override
@@ -36,6 +37,10 @@ public class SemesterActivity extends Activity {
 		showEndDate = (TextView) findViewById(R.id.showEndDate);
 		enableSaturday = (CheckBox) findViewById(R.id.enableSaturday);
 		enableSunday = (CheckBox) findViewById(R.id.enableSunday);
+		reset =(Button)findViewById(R.id.reset);
+		addCourses =(Button)findViewById(R.id.addCourses);
+		planHolidays =(Button)findViewById(R.id.planHolidays);
+		selectHolidays =(Button)findViewById(R.id.selectHolidays);
 
 		showStartDate.setOnClickListener(new View.OnClickListener() {
 
@@ -52,11 +57,40 @@ public class SemesterActivity extends Activity {
 				showDatePickerDialog((TextView) v);
 			}
 		});
+		reset.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				resetFields();
+			}
+		});
 	}
-
+	/*public void onClick(View v){
+		switch(v.getId()){
+		case R.id.showEndDate:
+			showDatePickerDialog((TextView) v);
+		case R.id.showStartDate:
+			showDatePickerDialog((TextView) v);
+		case R.id.reset:
+			resetFields();
+		}
+	}*/
+	
 	private void showDatePickerDialog(TextView tv) {
 		FragmentTransaction ft = getFragmentManager().beginTransaction();
 		DialogFragment newFragment = new DatePickerFragment(tv);
 		newFragment.show(ft, "datePicker");
 	}
+	public void resetFields(){
+		if(enableSaturday.isChecked()){
+			enableSaturday.setChecked(false);
+		}
+		if(enableSunday.isChecked()){
+			enableSunday.setChecked(false);
+		}
+		showEndDate.setText(getString(R.string.enterDate));
+		showStartDate.setText(getString(R.string.enterDate));
+
+	}
+	
 }

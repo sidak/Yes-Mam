@@ -5,50 +5,15 @@
     tools:context="${packageName}.${activityClass}" >
 
     <TextView
-        android:id="@+id/semesterText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="36dp"
-        android:text="@string/semesterHeading"
-        android:textSize="24sp" />
-
-    <TextView
-        android:id="@+id/startDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/semesterText"
-        android:layout_marginTop="35dp"
-        android:layout_toLeftOf="@+id/semesterText"
-        android:gravity="center"
-        android:height="40dp"
-        android:text="@string/startDate"
-        android:textSize="20sp" />
-
-    <TextView
         android:id="@+id/showStartDate"
         style="@android:style/Widget.Holo.Spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/semesterText"
-        android:layout_alignTop="@id/startDate"
+        android:layout_alignTop="@+id/startDate"
         android:layout_marginLeft="72dp"
         android:height="40dp"
         android:text="@string/enterDate"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/endDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/enableSaturday"
-        android:layout_below="@+id/startDate"
-        android:layout_marginTop="20dp"
-        android:layout_toLeftOf="@+id/showStartDate"
-        android:gravity="center"
-        android:height="40dp"
-        android:text="@string/endDate"
         android:textSize="20sp" />
 
     <TextView
@@ -70,13 +35,82 @@
         android:layout_below="@+id/endDate"
         android:text="@string/enableSaturday" />
 
+    <TextView
+        android:id="@+id/semesterText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="21dp"
+        android:text="@string/semesterHeading"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/startDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/semesterText"
+        android:layout_marginTop="18dp"
+        android:layout_toLeftOf="@+id/showStartDate"
+        android:gravity="center"
+        android:height="40dp"
+        android:text="@string/startDate"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/addCourses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/showEndDate"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:text="@string/addCourses" />
+
+    <Button
+        android:id="@+id/reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/addCourses"
+        android:layout_alignBottom="@+id/addCourses"
+        android:layout_alignLeft="@+id/enableSunday"
+        android:text="@string/reset" />
+
+    <Button
+        android:id="@+id/planHolidays"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/selectHolidays"
+        android:layout_alignRight="@+id/selectHolidays"
+        android:layout_below="@+id/selectHolidays"
+        android:layout_marginTop="14dp"
+        android:text="@string/planHolidays" />
+
+    <TextView
+        android:id="@+id/endDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/startDate"
+        android:layout_toLeftOf="@+id/showStartDate"
+        android:gravity="center"
+        android:height="40dp"
+        android:text="@string/endDate"
+        android:textSize="20sp" />
+
     <CheckBox
         android:id="@+id/enableSunday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/enableSaturday"
         android:layout_below="@+id/enableSaturday"
-        android:layout_marginTop="16dp"
         android:text="@string/enableSunday" />
+
+    <Button
+        android:id="@+id/selectHolidays"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/enableSunday"
+        android:layout_alignRight="@+id/showEndDate"
+        android:layout_below="@+id/enableSunday"
+        android:text="@string/selectHolidays" />
 
 </RelativeLayout>

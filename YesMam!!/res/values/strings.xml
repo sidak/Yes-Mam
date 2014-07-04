@@ -12,5 +12,9 @@
     <string name="endDate">end date</string>
     <string name="enableSaturday">enable classes on Saturday</string>
     <string name="enableSunday">enable classes on Sunday</string>
+    <string name="addCourses">Add Courses</string>
+    <string name="reset">Reset</string>
+    <string name="selectHolidays">Select Holidays</string>
+    <string name="planHolidays">Plan Your Holidays</string>
 
 </resources>
