@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <item
+        android:id="@+id/menu_all"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/menu_all"/>
+    <item
+        android:id="@+id/menu_planned"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/menu_planned"/>
+    <item
+        android:id="@+id/menu_add"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/menu_add"/>
+
+</menu>

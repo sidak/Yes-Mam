@@ -1,0 +1,113 @@
+package com.sidak.yesmam;
+
+import java.util.List;
+
+import android.app.Activity;
+import android.app.ListActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+
+import com.sidak.yesmam.db.HolidaysDataSource;
+import com.sidak.yesmam.model.Holiday;
+
+public class HolidayList extends ListActivity {
+	public static final String TAG=HolidayList.class.getSimpleName();
+	private List<Holiday> holidays;
+	private HolidaysDataSource datasource;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_holiday_list);
+		Log.i(TAG, "in oncreate");
+		datasource = new HolidaysDataSource(this);
+		datasource.open();
+		Log.i(TAG, "after opening databasse");
+
+		holidays = datasource.findAll();
+		Log.i(TAG, "after dtasrc.findall w/o if");
+
+		if (holidays.size() == 0) {
+			Log.i(TAG, "after dtasrc.findall in if");
+
+			createData();
+			Log.i(TAG, "after cretae data in if");
+
+			holidays = datasource.findAll();
+			Log.i(TAG, "after findall and cretae data in if");
+
+		}
+	}
+	
+	private void createData() {
+		Holiday holiday1= new Holiday();
+		holiday1.setDay(20);
+		holiday1.setMonth(6);
+		holiday1.setYear(2014);
+		holiday1.setDescription("wej");
+		holiday1.setType(Holiday.TYPE_INSTI);
+		datasource.create(holiday1);
+		
+		Holiday holiday2= new Holiday();
+		holiday1.setDay(21);
+		holiday1.setMonth(6);
+		holiday1.setYear(2014);
+		holiday1.setDescription("werej");
+		holiday1.setType(Holiday.TYPE_INSTI);
+		datasource.create(holiday2);
+		
+		Holiday holiday3= new Holiday();
+		holiday1.setDay(22);
+		holiday1.setMonth(6);
+		holiday1.setYear(2014);
+		holiday1.setDescription("wegrej");
+		holiday1.setType(Holiday.TYPE_PLANNED);
+		datasource.create(holiday1);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.menu_holidays,menu);
+		return true;
+	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_all:
+			holidays = datasource.findAll();
+			refreshDisplay();
+			break;
+
+		case R.id.menu_planned:
+			holidays = datasource.findFiltered("type = planned", null);
+			refreshDisplay();
+			break;
+			
+		default:
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	public void refreshDisplay() {
+		ArrayAdapter<Holiday> adapter = new ArrayAdapter<Holiday>(this, 
+				android.R.layout.simple_list_item_1, holidays);
+		setListAdapter(adapter);
+	}
+	
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		datasource.open();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		datasource.close();
+	}
+}

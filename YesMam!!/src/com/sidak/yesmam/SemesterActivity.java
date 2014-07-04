@@ -7,6 +7,7 @@ import java.util.GregorianCalendar;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -65,6 +66,14 @@ public class SemesterActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				resetFields();
+			}
+		});
+		planHolidays.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent= new Intent(SemesterActivity.this, HolidayList.class);
+				startActivity(intent);
 			}
 		});
 	}

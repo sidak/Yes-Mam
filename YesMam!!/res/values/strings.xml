@@ -19,5 +19,10 @@
     <string name="reqAttendance">Req. Attendance %</string>
     <string name="title_activity_course_view">CourseView</string>
     <string name="desiredAttendance">Desired Attendance %</string>
-
+    <string name="title_activity_holiday_list">HolidayList</string>
+    <string name="menu_all">All</string>
+    <string name="menu_planned">Planned</string>
+    <string name="menu_add">Add</string>
+    
+    
 </resources>

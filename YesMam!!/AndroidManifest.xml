@@ -34,6 +34,10 @@
             android:name="com.sidak.yesmam.CourseView"
             android:label="@string/title_activity_course_view" >
         </activity>
+        <activity
+            android:name="com.sidak.yesmam.HolidayList"
+            android:label="@string/title_activity_holiday_list" >
+        </activity>
     </application>
 
 </manifest>
