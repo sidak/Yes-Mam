@@ -14,18 +14,9 @@ import android.widget.TextView;
 @SuppressLint("ValidFragment")
 public class DatePickerFragment extends DialogFragment implements
 		DatePickerDialog.OnDateSetListener {
-	private TextView showStartDate;
-	private TextView showHolidayDate;
-	private int code;
-	public DatePickerFragment(TextView tv, int code){
-		if(code==1){
-			showStartDate=tv;
-			this.code=code;
-		}
-		else{
-			showHolidayDate=tv;
-			this.code=code;
-		}
+	private TextView textView;
+	public DatePickerFragment(TextView tv){
+		textView=tv;
 	}
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -41,13 +32,9 @@ public class DatePickerFragment extends DialogFragment implements
 	@Override
 	public void onDateSet(DatePicker view, int year, int month, int day) {
 		// Do something with the date chosen by the user
-		if(code==1){
-			showStartDate.setText(String.valueOf(day)+"/"+String.valueOf(month+1)+"/"+String.valueOf(year));
-		}
-		else{
-			showHolidayDate.setText(String.valueOf(day)+"/"+String.valueOf(month+1)+"/"+String.valueOf(year));
 
-		}
+		textView.setText(String.valueOf(day)+"/"+String.valueOf(month+1)+"/"+String.valueOf(year));
+
 		
 	}
 }
