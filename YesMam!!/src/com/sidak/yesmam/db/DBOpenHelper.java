@@ -32,7 +32,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 			 COLUMN_DAY+ " INTEGER, " +
 			COLUMN_MONTH + " INTEGER, " +
 			COLUMN_YEAR + " INTEGER, " +
-			COLUMN_DESC + " TEXT " +
+			COLUMN_DESC + " TEXT, " +
 			COLUMN_TYPE + " TEXT " +
 			")";
 			
@@ -42,19 +42,24 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 	
 	public DBOpenHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
+		Log.i(TAG, "dbopen helper constr");
+
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL(TABLE_COURSES);
-		db.execSQL(TABLE_HOLIDAYS);
+		//db.execSQL(TABLE_CO);
+		Log.i(TAG, "1GVHKJKJNKJKJN");
+		Log.i(TAG, TABLE_CREATE_HOLIDAYS);
+		
+		db.execSQL(TABLE_CREATE_HOLIDAYS);
 
 		Log.i(TAG, "Table has been created");
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_COURSES);
+		//db.execSQL("DROP TABLE IF EXISTS " + TABLE_COURSES);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_HOLIDAYS);
 
 		onCreate(db);

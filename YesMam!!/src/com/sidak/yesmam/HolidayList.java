@@ -40,6 +40,7 @@ public class HolidayList extends ListActivity {
 			Log.i(TAG, "after findall and cretae data in if");
 
 		}
+		refreshDisplay();
 	}
 	
 	private void createData() {
@@ -50,22 +51,26 @@ public class HolidayList extends ListActivity {
 		holiday1.setDescription("wej");
 		holiday1.setType(Holiday.TYPE_INSTI);
 		datasource.create(holiday1);
-		
+		Log.i(TAG, "after holiday1");
+
 		Holiday holiday2= new Holiday();
-		holiday1.setDay(21);
-		holiday1.setMonth(6);
-		holiday1.setYear(2014);
-		holiday1.setDescription("werej");
-		holiday1.setType(Holiday.TYPE_INSTI);
+		holiday2.setDay(21);
+		holiday2.setMonth(6);
+		holiday2.setYear(2014);
+		holiday2.setDescription("bday");
+		holiday2.setType(Holiday.TYPE_INSTI);
 		datasource.create(holiday2);
-		
+		Log.i(TAG, "after holiday2");
+
 		Holiday holiday3= new Holiday();
-		holiday1.setDay(22);
-		holiday1.setMonth(6);
-		holiday1.setYear(2014);
-		holiday1.setDescription("wegrej");
-		holiday1.setType(Holiday.TYPE_PLANNED);
-		datasource.create(holiday1);
+		holiday3.setDay(22);
+		holiday3.setMonth(6);
+		holiday3.setYear(2014);
+		holiday3.setDescription("wegrej");
+		holiday3.setType(Holiday.TYPE_PLANNED);
+		datasource.create(holiday3);
+		Log.i(TAG, "after holiday3");
+
 	}
 
 	@Override
@@ -83,7 +88,7 @@ public class HolidayList extends ListActivity {
 			break;
 
 		case R.id.menu_planned:
-			holidays = datasource.findFiltered("type = planned", null);
+			holidays = datasource.findFiltered("type = 'Planned'", null);
 			refreshDisplay();
 			break;
 			
