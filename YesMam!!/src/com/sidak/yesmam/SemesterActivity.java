@@ -1,11 +1,14 @@
 package com.sidak.yesmam;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -22,6 +25,8 @@ public class SemesterActivity extends Activity {
 	private Button addCourses;
 	private Button planHolidays;
 	private Button selectHolidays;
+	private Date start;
+	private Date end;
 	
 	public final String TAG =SemesterActivity.class.getSimpleName();
 	
@@ -68,12 +73,14 @@ public class SemesterActivity extends Activity {
 	/*public void onClick(View v){
 		switch(v.getId()){
 		case R.id.showEndDate:
-			showDatePickerDialog((TextView) v);
 		case R.id.showStartDate:
 			showDatePickerDialog((TextView) v);
+			break;
 		case R.id.reset:
 			resetFields();
+			break;
 		}
+		
 	}*/
 	
 	private void showDatePickerDialog(TextView tv) {
@@ -92,5 +99,31 @@ public class SemesterActivity extends Activity {
 		showStartDate.setText(getString(R.string.enterDate));
 
 	}
+	public Date getDateFromText(String date){
+		String[] dateElements=date.split("/");
+		int day =Integer.parseInt(dateElements[0]);
+		int month =Integer.parseInt(dateElements[1]);
+		int year =Integer.parseInt(dateElements[2]);
+		Date d = null;
+		Calendar cal = GregorianCalendar.getInstance();
+		cal.set(1900 + year, month-1, day);
+		d = cal.getTime();
+		return d;
+
+	}
+	public boolean validateDates(Date before, Date after){
+		if(after.compareTo(before)<=0){
+			return false;
+		}
+		return true;
+	}
+	
+	public int calculateWorkingDays(){
+		//TODO: calculate working days on the basis of start date, end date, sat, sun, 
+		//holidays
+		return 0;
+	}
+	
+	
 	
 }
