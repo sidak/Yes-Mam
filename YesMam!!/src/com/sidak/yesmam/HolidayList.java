@@ -183,27 +183,7 @@ public class HolidayList extends ListActivity {
 		 adapter = new HolidayListAdapter(this, holidays);
 		setListAdapter(adapter);
 	}
-	
-//	private void deleteItem(){
-//		lv.setOnItemLongClickListener(new OnItemLongClickListener() {
-//		})
-//	}
-//	@Override
-//	  public void onCreateContextMenu(ContextMenu menu, View v,
-//	          ContextMenuInfo menuInfo) {
-//	       
-//	      super.onCreateContextMenu(menu, v, menuInfo);
-//	      AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
-//	       
-//	      // We know that each row in the adapter is a Map
-//	      HashMap map =  (HashMap) adapter.getItem(aInfo.position);
-//	       
-//	      menu.setHeaderTitle("Options for " + map.get("planet"));
-//	      menu.add(1, 1, 1, "Delete");
-//	      menu.add(1, 2, 2, "Delete");
-//	       
-//	  }
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();

@@ -116,7 +116,12 @@ public static final String TAG=HolidaysDataSource.class.getSimpleName();
 				allColumns[5] +"= '"+removeHoliday.getType() +"'"; 
 		int result = database.delete(DBOpenHelper.TABLE_HOLIDAYS, where, null);
 		return result==1;
-}
+	}
+
+	public int getHolidayNum() {
+		
+		return 0;
+	}
 	
 }
 
