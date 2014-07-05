@@ -119,6 +119,8 @@ public class SemesterActivity extends Activity {
 		//--------------- dates validated------------------
 		int workingDays=calculateWorkingDays(start, end);
 		saveSemesterInfo();
+		// TODO:make an intent to add courses view
+		// implement that as list like holidays and set it various fields
 	}
 
 	private void saveSemesterInfo() {
@@ -144,21 +146,7 @@ public class SemesterActivity extends Activity {
 		showStartDate.setText(getString(R.string.enterDate));
 
 	}
-//	public Date getDateFromText(String date){
-//		if(date==getString(R.string.enterDate)){
-//			return null;
-//		}
-//		String[] dateElements=date.split("/");
-//		int day =Integer.parseInt(dateElements[0]);
-//		int month =Integer.parseInt(dateElements[1]);
-//		int year =Integer.parseInt(dateElements[2]);
-//		Date d = null;
-//		Calendar cal = GregorianCalendar.getInstance();
-//		cal.set(1900 + year, month-1, day);
-//		d = cal.getTime();
-//		return d;
-//
-//	}
+
 	public boolean validateDates(Date before, Date after){
 		if(after.compareTo(before)<=0){
 			return false;
@@ -167,11 +155,9 @@ public class SemesterActivity extends Activity {
 	}
 	
 	public int calculateWorkingDays(Date olderDate, Date newerDate){
-		//TODO: calculate working days on the basis of start date, end date, sat, sun, 
-		//holidays
 		int diffInDays = (int)( (newerDate.getTime() - olderDate.getTime()) 
                 / (1000 * 60 * 60 * 24) );
-		// also need to check if holiday specified by the user / insti 
+		// TODO:also need to check if holiday specified by the user / insti 
 		// shldn't lie on saturdays and sundays
 		int startDateDay=UIHelper.getDayOfWeekFromDate(olderDate);
 		int endDateDay=UIHelper.getDayOfWeekFromDate(newerDate);
@@ -184,8 +170,8 @@ public class SemesterActivity extends Activity {
 
 		}
 		else{
-			numSat= 2*(int)Math.ceil(diffInDays/7.0);
-			numSun= 2*(int)Math.ceil(diffInDays/7.0);
+			numSat= (int)Math.ceil(diffInDays/7.0);
+			numSun= (int)Math.ceil(diffInDays/7.0);
 
 		}
 		int workingWeekends=0;
