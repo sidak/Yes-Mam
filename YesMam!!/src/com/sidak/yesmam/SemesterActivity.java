@@ -171,11 +171,36 @@ public class SemesterActivity extends Activity {
 		//holidays
 		int diffInDays = (int)( (newerDate.getTime() - olderDate.getTime()) 
                 / (1000 * 60 * 60 * 24) );
-		//int numHolidays= datasource.getHolidayNum();
-		int numSat;
-		int numSun;
-		
-		return 0;
+		// also need to check if holiday specified by the user / insti 
+		// shldn't lie on saturdays and sundays
+		int startDateDay=UIHelper.getDayOfWeekFromDate(olderDate);
+		int endDateDay=UIHelper.getDayOfWeekFromDate(newerDate);
+		int numSat=0;
+		int numSun=0;
+
+		if(startDateDay<=endDateDay){
+			numSat= (int)Math.floor(diffInDays/7.0);
+			numSun= (int)Math.floor(diffInDays/7.0);
+
+		}
+		else{
+			numSat= 2*(int)Math.ceil(diffInDays/7.0);
+			numSun= 2*(int)Math.ceil(diffInDays/7.0);
+
+		}
+		int workingWeekends=0;
+		if(checkWeekend(enableSaturday)){
+			workingWeekends+=numSat;
+		}
+		if(checkWeekend(enableSunday)){
+			workingWeekends+=numSun;
+		}
+		int totalWorkingDays=diffInDays-numHolidays-numSat - numSun + workingWeekends;
+		Log.v(TAG, "total working days" + totalWorkingDays);
+		return totalWorkingDays;
+	}
+	public boolean checkWeekend(CheckBox cb){
+		return UIHelper.getCBChecked(this, cb.getId());
 	}
 	
 	
