@@ -31,7 +31,8 @@ public class SemesterActivity extends Activity {
 	private Button planHolidays;
 	private Date start;
 	private Date end;
-	private HolidaysDataSource datasource;
+	private final int PLAN_HOLIDAYS_CODE=1;
+	private int numHolidays;
 
 	
 	public final String TAG =SemesterActivity.class.getSimpleName();
@@ -51,8 +52,7 @@ public class SemesterActivity extends Activity {
 		reset =(Button)findViewById(R.id.reset);
 		addCourses =(Button)findViewById(R.id.addCourses);
 		planHolidays =(Button)findViewById(R.id.planHolidays);
-		datasource = new HolidaysDataSource(this);
-		datasource.open();
+		
 
 		showStartDate.setOnClickListener(new View.OnClickListener() {
 
@@ -81,7 +81,7 @@ public class SemesterActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent intent= new Intent(SemesterActivity.this, HolidayList.class);
-				startActivity(intent);
+				startActivityForResult(intent, PLAN_HOLIDAYS_CODE);
 			}
 		});
 		addCourses.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +91,13 @@ public class SemesterActivity extends Activity {
 				validateCalculateSaveSemester();
 			}
 		});
+	}
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode==PLAN_HOLIDAYS_CODE && resultCode==RESULT_OK){
+			numHolidays=data.getExtras().getInt("holidayNum");
+			Log.i(TAG, ""+numHolidays+": number of holidays ");
+		}
 	}
 	// showStartDate and showEndDate contain the date entered
 	protected void validateCalculateSaveSemester() {
@@ -164,23 +171,13 @@ public class SemesterActivity extends Activity {
 		//holidays
 		int diffInDays = (int)( (newerDate.getTime() - olderDate.getTime()) 
                 / (1000 * 60 * 60 * 24) );
-		int numHolidays= datasource.getHolidayNum();
+		//int numHolidays= datasource.getHolidayNum();
 		int numSat;
 		int numSun;
 		
 		return 0;
 	}
-	@Override
-	protected void onResume() {
-		super.onResume();
-		datasource.open();
-	}
 	
-	@Override
-	protected void onPause() {
-		super.onPause();
-		datasource.close();
-	}
 	
 	
 	

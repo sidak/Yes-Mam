@@ -119,8 +119,10 @@ public static final String TAG=HolidaysDataSource.class.getSimpleName();
 	}
 
 	public int getHolidayNum() {
-		
-		return 0;
+		Cursor cursor = database.query(DBOpenHelper.TABLE_HOLIDAYS, allColumns, 
+				null, null, null, null, null);
+		Log.v(TAG, ""+cursor.getCount());
+		return cursor.getCount();
 	}
 	
 }

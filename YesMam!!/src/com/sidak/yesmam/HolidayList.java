@@ -28,6 +28,7 @@ public class HolidayList extends ListActivity {
 	private boolean inPlanned;
 	private ListView lv;
 	ArrayAdapter<Holiday> adapter;
+	private int holidaysNum;
 	
 
 	@Override
@@ -56,7 +57,7 @@ public class HolidayList extends ListActivity {
 			Log.i(TAG, "after findall and cretae data in if");
 
 		}
-		refreshDisplay();
+		refreshDisplayAndUpdate();
 		
 		addHoliday.setOnClickListener(new View.OnClickListener() {
 			
@@ -86,11 +87,6 @@ public class HolidayList extends ListActivity {
 			}
 		});
 	}
-	private void addHolidayInDatabase() {
-		Intent intent= new Intent(HolidayList.this, AddHolidays.class);
-		startActivityForResult(intent, 1);		
-	}
-	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(requestCode==1){
@@ -116,15 +112,66 @@ public class HolidayList extends ListActivity {
 			}
 		}
 	}
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.menu_holidays,menu);
+		return true;
+	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_all:
+			holidays = datasource.findAll();
+			refreshDisplayAndUpdate();
+			inPlanned=false;
+			break;
+			
+		case R.id.menu_planned:
+			holidays = datasource.findFiltered("type = 'Planned'", null);
+			refreshDisplayAndUpdate();
+			inPlanned=true;
+			break;
+			
+		default:
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	// this method is called to send back the holiday num to semester activity
+	@Override
+	public void onBackPressed() {
+		sendBackHolidayNum();
+		super.onBackPressed();
+	}
+	@Override
+	protected void onResume() {
+		super.onResume();
+		datasource.open();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		datasource.close();
+	}
+	private void addHolidayInDatabase() {
+		Intent intent= new Intent(HolidayList.this, AddHolidays.class);
+		startActivityForResult(intent, 1);		
+	}
+	public int getHolidayNum(){
+		return holidaysNum;
+	}
+	
 	private void getHolidaysWithType() {
 		datasource.open();
 		if(inPlanned){
 			holidays = datasource.findFiltered("type = 'Planned'", null);
-			refreshDisplay();
+			refreshDisplayAndUpdate();
 		}
 		else{
 			holidays = datasource.findAll();
-			refreshDisplay();
+			refreshDisplayAndUpdate();
 		}
 	}
 	
@@ -153,46 +200,15 @@ public class HolidayList extends ListActivity {
 
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.menu_holidays,menu);
-		return true;
-	}
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.menu_all:
-			holidays = datasource.findAll();
-			refreshDisplay();
-			inPlanned=false;
-			break;
-
-		case R.id.menu_planned:
-			holidays = datasource.findFiltered("type = 'Planned'", null);
-			refreshDisplay();
-			inPlanned=true;
-			break;
-			
-		default:
-			break;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-	public void refreshDisplay() {
-		 adapter = new HolidayListAdapter(this, holidays);
+	public void refreshDisplayAndUpdate() {
+		adapter = new HolidayListAdapter(this, holidays);
 		setListAdapter(adapter);
+		holidaysNum=datasource.getHolidayNum();
 	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		datasource.open();
+	private void sendBackHolidayNum(){
+		Intent returnIntent= new Intent();
+		returnIntent.putExtra("holidayNum", getHolidayNum());
+		setResult(RESULT_OK, returnIntent);
 	}
 	
-	@Override
-	protected void onPause() {
-		super.onPause();
-		datasource.close();
-	}
 }
