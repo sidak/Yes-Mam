@@ -159,8 +159,7 @@ public class HolidayList extends ListActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	public void refreshDisplay() {
-		 adapter = new ArrayAdapter<Holiday>(this, 
-				android.R.layout.simple_list_item_1, holidays);
+		 adapter = new HolidayListAdapter(this, holidays);
 		setListAdapter(adapter);
 	}
 	
