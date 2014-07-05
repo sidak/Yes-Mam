@@ -10,6 +10,18 @@ public class Holiday {
 	private String description;
 	private String type;
 	private long id;
+	public Holiday(){
+		
+	}
+	
+	public Holiday(int day , int month , int year,  String description, String type){
+		this.day=day;
+		this.year=year;
+		this.month=month;
+		this.description=description;
+		this.type=type;
+		
+	}
 	public long getId(){
 		return id;
 	}

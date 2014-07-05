@@ -117,12 +117,7 @@ public class HolidayList extends ListActivity {
 		datasource.create(holiday1);
 		Log.i(TAG, "after holiday1");
 
-		Holiday holiday2= new Holiday();
-		holiday2.setDay(21);
-		holiday2.setMonth(6);
-		holiday2.setYear(2014);
-		holiday2.setDescription("bday");
-		holiday2.setType(Holiday.TYPE_INSTI);
+		Holiday holiday2= new Holiday(21,6,2014,"bday", Holiday.TYPE_INSTI);
 		datasource.create(holiday2);
 		Log.i(TAG, "after holiday2");
 
