@@ -33,5 +33,6 @@
     <string name="title_activity_add_holidays">AddHolidays</string>
     <string name="descHint">About</string>
     <string name="saveNewHoliday">Save New Holiday</string>
-
+    <string name="deleteText">Long Press a Holiday To Delete!</string>
+    
 </resources>

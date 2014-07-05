@@ -3,14 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="${packageName}.${activityClass}" >
+	
+    <TextView
+        android:id="@+id/deleteInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/deleteText" />
 
     <Button
         android:id="@+id/addHoliday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/deleteInfo"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="14dp"
         android:text="@string/addHoliday" />
 
     <ListView
