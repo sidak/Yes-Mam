@@ -112,7 +112,7 @@ public static final String TAG=HolidaysDataSource.class.getSimpleName();
 		String where=allColumns[1] +"="+removeHoliday.getDay() +" AND "+ 
 				allColumns[2] +"="+removeHoliday.getMonth() +" AND "+
 				allColumns[3] +"="+removeHoliday.getYear() +" AND "+ 
-				allColumns[4] +"= '"+removeHoliday.getDescription() +"' AND "+ 
+				//allColumns[4] +"= '"+removeHoliday.getDescription() +"' AND "+ 
 				allColumns[5] +"= '"+removeHoliday.getType() +"'"; 
 		int result = database.delete(DBOpenHelper.TABLE_HOLIDAYS, where, null);
 		return result==1;
