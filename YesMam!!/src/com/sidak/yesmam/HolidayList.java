@@ -1,18 +1,21 @@
 package com.sidak.yesmam;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 
 import com.sidak.yesmam.db.HolidaysDataSource;
 import com.sidak.yesmam.model.Holiday;
@@ -24,6 +27,8 @@ public class HolidayList extends ListActivity {
 	private Button addHoliday;
 	private Holiday holidayAdded;
 	private boolean inPlanned;
+	private ListView lv;
+	ArrayAdapter<Holiday> adapter;
 	
 
 	@Override
@@ -31,6 +36,9 @@ public class HolidayList extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_holiday_list);
 		addHoliday=(Button)findViewById(R.id.addHoliday);
+		lv =(ListView)findViewById(android.R.id.list);
+		lv.setLongClickable(true);
+		
 		Log.i(TAG, "in oncreate");
 		datasource = new HolidaysDataSource(this);
 		datasource.open();
@@ -81,8 +89,8 @@ public class HolidayList extends ListActivity {
 //				int day = c.get(Calendar.DATE);
 //				int month = c.get(Calendar.MONTH)+1;
 //				int year= c.get(Calendar.YEAR);
-				holidayAdded.setMonth(dateEle[0]);
-				holidayAdded.setDay(dateEle[1]);
+				holidayAdded.setDay(dateEle[0]);
+				holidayAdded.setMonth(dateEle[1]);
 				holidayAdded.setYear(dateEle[2]);
 				datasource.open();//do it again since onstop was c/d
 				datasource.create(holidayAdded);
@@ -98,6 +106,7 @@ public class HolidayList extends ListActivity {
 			}
 		}
 	}
+	
 	private void createData() {
 		Holiday holiday1= new Holiday();
 		holiday1.setDay(20);
@@ -155,11 +164,30 @@ public class HolidayList extends ListActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	public void refreshDisplay() {
-		ArrayAdapter<Holiday> adapter = new ArrayAdapter<Holiday>(this, 
+		 adapter = new ArrayAdapter<Holiday>(this, 
 				android.R.layout.simple_list_item_1, holidays);
 		setListAdapter(adapter);
 	}
 	
+//	private void deleteItem(){
+//		lv.setOnItemLongClickListener(new OnItemLongClickListener() {
+//		})
+//	}
+//	@Override
+//	  public void onCreateContextMenu(ContextMenu menu, View v,
+//	          ContextMenuInfo menuInfo) {
+//	       
+//	      super.onCreateContextMenu(menu, v, menuInfo);
+//	      AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+//	       
+//	      // We know that each row in the adapter is a Map
+//	      HashMap map =  (HashMap) adapter.getItem(aInfo.position);
+//	       
+//	      menu.setHeaderTitle("Options for " + map.get("planet"));
+//	      menu.add(1, 1, 1, "Delete");
+//	      menu.add(1, 2, 2, "Delete");
+//	       
+//	  }
 	
 	@Override
 	protected void onResume() {

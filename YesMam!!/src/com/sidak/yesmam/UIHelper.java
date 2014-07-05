@@ -39,10 +39,8 @@ public class UIHelper {
 		}
 		String[] dateElements=date.split("\\/");
 		Log.v("ui", dateElements[0]+":"+dateElements[1]+":"+dateElements[2]);
-		// although date is shown in dd/mm/yyyy
-		// is actually set as mm/dd/yyyy
-		int day =Integer.parseInt(dateElements[1]);
-		int month =Integer.parseInt(dateElements[0]);
+		int day =Integer.parseInt(dateElements[0]);
+		int month =Integer.parseInt(dateElements[1]);
 		int year =Integer.parseInt(dateElements[2]);
 		int[] dateEle={day,month,year};
 		
