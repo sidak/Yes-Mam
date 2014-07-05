@@ -1,21 +1,20 @@
 package com.sidak.yesmam;
 
-import java.util.HashMap;
 import java.util.List;
 
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.sidak.yesmam.db.HolidaysDataSource;
 import com.sidak.yesmam.model.Holiday;
@@ -68,6 +67,24 @@ public class HolidayList extends ListActivity {
 
 			
 		});
+		lv.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Holiday removeHoliday=adapter.getItem(position);
+				//Log.v(TAG, removeHoliday.getDescription());
+				boolean result= datasource.remove(removeHoliday);
+				getHolidaysWithType();
+				if(result){
+					Toast.makeText(HolidayList.this, "holiday deleted", Toast.LENGTH_LONG).show();
+				}
+				else{
+					Toast.makeText(HolidayList.this, "holiday not  deleted", Toast.LENGTH_LONG).show();
+				}
+				return result;
+			}
+		});
 	}
 	private void addHolidayInDatabase() {
 		Intent intent= new Intent(HolidayList.this, AddHolidays.class);
@@ -94,16 +111,20 @@ public class HolidayList extends ListActivity {
 				holidayAdded.setYear(dateEle[2]);
 				datasource.open();//do it again since onstop was c/d
 				datasource.create(holidayAdded);
-				if(inPlanned){
-					holidays = datasource.findFiltered("type = 'Planned'", null);
-					refreshDisplay();
-				}
-				else{
-					holidays = datasource.findAll();
-					refreshDisplay();
-				}
+				getHolidaysWithType();
 				
 			}
+		}
+	}
+	private void getHolidaysWithType() {
+		datasource.open();
+		if(inPlanned){
+			holidays = datasource.findFiltered("type = 'Planned'", null);
+			refreshDisplay();
+		}
+		else{
+			holidays = datasource.findAll();
+			refreshDisplay();
 		}
 	}
 	

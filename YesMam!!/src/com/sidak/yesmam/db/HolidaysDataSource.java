@@ -9,7 +9,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.sidak.yesmam.HolidayList;
 import com.sidak.yesmam.model.Holiday;
 
 public class HolidaysDataSource {
@@ -99,6 +101,22 @@ public static final String TAG=HolidaysDataSource.class.getSimpleName();
 		}
 		return holidays;
 	}
+
+	public boolean remove(Holiday removeHoliday) {
+		String desc= removeHoliday.getDescription();
+		String type= removeHoliday.getType();
+		int day = removeHoliday.getDay();
+		int month = removeHoliday.getMonth();
+		int year = removeHoliday.getYear();
+		
+		String where=allColumns[1] +"="+removeHoliday.getDay() +" AND "+ 
+				allColumns[2] +"="+removeHoliday.getMonth() +" AND "+
+				allColumns[3] +"="+removeHoliday.getYear() +" AND "+ 
+				allColumns[4] +"= '"+removeHoliday.getDescription() +"' AND "+ 
+				allColumns[5] +"= '"+removeHoliday.getType() +"'"; 
+		int result = database.delete(DBOpenHelper.TABLE_HOLIDAYS, where, null);
+		return result==1;
+}
 	
 }
 
