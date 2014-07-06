@@ -1,0 +1,119 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${packageName}.${activityClass}" >
+
+    <TextView
+        android:id="@+id/addCourse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="@string/addCourseText"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/courseNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/addCourse"
+        android:layout_marginLeft="27dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/courseNameText"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/courseName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/courseNameText"
+        android:layout_marginLeft="32dp"
+        android:layout_toRightOf="@+id/courseNameText"
+        android:ems="10"
+        android:hint="@string/enterDate" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/courseCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/courseName"
+        android:layout_below="@+id/courseName"
+        android:ems="10"
+        android:hint="@string/enterDate" />
+
+    <TextView
+        android:id="@+id/courseCodeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/courseNameText"
+        android:layout_below="@+id/courseName"
+        android:text="@string/courseCodeText"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/courseVenueText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/courseCodeText"
+        android:layout_below="@+id/courseCode"
+        android:text="@string/courseVenueText"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/courseVenue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/courseCode"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/courseVenueText"
+        android:ems="10"
+        android:hint="@string/enterDate" />
+
+    <TextView
+        android:id="@+id/reqAttendance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/courseVenueText"
+        android:layout_below="@+id/courseVenue"
+        android:text="@string/reqAttendance"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/EditText01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/courseVenue"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/reqAttendance"
+        android:ems="10"
+        android:hint="@string/enterDate" />
+
+    <TextView
+        android:id="@+id/desiredAttendance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/reqAttendance"
+        android:layout_below="@+id/EditText01"
+        android:text="@string/desiredAttendance"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/EditText02"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/EditText01"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/EditText01"
+        android:ems="10"
+        android:hint="@string/enterDate" />
+
+</RelativeLayout>

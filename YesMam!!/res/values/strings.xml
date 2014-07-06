@@ -34,5 +34,10 @@
     <string name="descHint">About</string>
     <string name="saveNewHoliday">Save New Holiday</string>
     <string name="deleteText">Long Press a Holiday To Delete!</string>
-    
+    <string name="title_activity_add_courses">AddCourses</string>
+    <string name="addCourseText">Add a new Course</string>
+    <string name="courseNameText">Course Name</string>
+    <string name="courseCodeText">Course Code</string>
+    <string name="courseVenueText">Course Venue</string>
+
 </resources>

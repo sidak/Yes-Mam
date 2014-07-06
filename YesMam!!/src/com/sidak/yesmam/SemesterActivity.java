@@ -121,6 +121,7 @@ public class SemesterActivity extends Activity {
 		saveSemesterInfo();
 		// TODO:make an intent to add courses view
 		// implement that as list like holidays and set it various fields
+		
 	}
 
 	private void saveSemesterInfo() {
