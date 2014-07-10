@@ -96,3 +96,10 @@ shld hv a static field CREATOR
 
 # delete method of the database , returns an int not a long as like insert
 # calling the finish method of the activity takes u back to the original activity
+
+also u can change the orientation of the emulator , when open
+by pressing ctrl + f11, or f12
+
+android:screenOrientation ="portrait" will fix the screen orientation , 
+in manifest
+

@@ -13,12 +13,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SemesterActivity extends Activity {
+public class SemesterActivity extends Activity implements OnClickListener{
 	private TextView semesterText;
 	private TextView startDate;
 	private TextView endDate;
@@ -45,53 +46,47 @@ public class SemesterActivity extends Activity {
 
 		startDate = (TextView) findViewById(R.id.startDate);
 		endDate = (TextView)findViewById(R.id.endDate);
-		showStartDate = (TextView) findViewById(R.id.showHolidayDate);
+		showStartDate = (TextView) findViewById(R.id.showStartDate);
 		showEndDate = (TextView) findViewById(R.id.showEndDate);
 		enableSaturday = (CheckBox) findViewById(R.id.enableSaturday);
 		enableSunday = (CheckBox) findViewById(R.id.enableSunday);
 		reset =(Button)findViewById(R.id.reset);
 		addCourses =(Button)findViewById(R.id.addCourses);
 		planHolidays =(Button)findViewById(R.id.planHolidays);
+		// attach on click listeners
+		showStartDate.setOnClickListener(this);
+		showEndDate.setOnClickListener(this);
+		reset.setOnClickListener(this); 
+		planHolidays.setOnClickListener(this); 
+		addCourses.setOnClickListener(this);
 		
+	}
 
-		showStartDate.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch(v.getId()){
+			case R.id.showStartDate :
 				showDatePickerDialog((TextView) v);
-			}
-		});
-		
-		showEndDate.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
+				break;
+			case R.id.showEndDate:
 				showDatePickerDialog((TextView) v);
-			}
-		});
-		reset.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
+				break;
+			case R.id.reset:
 				resetFields();
-			}
-		});
-		planHolidays.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
+			case R.id.planHolidays:
 				Intent intent= new Intent(SemesterActivity.this, HolidayList.class);
 				startActivityForResult(intent, PLAN_HOLIDAYS_CODE);
-			}
-		});
-		addCourses.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
+			case R.id.addCourses:
 				validateCalculateSaveSemester();
-			}
-		});
+			default:
+				break;
+				
+		}
+		
 	}
+	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(requestCode==PLAN_HOLIDAYS_CODE && resultCode==RESULT_OK){
