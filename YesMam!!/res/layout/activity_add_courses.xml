@@ -1,9 +1,13 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
     tools:context="${packageName}.${activityClass}" >
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
     <TextView
         android:id="@+id/addCourse"
         android:layout_width="match_parent"
@@ -116,4 +120,82 @@
         android:ems="10"
         android:hint="@string/enterDate" />
 
+    <CheckedTextView
+        android:id="@+id/tuesdayCTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/mondayCTV"
+        android:layout_below="@+id/mondayCTV"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+        android:checked="true"
+        android:gravity="center_vertical"
+        android:text="@string/tuesdayCTVText" />
+
+    <CheckedTextView
+        android:id="@+id/wednesdayCTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tuesdayCTV"
+        android:layout_below="@+id/tuesdayCTV"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+        android:checked="true"
+        android:gravity="center_vertical"
+        android:text="@string/wednesdayCTVText" />
+
+    <CheckedTextView
+        android:id="@+id/thursdayCTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/wednesdayCTV"
+        android:layout_below="@+id/wednesdayCTV"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+        android:checked="true"
+        android:gravity="center_vertical"
+        android:text="@string/thursdayCTVText" />
+
+    <CheckedTextView
+        android:id="@+id/fridayCTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/thursdayCTV"
+        android:layout_below="@+id/thursdayCTV"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+        android:checked="true"
+        android:gravity="center_vertical"
+        android:text="@string/fridayCTVText" />
+
+    <TextView
+        android:id="@+id/setSchedule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/desiredAttendance"
+        android:layout_below="@+id/EditText02"
+        android:text="@string/setScheduleText"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <CheckedTextView
+        android:id="@+id/mondayCTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/setSchedule"
+        android:layout_below="@+id/setSchedule"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+        android:checked="true"
+        android:gravity="center_vertical"
+        android:text="@string/mondayCTVText" />
+
+    <TextView
+        android:id="@+id/showStartDate"
+        style="@android:style/Widget.Holo.Spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/mondayCTV"
+        android:layout_alignTop="@+id/mondayCTV"
+        android:layout_toRightOf="@+id/desiredAttendance"
+        android:height="40dp"
+        android:text="@string/enterDate"
+        android:textSize="20sp" />
+
 </RelativeLayout>
+</ScrollView>

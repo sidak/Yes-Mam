@@ -116,7 +116,8 @@ public class SemesterActivity extends Activity implements OnClickListener{
 		saveSemesterInfo();
 		// TODO:make an intent to add courses view
 		// implement that as list like holidays and set it various fields
-		Intent intent =new Intent(this, CourseView.class);
+		//checking the working of courseView activity
+		Intent intent =new Intent(this, AddCourses.class);
 		startActivity(intent);
 		
 	}

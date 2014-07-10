@@ -39,5 +39,10 @@
     <string name="courseNameText">Course Name</string>
     <string name="courseCodeText">Course Code</string>
     <string name="courseVenueText">Course Venue</string>
-
+    <string name="setScheduleText">Set Schedule</string>
+    <string name="mondayCTVText">Monday</string>
+    <string name="tuesdayCTVText">Tuesday</string>
+    <string name="wednesdayCTVText">Wednesday</string>
+	<string name="thursdayCTVText">Thursday</string>
+    <string name="fridayCTVText">Friday</string>
 </resources>
