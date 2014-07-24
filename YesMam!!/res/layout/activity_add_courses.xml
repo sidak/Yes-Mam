@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/reqAttendanceText"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     tools:context="${packageName}.${activityClass}" >
@@ -35,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/courseNameText"
-        android:layout_marginLeft="32dp"
+        android:layout_marginLeft="35dp"
         android:layout_toRightOf="@+id/courseNameText"
         android:ems="10"
         android:hint="@string/enterDate" >
@@ -81,7 +82,7 @@
         android:hint="@string/enterDate" />
 
     <TextView
-        android:id="@+id/reqAttendance"
+        android:id="@+id/reqAttendanceText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/courseVenueText"
@@ -91,32 +92,22 @@
         android:textStyle="bold" />
 
     <EditText
-        android:id="@+id/EditText01"
+        android:id="@+id/reqAttendanceValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/courseVenue"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/reqAttendance"
+        android:layout_alignTop="@+id/reqAttendanceText"
         android:ems="10"
         android:hint="@string/enterDate" />
 
-    <TextView
-        android:id="@+id/desiredAttendance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/reqAttendance"
-        android:layout_below="@+id/EditText01"
-        android:text="@string/desiredAttendance"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
     <EditText
-        android:id="@+id/EditText02"
+        android:id="@+id/desiredAttendanceValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/EditText01"
+        android:layout_alignLeft="@+id/reqAttendanceValue"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/EditText01"
+        android:layout_below="@+id/reqAttendanceValue"
         android:ems="10"
         android:hint="@string/enterDate" />
 
@@ -153,23 +144,12 @@
         android:gravity="center_vertical"
         android:text="@string/thursdayCTVText" />
 
-    <CheckedTextView
-        android:id="@+id/fridayCTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/thursdayCTV"
-        android:layout_below="@+id/thursdayCTV"
-        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-        android:checked="true"
-        android:gravity="center_vertical"
-        android:text="@string/fridayCTVText" />
-
     <TextView
         android:id="@+id/setSchedule"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/desiredAttendance"
-        android:layout_below="@+id/EditText02"
+        android:layout_alignLeft="@+id/desiredAttendanceText"
+        android:layout_below="@+id/desiredAttendanceValue"
         android:text="@string/setScheduleText"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -186,16 +166,85 @@
         android:text="@string/mondayCTVText" />
 
     <TextView
-        android:id="@+id/showStartDate"
+        android:id="@+id/mondayTimings"
         style="@android:style/Widget.Holo.Spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/mondayCTV"
         android:layout_alignBottom="@+id/mondayCTV"
-        android:layout_alignTop="@+id/mondayCTV"
-        android:layout_toRightOf="@+id/desiredAttendance"
-        android:height="40dp"
+        android:layout_alignLeft="@+id/wednesdayTimings"
+        android:height="30dp"
         android:text="@string/enterDate"
-        android:textSize="20sp" />
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tuesdayTimings"
+        style="@android:style/Widget.Holo.Spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tuesdayCTV"
+        android:layout_alignBottom="@+id/tuesdayCTV"
+        android:layout_alignLeft="@+id/wednesdayTimings"
+        android:height="30dp"
+        android:text="@string/enterDate"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/wednesdayTimings"
+        style="@android:style/Widget.Holo.Spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/wednesdayCTV"
+        android:layout_alignBottom="@+id/wednesdayCTV"
+        android:layout_toRightOf="@+id/desiredAttendanceText"
+        android:height="30dp"
+        android:text="@string/enterDate"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/thursdayTimings"
+        style="@android:style/Widget.Holo.Spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/thursdayCTV"
+        android:layout_alignBottom="@+id/thursdayCTV"
+        android:layout_alignLeft="@+id/wednesdayTimings"
+        android:height="30dp"
+        android:text="@string/enterDate"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/fridayTimings"
+        style="@android:style/Widget.Holo.Spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/thursdayTimings"
+        android:layout_toRightOf="@+id/desiredAttendanceText"
+        android:height="30dp"
+        android:text="@string/enterDate"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/desiredAttendanceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/reqAttendanceText"
+        android:layout_below="@+id/reqAttendanceValue"
+        android:gravity="center"
+        android:text="@string/desiredAttendance"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <CheckedTextView
+        android:id="@+id/fridayCTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/thursdayCTV"
+        android:layout_below="@+id/thursdayCTV"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+        android:checked="true"
+        android:gravity="center_vertical"
+        android:text="@string/fridayCTVText" />
 
 </RelativeLayout>
 </ScrollView>

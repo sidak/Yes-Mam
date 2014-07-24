@@ -10,7 +10,7 @@
         android:layout_height="517dp" >
 
         <TextView
-            android:id="@+id/TextView03"
+            android:id="@+id/thursdayTimings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -20,7 +20,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/TextView04"
+            android:id="@+id/fridayTimings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
