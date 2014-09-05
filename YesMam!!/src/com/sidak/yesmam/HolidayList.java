@@ -57,6 +57,7 @@ public class HolidayList extends ListActivity {
 			Log.i(TAG, "after findall and cretae data in if");
 
 		}
+		
 		refreshDisplayAndUpdate();
 		
 		addHoliday.setOnClickListener(new View.OnClickListener() {

@@ -45,4 +45,7 @@
     <string name="wednesdayCTVText">Wednesday</string>
 	<string name="thursdayCTVText">Thursday</string>
     <string name="fridayCTVText">Friday</string>
+    <string name="submitCourse">Submit Course</string>
+    <string name ="fillAllFields">Please enter all the fields</string>
+    <string name ="fillTimings">Please enter the course Timings</string>
 </resources>

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@id/reqAttendanceText"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
     tools:context="${packageName}.${activityClass}" >
 
     <RelativeLayout
@@ -76,7 +75,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/courseCode"
-        android:layout_alignParentRight="true"
+        android:layout_alignRight="@+id/courseCode"
         android:layout_alignTop="@+id/courseVenueText"
         android:ems="10"
         android:hint="@string/enterDate" />
@@ -96,7 +95,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/courseVenue"
-        android:layout_alignParentRight="true"
+        android:layout_alignRight="@+id/courseVenue"
         android:layout_alignTop="@+id/reqAttendanceText"
         android:ems="10"
         android:hint="@string/enterDate" />
@@ -106,41 +105,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/reqAttendanceValue"
-        android:layout_alignParentRight="true"
+        android:layout_alignRight="@+id/reqAttendanceValue"
         android:layout_below="@+id/reqAttendanceValue"
         android:ems="10"
         android:hint="@string/enterDate" />
 
-    <CheckedTextView
+    <CheckBox
         android:id="@+id/tuesdayCTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/mondayCTV"
         android:layout_below="@+id/mondayCTV"
-        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-        android:checked="true"
+        android:checked="false"
         android:gravity="center_vertical"
         android:text="@string/tuesdayCTVText" />
 
-    <CheckedTextView
+    <CheckBox
         android:id="@+id/wednesdayCTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/tuesdayCTV"
         android:layout_below="@+id/tuesdayCTV"
-        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-        android:checked="true"
+        android:checked="false"
         android:gravity="center_vertical"
         android:text="@string/wednesdayCTVText" />
 
-    <CheckedTextView
+    <CheckBox
         android:id="@+id/thursdayCTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/wednesdayCTV"
         android:layout_below="@+id/wednesdayCTV"
-        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-        android:checked="true"
+        android:checked="false"
         android:gravity="center_vertical"
         android:text="@string/thursdayCTVText" />
 
@@ -154,14 +150,13 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <CheckedTextView
+    <CheckBox
         android:id="@+id/mondayCTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/setSchedule"
         android:layout_below="@+id/setSchedule"
-        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-        android:checked="true"
+        android:checked="false"
         android:gravity="center_vertical"
         android:text="@string/mondayCTVText" />
 
@@ -235,14 +230,22 @@
         android:textSize="16sp"
         android:textStyle="bold" />
 
-    <CheckedTextView
+    <Button
+        android:id="@+id/submitCourse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fridayTimings"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:text="@string/submitCourse" />
+
+    <CheckBox
         android:id="@+id/fridayCTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/thursdayCTV"
         android:layout_below="@+id/thursdayCTV"
-        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-        android:checked="true"
+        android:checked="false"
         android:gravity="center_vertical"
         android:text="@string/fridayCTVText" />
 
