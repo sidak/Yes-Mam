@@ -43,11 +43,13 @@ public class SemesterActivity extends Activity implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_semester);
-
+		// labels for dates
 		startDate = (TextView) findViewById(R.id.startDate);
 		endDate = (TextView)findViewById(R.id.endDate);
+		// hold values for dates
 		showStartDate = (TextView) findViewById(R.id.showStartDate);
 		showEndDate = (TextView) findViewById(R.id.showEndDate);
+		
 		enableSaturday = (CheckBox) findViewById(R.id.enableSaturday);
 		enableSunday = (CheckBox) findViewById(R.id.enableSunday);
 		reset =(Button)findViewById(R.id.reset);
@@ -156,7 +158,7 @@ public class SemesterActivity extends Activity implements OnClickListener{
 	public int calculateWorkingDays(Date olderDate, Date newerDate){
 		int diffInDays = (int)( (newerDate.getTime() - olderDate.getTime()) 
                 / (1000 * 60 * 60 * 24) );
-		// TODO:also need to check if holiday specified by the user / insti 
+		// TODO: also need to check if holiday specified by the user / insti 
 		// shldn't lie on saturdays and sundays
 		int startDateDay=UIHelper.getDayOfWeekFromDate(olderDate);
 		int endDateDay=UIHelper.getDayOfWeekFromDate(newerDate);

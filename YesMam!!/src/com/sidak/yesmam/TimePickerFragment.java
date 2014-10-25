@@ -34,6 +34,5 @@ public class TimePickerFragment extends DialogFragment implements
 	public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 		// TODO Auto-generated method stub
 		textView.setText(String.valueOf(hourOfDay)+":"+String.valueOf(minute));
-
 	}
 }
