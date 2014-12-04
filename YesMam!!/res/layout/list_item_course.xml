@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/viewCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.5"
+            android:gravity="center_vertical"
+            android:text="CS-221"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/viewVenue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="0.5"
+            android:gravity="right"
+            android:text="LHC-104"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/viewName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="0dp"
+            android:gravity="center_vertical"
+            android:text="Computer Architecture"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <TextView
+	            android:id="@+id/labelSchedule"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_margin="10dp"
+	            android:layout_marginBottom="0dp"
+	            android:gravity="center_vertical"
+	            android:text="Schedule"
+	            android:textSize="20sp"
+	            android:textStyle="bold"
+	            
+	         />
+
+            <LinearLayout
+                android:id="@+id/scheduleLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_weight="0.5" >
+
+	        <TextView
+	            android:id="@+id/labelDesiredAtten"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_margin="10dp"
+	            android:layout_marginBottom="0dp"
+	            android:layout_weight="0.25"
+	            android:gravity="center_vertical|center_horizontal"
+	            android:text="Desired Attendance"
+	            android:textSize="20sp"
+	            android:textStyle="bold" />
+	
+	        <TextView
+	            android:id="@+id/viewDesiredAtten"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_margin="3dp"
+	            android:layout_marginBottom="0dp"
+	            android:layout_weight="0.25"
+	            
+	            android:text="85%"
+	            android:textSize="20sp" />
+
+	        <TextView
+	            android:id="@+id/labelMinAtten"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_margin="10dp"
+	            android:layout_marginBottom="0dp"
+	            android:layout_weight="0.25"
+	            android:gravity="center_vertical|center_horizontal"
+	            android:text="Min. Attendance"
+	            android:textSize="20sp"
+	            android:textStyle="bold" />
+	
+	        <TextView
+	            android:id="@+id/viewMinAtten"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_margin="3dp"
+	            android:layout_marginBottom="0dp"
+	            android:layout_weight="0.25"
+	            
+	            android:text="75%"
+	            android:textSize="20sp" />
+        
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
