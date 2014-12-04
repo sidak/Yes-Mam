@@ -75,4 +75,11 @@ public class Course {
 	public void setFriTimings(String tmg){
 		friTimings=tmg;
 	}
+	public String toString(){
+		return courseCode +" "+courseVenue+" "+courseName+" "+
+				courseDesiredAttendance+ " "+ courseReqAttendance+
+				" "+monTimings+" "+ tuesTimings+ " "+ wedTimings+ " "+
+				thursTimings+" "+friTimings;
+	
+	}
 }

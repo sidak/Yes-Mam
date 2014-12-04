@@ -10,7 +10,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 	public static final String TAG = "YES MAM DB";
 	
 	private static final String DATABASE_NAME = "semester.db";
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 3;
 	
 	public static final String TABLE_COURSES="courses";
 	public static final String COURSE_ID = "courseId";
@@ -19,11 +19,11 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 	public static final String COURSE__CODE = "courseCode";
 	public static final String COURSE_DES_ATTEND = "desAttendance";
 	public static final String COURSE_REQ_ATTEND = "reqAtendance";
-	public static final String MON_TIMINGS="monday timings";
-	public static final String TUES_TIMINGS="tuesday timings";
-	public static final String WED_TIMINGS="wednesday timings";
-	public static final String THURS_TIMINGS="thursday timings";
-	public static final String FRI_TIMINGS="friday timings";
+	public static final String MON_TIMINGS="monTimings";
+	public static final String TUES_TIMINGS="tuesTimings";
+	public static final String WED_TIMINGS="wedTimings";
+	public static final String THURS_TIMINGS="thurTimings";
+	public static final String FRI_TIMINGS="friTimings";
 	
 	private static final String TABLE_CREATE_COURSES=
 			"CREATE TABLE " + TABLE_COURSES + " (" +
@@ -37,7 +37,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 			 TUES_TIMINGS+ " TEXT, " +
 			 WED_TIMINGS+ " TEXT, " +
 			 THURS_TIMINGS+ " TEXT, " +
-			 FRI_TIMINGS+ " TEXT, " +
+			 FRI_TIMINGS+ " TEXT " +
 			 ")";
 
 	public static final String TABLE_HOLIDAYS="holidays";
@@ -66,7 +66,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 	public DBOpenHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		Log.i(TAG, "dbopen helper constr");
-
+		
 	}
 
 	@Override

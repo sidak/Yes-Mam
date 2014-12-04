@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -15,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class AddCourses extends Activity {
-
+	public static final String TAG = AddCourses.class.getSimpleName();
 	private EditText courseName;
 	private EditText courseCode;
 	private EditText courseVenue;
@@ -49,7 +50,7 @@ public class AddCourses extends Activity {
 		thursCB = (CheckBox) findViewById(R.id.thursdayCTV);
 		friCB = (CheckBox) findViewById(R.id.fridayCTV);
 
-		monTV = (TextView) findViewById(R.id.mondayTimings);
+		monTV = (TextView) findViewById(R.id.monTimings);
 		tuesTV = (TextView) findViewById(R.id.tuesdayTimings);
 		wedTV = (TextView) findViewById(R.id.wednesdayTimings);
 		thursTV = (TextView) findViewById(R.id.thursdayTimings);
@@ -140,7 +141,7 @@ public class AddCourses extends Activity {
 	 */
 
 	private void sendCourseData() {
-		Intent sendIntent = new Intent(this, CourseView.class);
+		Intent sendIntent = new Intent();
 		
 		// if any of the timings are not set , they will be equal to "enter here"
 		sendIntent.putExtra("courseName", UIHelper.getTextFromEditext(this, courseName.getId()));
@@ -158,16 +159,18 @@ public class AddCourses extends Activity {
 		sendIntent.putExtra("wedTimings", wedText);
 		sendIntent.putExtra("thursTimings", thursText);
 		sendIntent.putExtra("friTimings", friText);
-		startActivityForResult(sendIntent, RESULT_OK);
+		setResult( RESULT_OK,sendIntent);
 		finish();
 		
 	}
 
 	private boolean validateData() {
+		Log.v(TAG, "in validate data ");
 		if (ifEmptyEdittext(courseName) || ifEmptyEdittext(courseCode)
 				|| ifEmptyEdittext(courseVenue)
 				|| ifEmptyEdittext(reqAttendance)
 				|| ifEmptyEdittext(desAttendance)) {
+			Log.v(TAG, "in the if cond checking if fields are mpty in course add ");
 			Toast.makeText(this, R.string.fillAllFields, Toast.LENGTH_LONG)
 					.show();
 			return false;
@@ -180,12 +183,15 @@ public class AddCourses extends Activity {
 			
 		}else {
 			Toast.makeText(this, R.string.fillTimings, Toast.LENGTH_LONG).show();
-		}
+		} 
 		return false;
 	}
 
 	private boolean ifEmptyEdittext(EditText ed) {
-		return UIHelper.getTextFromEditext(this, ed.getId()) == getString(R.string.enterDate);
+		
+		return (ed.getText().toString()).equals("");
+		// because the "enter here" appearing in the edittext is the label and not the text
+		
 	}
 
 	private void showTimePickerDialog(TextView tv) {

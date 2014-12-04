@@ -161,7 +161,7 @@
         android:text="@string/mondayCTVText" />
 
     <TextView
-        android:id="@+id/mondayTimings"
+        android:id="@+id/monTimings"
         style="@android:style/Widget.Holo.Spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -5,6 +5,7 @@ import java.util.List;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -26,20 +27,29 @@ public class CourseView extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_course_view);
-		datasource=new CoursesDataSource(this);
-		datasource.open();
+		
 		lv =(ListView)findViewById(android.R.id.list);
 		// initialise add course button
+		addCourse = (Button)findViewById(R.id.addCourseText);
+		Log.v(TAG, "in courseview constructor entry pt");
+		datasource=new CoursesDataSource(this);
+		Log.v(TAG, "after initialsing datasource and before open");
+		datasource.open();
+		Log.v(TAG, "after open datscr");
+		courses=datasource.findAll();
+		Log.v(TAG, "in courseview constructor after find all");
+		
 		addCourse.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				addCourseData();
+				addCourseInDatabase();
 			}
 
 			
 		});
-		
+		refreshDisplayAndUpdate();
+		Log.v(TAG, "after rdau in const");
 	}
 
 	@Override
@@ -58,6 +68,7 @@ public class CourseView extends ListActivity {
 				courseAdded.setWedTimings(data.getExtras().getString("wedTimings"));
 				courseAdded.setThursTimings(data.getExtras().getString("thursTimings"));
 				courseAdded.setFriTimings(data.getExtras().getString("friTimings"));
+				Log.v(TAG, "in onactivity result"+courseAdded.toString());
 				datasource.open();// do it again since onstop was c/d
 				datasource.create(courseAdded);
 
@@ -68,17 +79,28 @@ public class CourseView extends ListActivity {
 	protected void onResume() {
 		super.onResume();
 		datasource.open();
+		courses=datasource.findAll();
+		refreshDisplayAndUpdate();
+		Log.v(TAG, "courseview on resume");
 	}
-
+	@Override
+	protected void onStart() {
+		super.onStart();
+		datasource.open();
+		courses=datasource.findAll();
+		refreshDisplayAndUpdate();
+		Log.v(TAG, "courseview onstart");
+	}
 	@Override
 	protected void onPause() {
 		super.onPause();
 		datasource.close();
 	}
 
-	private void addCourseData() {
+	private void addCourseInDatabase() {
 		Intent intent = new Intent(CourseView.this, AddCourses.class);
 		startActivityForResult(intent, 1);
+		Log.v(TAG, "adding course in adtabase");
 	}
 	
 	/*private void createData() {
@@ -107,8 +129,10 @@ public class CourseView extends ListActivity {
 	}*/
 
 	public void refreshDisplayAndUpdate() {
+		Log.v(TAG, "in rdau");
 		adapter = new CourseListAdapter(this, courses);
 		setListAdapter(adapter);
+		Log.v(TAG, "exit rdau");
 	}
 
 

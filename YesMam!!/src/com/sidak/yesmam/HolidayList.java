@@ -47,7 +47,7 @@ public class HolidayList extends ListActivity {
 		holidays = datasource.findAll();
 		Log.i(TAG, "after dtasrc.findall w/o if");
 
-		if (holidays.size() == 0) {
+		/*if (holidays.size() == 0) {
 			Log.i(TAG, "after dtasrc.findall in if");
 
 			createData();
@@ -56,7 +56,7 @@ public class HolidayList extends ListActivity {
 			holidays = datasource.findAll();
 			Log.i(TAG, "after findall and cretae data in if");
 
-		}
+		}*/
 		
 		refreshDisplayAndUpdate();
 		

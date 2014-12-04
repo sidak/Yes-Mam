@@ -30,10 +30,11 @@ public class CoursesDataSource {
 
 	public CoursesDataSource(Context context) {
 		dbhelper = new DBOpenHelper(context);
+		Log.v(TAG, "constructor course data src");
 	}
 
 	public void open() {
-		Log.i(TAG, "Database opened");
+		Log.i(TAG, "Course Database opened");
 		database = dbhelper.getWritableDatabase();
 	}
 

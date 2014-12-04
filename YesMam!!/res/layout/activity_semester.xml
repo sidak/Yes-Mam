@@ -5,7 +5,7 @@
     tools:context="${packageName}.${activityClass}" >
 
     <TextView
-        android:id="@+id/mondayTimings"
+        android:id="@+id/sDateValue"
         style="@android:style/Widget.Holo.Spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/enableSaturday"
-        android:layout_alignLeft="@+id/mondayTimings"
+        android:layout_alignLeft="@+id/sDateValue"
         android:height="40dp"
         android:text="@string/enterDate"
         android:textSize="20sp" />

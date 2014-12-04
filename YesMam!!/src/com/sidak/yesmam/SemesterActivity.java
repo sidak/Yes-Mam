@@ -47,7 +47,7 @@ public class SemesterActivity extends Activity implements OnClickListener{
 		startDate = (TextView) findViewById(R.id.startDate);
 		endDate = (TextView)findViewById(R.id.endDate);
 		// hold values for dates
-		showStartDate = (TextView) findViewById(R.id.showStartDate);
+		showStartDate = (TextView) findViewById(R.id.sDateValue);
 		showEndDate = (TextView) findViewById(R.id.showEndDate);
 		
 		enableSaturday = (CheckBox) findViewById(R.id.enableSaturday);
@@ -69,7 +69,7 @@ public class SemesterActivity extends Activity implements OnClickListener{
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch(v.getId()){
-			case R.id.showStartDate :
+			case R.id.sDateValue :
 				showDatePickerDialog((TextView) v);
 				break;
 			case R.id.showEndDate:
@@ -77,11 +77,14 @@ public class SemesterActivity extends Activity implements OnClickListener{
 				break;
 			case R.id.reset:
 				resetFields();
+				break;
 			case R.id.planHolidays:
 				Intent intent= new Intent(SemesterActivity.this, HolidayList.class);
 				startActivityForResult(intent, PLAN_HOLIDAYS_CODE);
+				break;
 			case R.id.addCourses:
 				validateCalculateSaveSemester();
+				break;
 			default:
 				break;
 				
@@ -119,7 +122,7 @@ public class SemesterActivity extends Activity implements OnClickListener{
 		// TODO:make an intent to add courses view
 		// implement that as list like holidays and set it various fields
 		//checking the working of courseView activity
-		Intent intent =new Intent(this, AddCourses.class);
+		Intent intent =new Intent(this, CourseView.class);
 		startActivity(intent);
 		
 	}
