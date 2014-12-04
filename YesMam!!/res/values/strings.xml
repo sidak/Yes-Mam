@@ -57,4 +57,6 @@
     <string name="thuLabel">Thu</string>
     <string name="friLabel">Fri</string>
     <string name ="na">N/A</string>
+    <string name ="finishText">Finish</string>
+    <string name="prefPreviouslyStarted">com.sidak.yesmam.PREFERENCE_PREV_STARTED</string>
 </resources>
