@@ -30,7 +30,6 @@
             android:gravity="right"
             android:text="LHC-104"
             android:textSize="20sp" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -47,7 +46,6 @@
             android:text="Computer Architecture"
             android:textSize="20sp"
             android:textStyle="bold" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -62,82 +60,209 @@
             android:orientation="vertical" >
 
             <TextView
-	            android:id="@+id/labelSchedule"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_margin="10dp"
-	            android:layout_marginBottom="0dp"
-	            android:gravity="center_vertical"
-	            android:text="Schedule"
-	            android:textSize="20sp"
-	            android:textStyle="bold"
-	            
-	         />
+                android:id="@+id/labelSchedule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center_vertical"
+                android:text="@string/scheduleLabel"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <LinearLayout
-                android:id="@+id/scheduleLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/monLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_marginBottom="0dp"
+                    android:layout_weight="0.40"
+                    android:gravity="center_vertical"
+                    android:text="@string/monLabel"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/monTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_marginBottom="0dp"
+                    android:layout_weight="0.60"
+                    android:gravity="right"
+                    android:text="9-10am"
+                    android:textSize="20sp" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/tueLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_marginBottom="0dp"
+                    android:layout_weight="0.40"
+                    android:gravity="center_vertical"
+                    android:text="@string/tueLabel"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tueTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_marginBottom="0dp"
+                    android:layout_weight="0.60"
+                    android:gravity="right"
+                    android:text="9-10am"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/wedLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_marginBottom="0dp"
+                    android:layout_weight="0.40"
+                    android:gravity="center_vertical"
+                    android:text="@string/wedLabel"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/wedTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_marginBottom="0dp"
+                    android:layout_weight="0.60"
+                    android:gravity="right"
+                    android:text="9-10am"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/thuLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_marginBottom="0dp"
+                    android:layout_weight="0.40"
+                    android:gravity="center_vertical"
+                    android:text="@string/thuLabel"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/thuTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_marginBottom="0dp"
+                    android:layout_weight="0.60"
+                    android:gravity="right"
+                    android:text="9-10am"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/friLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_marginBottom="0dp"
+                    android:layout_weight="0.40"
+                    android:gravity="center_vertical"
+                    android:text="@string/friLabel"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/friTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_marginBottom="0dp"
+                    android:layout_weight="0.60"
+                    android:gravity="right"
+                    android:text="9-10am"
+                    android:textSize="20sp" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
             android:gravity="center"
-            android:layout_weight="0.5" >
+            android:orientation="vertical" >
 
-	        <TextView
-	            android:id="@+id/labelDesiredAtten"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_margin="10dp"
-	            android:layout_marginBottom="0dp"
-	            android:layout_weight="0.25"
-	            android:gravity="center_vertical|center_horizontal"
-	            android:text="Desired Attendance"
-	            android:textSize="20sp"
-	            android:textStyle="bold" />
-	
-	        <TextView
-	            android:id="@+id/viewDesiredAtten"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_margin="3dp"
-	            android:layout_marginBottom="0dp"
-	            android:layout_weight="0.25"
-	            
-	            android:text="85%"
-	            android:textSize="20sp" />
+            <TextView
+                android:id="@+id/labelDesiredAtten"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/desAttenLabel"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-	        <TextView
-	            android:id="@+id/labelMinAtten"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_margin="10dp"
-	            android:layout_marginBottom="0dp"
-	            android:layout_weight="0.25"
-	            android:gravity="center_vertical|center_horizontal"
-	            android:text="Min. Attendance"
-	            android:textSize="20sp"
-	            android:textStyle="bold" />
-	
-	        <TextView
-	            android:id="@+id/viewMinAtten"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_margin="3dp"
-	            android:layout_marginBottom="0dp"
-	            android:layout_weight="0.25"
-	            
-	            android:text="75%"
-	            android:textSize="20sp" />
-        
+            <TextView
+                android:id="@+id/viewDesiredAtten"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:layout_marginBottom="0dp"
+                android:text="85%"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/labelMinAtten"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/minAttenLabel"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/viewMinAtten"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:layout_marginBottom="0dp"
+                android:text="75%"
+                android:textSize="20sp" />
         </LinearLayout>
-
     </LinearLayout>
 
 </LinearLayout>
