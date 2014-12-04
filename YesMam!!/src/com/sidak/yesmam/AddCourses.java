@@ -174,7 +174,10 @@ public class AddCourses extends Activity {
 		}
 		if (monCB.isChecked() || tuesCB.isChecked() || wedCB.isChecked()
 				|| thursCB.isChecked() || friCB.isChecked()) {
+			// check if those checkboxes which are checked have corresponding 
+			// dates along with it.
 			return true;
+			
 		}else {
 			Toast.makeText(this, R.string.fillTimings, Toast.LENGTH_LONG).show();
 		}

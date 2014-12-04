@@ -31,8 +31,8 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 			 COURSE_NAME + " TEXT, "+
 			 COURSE__CODE + " TEXT, "+
 			 COURSE_VENUE+ " TEXT, "+
-			 COURSE_REQ_ATTEND + " REAL, "+
-			 COURSE_DES_ATTEND+ " REAL, "+
+			 COURSE_REQ_ATTEND + " TEXT, "+
+			 COURSE_DES_ATTEND+ " TEXT, "+
 			 MON_TIMINGS+ " TEXT, " +
 			 TUES_TIMINGS+ " TEXT, " +
 			 WED_TIMINGS+ " TEXT, " +

@@ -48,4 +48,13 @@
     <string name="submitCourse">Submit Course</string>
     <string name ="fillAllFields">Please enter all the fields</string>
     <string name ="fillTimings">Please enter the course Timings</string>
+    <string name="scheduleLabel">Schedule</string>
+    <string name="desAttenLabel">Desired Attendance</string>
+    <string name="minAttenLabel">Min. Attendance</string>
+    <string name="monLabel">Mon</string>
+    <string name="tueLabel">Tue</string>
+    <string name="wedLabel">Wed</string>
+    <string name="thuLabel">Thu</string>
+    <string name="friLabel">Fri</string>
+    <string name ="na">N/A</string>
 </resources>

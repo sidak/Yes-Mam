@@ -2,24 +2,18 @@ package com.sidak.yesmam;
 
 import java.util.List;
 
-import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.sidak.yesmam.db.CoursesDataSource;
 import com.sidak.yesmam.model.Course;
 
-public class CourseView extends Activity {
+public class CourseView extends ListActivity {
 	public static final String TAG = CourseView.class.getSimpleName();
 	private CoursesDataSource datasource;
 	private Button addCourse;
@@ -50,7 +44,7 @@ public class CourseView extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == 1) {
+		if (requestCode == 1) { // for adding courses
 			if (resultCode == RESULT_OK) {
 				courseAdded = new Course();
 				courseAdded.setCourseName(data.getExtras().getString("courseName"));
