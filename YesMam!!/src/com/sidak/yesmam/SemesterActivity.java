@@ -1,16 +1,14 @@
 package com.sidak.yesmam;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-
-import com.sidak.yesmam.db.HolidaysDataSource;
 
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,6 +32,9 @@ public class SemesterActivity extends Activity implements OnClickListener{
 	private Date end;
 	private final int PLAN_HOLIDAYS_CODE=1;
 	private int numHolidays;
+	private int workingDays;
+	private String dateStart;
+	private String dateEnd;
 
 	
 	public final String TAG =SemesterActivity.class.getSimpleName();
@@ -105,8 +106,8 @@ public class SemesterActivity extends Activity implements OnClickListener{
 			Toast.makeText(this, "Please enter the required dates", Toast.LENGTH_LONG).show();
 			return;
 		}
-		String dateStart= UIHelper.getTextFromTextview(this, showStartDate.getId());
-		String dateEnd= UIHelper.getTextFromTextview(this, showEndDate.getId());
+		dateStart= UIHelper.getTextFromTextview(this, showStartDate.getId());
+		dateEnd= UIHelper.getTextFromTextview(this, showEndDate.getId());
 		start=UIHelper.getDateObjectFromText(dateStart);
 		end=UIHelper.getDateObjectFromText(dateEnd);
 		if(!validateDates(start, end)){
@@ -117,7 +118,7 @@ public class SemesterActivity extends Activity implements OnClickListener{
 		Log.v(TAG, end.toString());
 
 		//--------------- dates validated------------------
-		int workingDays=calculateWorkingDays(start, end);
+		workingDays=calculateWorkingDays(start, end);
 		saveSemesterInfo();
 		// TODO:make an intent to add courses view
 		// implement that as list like holidays and set it various fields
@@ -129,6 +130,13 @@ public class SemesterActivity extends Activity implements OnClickListener{
 
 	private void saveSemesterInfo() {
 		// TODO Auto-generated method stub
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		SharedPreferences.Editor edit = prefs.edit();
+		edit.putInt(getString(R.string.numWorkingDays), workingDays);
+		edit.putString(getString(R.string.dateStart), dateStart);
+		edit.putString(getString(R.string.dateEnd), dateEnd);
+		edit.commit();
+		
 		Log.i(TAG, "data saved");
 	}
 	private boolean ifEmptyTextview(TextView tv) {
@@ -161,6 +169,7 @@ public class SemesterActivity extends Activity implements OnClickListener{
 	public int calculateWorkingDays(Date olderDate, Date newerDate){
 		int diffInDays = (int)( (newerDate.getTime() - olderDate.getTime()) 
                 / (1000 * 60 * 60 * 24) );
+		diffInDays++;
 		// TODO: also need to check if holiday specified by the user / insti 
 		// shldn't lie on saturdays and sundays
 		int startDateDay=UIHelper.getDayOfWeekFromDate(olderDate);
@@ -186,7 +195,9 @@ public class SemesterActivity extends Activity implements OnClickListener{
 			workingWeekends+=numSun;
 		}
 		int totalWorkingDays=diffInDays-numHolidays-numSat - numSun + workingWeekends;
-		Log.v(TAG, "total working days" + totalWorkingDays);
+		Log.v(TAG, "total working days" + totalWorkingDays+"diffin days "+diffInDays+
+				"num holidays "+numHolidays+ "num sat "+numSat+"num sun "+numSun+ " working weekens "+
+				workingWeekends);
 		return totalWorkingDays;
 	}
 	public boolean checkWeekend(CheckBox cb){

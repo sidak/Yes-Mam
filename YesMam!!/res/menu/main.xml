@@ -4,7 +4,7 @@
     tools:context="com.sidak.yesmam.MainActivity" >
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/addCourseText"
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never"/>
