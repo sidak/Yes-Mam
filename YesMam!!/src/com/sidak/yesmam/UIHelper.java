@@ -79,5 +79,14 @@ public class UIHelper {
 		cal.setTime(date); 
 		return cal.get(Calendar.DAY_OF_WEEK);
 	}
+	public static boolean checkIfBefore(String s1, String s2){
+		Date d1,d2;
+		d1=getDateObjectFromText(s1);
+		d2=getDateObjectFromText(s2);
+		if(d1.compareTo(d2)<=0){
+			return true;
+		}
+		return false;
+	}
 
 }

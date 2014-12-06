@@ -62,4 +62,5 @@
     <string name="numWorkingDays">com.sidak.yesmam.PREFERENCE_WORKING_DAYS</string>
     <string name="dateStart">com.sidak.yesmam.PREFERENCE_START_DATE</string>
     <string name="dateEnd">com.sidak.yesmam.PREFERENCE_END_DATE</string>
+    <string name="semPrefs">Semester Pref</string>
 </resources>

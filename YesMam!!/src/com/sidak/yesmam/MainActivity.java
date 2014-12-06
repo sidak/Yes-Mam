@@ -18,7 +18,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		prefs = getApplicationContext().getSharedPreferences(getString(R.string.semPrefs),0);
 		numWorkingDays= prefs.getInt(getString(R.string.numWorkingDays), 0);
 		Log.v(TAG, ""+numWorkingDays);
 		TextView t = (TextView)findViewById(R.id.trial);
