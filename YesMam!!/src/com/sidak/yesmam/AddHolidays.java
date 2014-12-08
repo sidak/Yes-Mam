@@ -6,7 +6,6 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -77,7 +76,11 @@ public class AddHolidays extends Activity {
 					Toast.LENGTH_LONG).show();
 			return;
 		}
-
+		if(UIHelper.checkIfWeekend(dateHoliday)){
+			Toast.makeText(this, "The date entered is already a weekend",
+					Toast.LENGTH_LONG).show();
+			return;
+		}
 		// Intent intent =getIntent();
 		// startDate=intent.getStringExtra("dateStart");
 		// endDate=intent.getStringExtra("dateEnd");

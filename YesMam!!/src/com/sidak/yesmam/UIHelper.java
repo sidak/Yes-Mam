@@ -88,5 +88,13 @@ public class UIHelper {
 		}
 		return false;
 	}
-
+	public static boolean checkIfWeekend(String s ){
+		Date d = getDateObjectFromText(s);
+		int day = getDayOfWeekFromDate(d);
+		if(day==Calendar.SATURDAY || day == Calendar.SUNDAY){
+			return true;
+		}
+		else return false;
+	}
+	
 }
