@@ -26,6 +26,7 @@ public class MainActivity extends Activity {
 	private HolidaysDataSource holiDatasource;
 	private String holidayType;
 	private String holidayDesc;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,51 +37,57 @@ public class MainActivity extends Activity {
 		Log.v(TAG, "" + numWorkingDays);
 		TextView t = (TextView) findViewById(R.id.trial);
 		t.setText("" + numWorkingDays);
-		
-		
+		holiDatasource = new HolidaysDataSource(this);
+		holiDatasource.open();
+		Log.i(TAG, "after opening holiday databasse");
+
 		final Button t1 = (Button) findViewById(R.id.status1);
 		t1.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				if(checkHoliday()){
+				if (checkHoliday()) {
+					t1.setText(holidayDesc + " " + holidayType);
+				} else {
+
 					t1.setText("there is no holiday");
 				}
-				else{
-					t1.setText(holidayDesc+ " "+holidayType);
-				}
-				
+
 			}
 		});
-		
+
 		// check if it is a holiday
-		// also cache the value for a particular day by checking the 
-		// current date and the variable 
+		// also cache the value for a particular day by checking the
+		// current date and the variable
 		// UIHelper.checkIfWeekend(s)
 		// check for extra class
 		// then if none: check for todays' classes
 
-		
-
 	}
-	private boolean checkHoliday(){
-		int date[]=UIHelper.getDateFromText(getCurrentDate(), this);
-		holidays=holiDatasource.findWhereDatesMatch(new String[] {""+date[0],""+date[1],""+date[2]});
-		if(holidays==null){
+
+	private boolean checkHoliday() {
+		int date[] = UIHelper.getDateFromText(getCurrentDate(), this);
+		Log.v(TAG, " " + date[0] + " " + date[1] + " " + date[2]);
+		holidays = holiDatasource.findWhereDatesMatch(new String[] {
+				"" + date[0], "" + date[1], "" + date[2] });
+		if (holidays == null) {
 			// not a holiday
 			return false;
-		}else{
-			Holiday holiday= holidays.get(0);
-			holidayDesc=holiday.getDescription();
-			holidayDesc=holiday.getType();
+		} else if (holidays.size() > 0) {
+			Holiday holiday = holidays.get(0);
+			holidayDesc = holiday.getDescription();
+			holidayType = holiday.getType();
 			return true;
+		} else {
+			return false;
 		}
 	}
+
 	private String getCurrentDate() {
 		c = Calendar.getInstance();
 		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		String formattedDate = df.format(c.getTime());
-		Log.v(TAG, "current date "+formattedDate);
+		Log.v(TAG, "current date " + formattedDate);
 		return formattedDate;
 	}
 
