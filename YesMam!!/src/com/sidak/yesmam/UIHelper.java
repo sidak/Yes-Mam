@@ -8,7 +8,6 @@ import java.util.GregorianCalendar;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -96,5 +95,21 @@ public class UIHelper {
 		}
 		else return false;
 	}
-	
+	public static int calculateSpecificDay(Date d1, Date d2, int day) {
+		Calendar c1 = Calendar.getInstance();  
+        c1.setTime(d1);  
+   
+        Calendar c2 = Calendar.getInstance();  
+        c2.setTime(d2);  
+   
+        int num = 0;  
+   
+        while(c2.after(c1)) {  
+            if(c1.get(Calendar.DAY_OF_WEEK)==day)  
+                num++;  
+            c1.add(Calendar.DATE,1);  
+        }  
+        if(c2.get(Calendar.DAY_OF_WEEK)==day)num++;
+        return num;
+	}
 }
