@@ -14,6 +14,10 @@ public class Course {
 	private String wedTimings;
 	private String thursTimings;
 	private String friTimings;
+	private int totalClasses;
+	private int attendClasses;
+	private int bunkClasses;
+	
 	public String getCourseName(){
 		return courseName;
 	}
@@ -28,6 +32,28 @@ public class Course {
 	}
 	public String getCourseDesiredAttendance(){
 		return courseDesiredAttendance;
+	}
+	public int getTotalClasses(){
+		return totalClasses;
+	}
+	
+	public int getAttendedClasses(){
+		return attendClasses;
+	}
+	public int getBunkedClasses(){
+		return bunkClasses;
+	}
+	
+	public void  setTotalClasses(int n){
+		totalClasses=n;
+	}
+	
+	public void  setAttendClasses(int n){
+		attendClasses=n;
+	}
+	
+	public void  setBunkClasses(int n){
+		bunkClasses=n;
 	}
 	
 	public void setCourseName(String name){
@@ -79,7 +105,7 @@ public class Course {
 		return courseCode +" "+courseVenue+" "+courseName+" "+
 				courseDesiredAttendance+ " "+ courseReqAttendance+
 				" "+monTimings+" "+ tuesTimings+ " "+ wedTimings+ " "+
-				thursTimings+" "+friTimings;
+				thursTimings+" "+friTimings + " "+totalClasses+ " "+attendClasses+" "+bunkClasses;
 	
 	}
 }

@@ -102,4 +102,26 @@ by pressing ctrl + f11, or f12
 
 android:screenOrientation ="portrait" will fix the screen orientation , 
 in manifest
+######################################3
+import java.util.Date;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 
+Date past = new Date(110, 5, 20); // June 20th, 2010
+Date today = new Date(110, 6, 24); // July 24th 
+int days = Days.daysBetween(new DateTime(past), new DateTime(today)).getDays(); // => 34
+
+
+##################
+
+int days = Math.Abs((thisDate - thatDate).Days) + 1;
+        return = ((days/7) * 5) + (days % 7);
+        
+        
+        
+ ################################
+ 
+ Calendar.SUNDAY=1
+ Calendar.SATURDAY=7
+ ###########
+ 

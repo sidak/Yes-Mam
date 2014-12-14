@@ -1,5 +1,6 @@
 package com.sidak.yesmam;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import android.app.Activity;
@@ -36,6 +37,12 @@ public class SemesterActivity extends Activity implements OnClickListener {
 	private String dateStart;
 	private String dateEnd;
 	private SharedPreferences prefs;
+	/*private int mondays;
+	private int tuesdays;
+	private int wednesdays;
+	private int thursdays;
+	private int fridays;
+	*/
 
 	public final String TAG = SemesterActivity.class.getSimpleName();
 
@@ -142,6 +149,13 @@ public class SemesterActivity extends Activity implements OnClickListener {
 				.getSharedPreferences(getString(R.string.semPrefs), 0);
 		SharedPreferences.Editor edit = prefs.edit();
 		edit.putInt(getString(R.string.numWorkingDays), workingDays);
+		
+		/*edit.putInt(getString(R.string.numMon), mondays);
+		edit.putInt(getString(R.string.numTue), tuesdays);
+		edit.putInt(getString(R.string.numWed), wednesdays);
+		edit.putInt(getString(R.string.numThu), thursdays);
+		edit.putInt(getString(R.string.numFri), fridays);
+		*/
 		edit.putString(getString(R.string.dateStart), dateStart);
 		edit.putString(getString(R.string.dateEnd), dateEnd);
 		edit.commit();
@@ -187,16 +201,24 @@ public class SemesterActivity extends Activity implements OnClickListener {
 		int endDateDay = UIHelper.getDayOfWeekFromDate(newerDate);
 		int numSat = 0;
 		int numSun = 0;
-
-		if (startDateDay <= endDateDay) {
+		// wrong
+		if (startDateDay < endDateDay) {
 			numSat = (int) Math.floor(diffInDays / 7.0);
 			numSun = (int) Math.floor(diffInDays / 7.0);
-
+			
 		} else {
 			numSat = (int) Math.ceil(diffInDays / 7.0);
 			numSun = (int) Math.ceil(diffInDays / 7.0);
-
+			
 		}
+		// assuming sat and sun are off
+		/*mondays=UIHelper.calculateSpecificDay(olderDate, newerDate, Calendar.MONDAY);
+		tuesdays=UIHelper.calculateSpecificDay(olderDate, newerDate, Calendar.TUESDAY);
+		wednesdays=UIHelper.calculateSpecificDay(olderDate, newerDate, Calendar.WEDNESDAY);
+		thursdays=UIHelper.calculateSpecificDay(olderDate, newerDate, Calendar.THURSDAY);
+		fridays=UIHelper.calculateSpecificDay(olderDate, newerDate, Calendar.FRIDAY);
+		int total = mondays+thursdays+tuesdays+wednesdays+fridays;
+		*/
 		int workingWeekends = 0;
 		if (checkWeekend(enableSaturday)) {
 			workingWeekends += numSat;
@@ -204,12 +226,16 @@ public class SemesterActivity extends Activity implements OnClickListener {
 		if (checkWeekend(enableSunday)) {
 			workingWeekends += numSun;
 		}
+		
+		
+		
 		int totalWorkingDays = diffInDays - numHolidays - numSat - numSun
 				+ workingWeekends;
 		Log.v(TAG, "total working days" + totalWorkingDays + "diffin days "
 				+ diffInDays + "num holidays " + numHolidays + "num sat "
 				+ numSat + "num sun " + numSun + " working weekens "
 				+ workingWeekends);
+		//Log.v(TAG, totalWorkingDays + " twd  : indv "+ total );
 		return totalWorkingDays;
 	}
 

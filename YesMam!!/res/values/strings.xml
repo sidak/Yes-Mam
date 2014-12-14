@@ -63,4 +63,9 @@
     <string name="dateStart">com.sidak.yesmam.PREFERENCE_START_DATE</string>
     <string name="dateEnd">com.sidak.yesmam.PREFERENCE_END_DATE</string>
     <string name="semPrefs">Semester Pref</string>
+    <string name="numMon">mon</string>
+    <string name="numTue">tue</string>
+    <string name="numWed">wed</string>
+    <string name="numThu">thu</string>
+    <string name="numFri">fri</string>
 </resources>

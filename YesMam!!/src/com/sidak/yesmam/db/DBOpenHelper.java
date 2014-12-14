@@ -10,7 +10,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 	public static final String TAG = "YES MAM DB";
 	
 	private static final String DATABASE_NAME = "semester.db";
-	private static final int DATABASE_VERSION = 3;
+	private static final int DATABASE_VERSION = 4;
 	
 	public static final String TABLE_COURSES="courses";
 	public static final String COURSE_ID = "courseId";
@@ -24,6 +24,9 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 	public static final String WED_TIMINGS="wedTimings";
 	public static final String THURS_TIMINGS="thurTimings";
 	public static final String FRI_TIMINGS="friTimings";
+	public static final String NUM_TOTAL_CLASSES="totalClasses";
+	public static final String NUM_ATTENDED_CLASSES="attendClasses";
+	public static final String NUM_BUNKED_CLASSES="bunkClasses";
 	
 	private static final String TABLE_CREATE_COURSES=
 			"CREATE TABLE " + TABLE_COURSES + " (" +
@@ -37,7 +40,10 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 			 TUES_TIMINGS+ " TEXT, " +
 			 WED_TIMINGS+ " TEXT, " +
 			 THURS_TIMINGS+ " TEXT, " +
-			 FRI_TIMINGS+ " TEXT " +
+			 FRI_TIMINGS+ " TEXT, " +
+			 NUM_TOTAL_CLASSES+" INTEGER, "+
+			 NUM_ATTENDED_CLASSES+" INTEGER, "+
+			 NUM_BUNKED_CLASSES+" INTEGER " +
 			 ")";
 
 	public static final String TABLE_HOLIDAYS="holidays";

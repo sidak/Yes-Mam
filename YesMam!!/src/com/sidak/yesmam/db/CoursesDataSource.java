@@ -24,7 +24,9 @@ public class CoursesDataSource {
 			DBOpenHelper.COURSE_VENUE, DBOpenHelper.COURSE_REQ_ATTEND,
 			DBOpenHelper.COURSE_DES_ATTEND, DBOpenHelper.MON_TIMINGS,
 			DBOpenHelper.TUES_TIMINGS, DBOpenHelper.WED_TIMINGS,
-			DBOpenHelper.THURS_TIMINGS, DBOpenHelper.FRI_TIMINGS
+			DBOpenHelper.THURS_TIMINGS, DBOpenHelper.FRI_TIMINGS,
+			DBOpenHelper.NUM_TOTAL_CLASSES, DBOpenHelper.NUM_ATTENDED_CLASSES,
+			DBOpenHelper.NUM_BUNKED_CLASSES
 
 	};
 
@@ -58,6 +60,9 @@ public class CoursesDataSource {
 		values.put(DBOpenHelper.WED_TIMINGS, course.getWedTimings());
 		values.put(DBOpenHelper.THURS_TIMINGS, course.getThursTimings());
 		values.put(DBOpenHelper.FRI_TIMINGS, course.getFriTimings());
+		values.put(DBOpenHelper.NUM_TOTAL_CLASSES,course.getTotalClasses());
+		values.put(DBOpenHelper.NUM_ATTENDED_CLASSES,course.getAttendedClasses());
+		values.put(DBOpenHelper.NUM_BUNKED_CLASSES,course.getBunkedClasses());
 
 		long insertid = database.insert(DBOpenHelper.TABLE_COURSES, null,
 				values);
@@ -88,7 +93,9 @@ public class CoursesDataSource {
 				course.setWedTimings(cursor.getString(cursor.getColumnIndex(DBOpenHelper.WED_TIMINGS)));
 				course.setThursTimings(cursor.getString(cursor.getColumnIndex(DBOpenHelper.THURS_TIMINGS)));
 				course.setFriTimings(cursor.getString(cursor.getColumnIndex(DBOpenHelper.FRI_TIMINGS)));
-
+				course.setTotalClasses(cursor.getInt(cursor.getColumnIndex(DBOpenHelper.NUM_TOTAL_CLASSES)));
+				course.setAttendClasses(cursor.getInt(cursor.getColumnIndex(DBOpenHelper.NUM_ATTENDED_CLASSES)));
+				course.setBunkClasses(cursor.getInt(cursor.getColumnIndex(DBOpenHelper.NUM_BUNKED_CLASSES)));
 				courses.add(course);
 				Log.v(TAG, course.toString());
 

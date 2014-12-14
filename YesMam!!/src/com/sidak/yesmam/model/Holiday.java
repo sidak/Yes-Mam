@@ -1,5 +1,9 @@
 package com.sidak.yesmam.model;
 
+import java.util.Date;
+
+import com.sidak.yesmam.UIHelper;
+
 public class Holiday {
 	public final static String TYPE_PLANNED="Planned";
 	public final static String TYPE_INSTI="Insti";
@@ -61,5 +65,12 @@ public class Holiday {
 	@Override
 	public String toString() {
 		return type+": \n"+ description+ "\n"+ day +"/"+ month+"/"+ year;
+	}
+	public String toDateString(){
+		return day +"/"+ month+"/"+ year;
+	}
+	public Date toDateObject(){
+		String s= day +"/"+ month+"/"+ year;
+		return UIHelper.getDateObjectFromText(s);
 	}
 }

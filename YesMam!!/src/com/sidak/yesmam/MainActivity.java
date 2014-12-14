@@ -90,5 +90,18 @@ public class MainActivity extends Activity {
 		Log.v(TAG, "current date " + formattedDate);
 		return formattedDate;
 	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		holiDatasource.open();
+	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+		holiDatasource.close();
+	}
+
+	
 }

@@ -1,9 +1,12 @@
 package com.sidak.yesmam;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,17 +15,23 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.sidak.yesmam.db.CoursesDataSource;
+import com.sidak.yesmam.db.HolidaysDataSource;
 import com.sidak.yesmam.model.Course;
+import com.sidak.yesmam.model.Holiday;
 
 public class CourseView extends ListActivity {
 	public static final String TAG = CourseView.class.getSimpleName();
 	private CoursesDataSource datasource;
+	private List<Holiday> holidays;
+	private HolidaysDataSource holiDatasource;
 	private Button addCourse;
 	private Button finish;
 	private List<Course> courses;
 	private ListView lv;
 	ArrayAdapter<Course> adapter;
 	private Course courseAdded;
+	private SharedPreferences pref;
+	private int[] holidayCount;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +42,13 @@ public class CourseView extends ListActivity {
 		// initialise add course button
 		addCourse = (Button) findViewById(R.id.addCourseText);
 		finish = (Button) findViewById(R.id.finishText);
+		
+		holiDatasource = new HolidaysDataSource(this);
+		holiDatasource.open();
+		holidays=holiDatasource.findAll();
+		countHolidays();
+		Log.i(TAG, "after opening holiday databasse");
+		
 		Log.v(TAG, "in courseview constructor entry pt");
 		datasource = new CoursesDataSource(this);
 		Log.v(TAG, "after initialsing datasource and before open");
@@ -56,12 +72,25 @@ public class CourseView extends ListActivity {
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					Intent intent = new Intent(CourseView.this, MainActivity.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					startActivity(intent);
 				}
 
 		});
 		refreshDisplayAndUpdate();
 		Log.v(TAG, "after rdau in const");
+	}
+
+	private void countHolidays() {
+		holidayCount= new int[8];
+		for(int i=0; i<holidays.size(); i++){
+			holidayCount[i]=0;
+		}
+		for(int i=0; i<holidays.size(); i++){
+			Holiday holiday=holidays.get(i);
+			holidayCount[UIHelper.getDayOfWeekFromDate(holiday.toDateObject())]+=1;
+		}
 	}
 
 	@Override
@@ -90,6 +119,12 @@ public class CourseView extends ListActivity {
 						"thursTimings"));
 				courseAdded.setFriTimings(data.getExtras().getString(
 						"friTimings"));
+				courseAdded.setAttendClasses(0);
+				courseAdded.setBunkClasses(0);
+				courseAdded.setTotalClasses(0);
+				int totalClasses = calcTotalClasses(courseAdded);
+				courseAdded.setTotalClasses(totalClasses);
+				Log.v(TAG, "total classes "+totalClasses);
 				Log.v(TAG, "in onactivity result" + courseAdded.toString());
 				datasource.open();// do it again since onstop was c/d
 				datasource.create(courseAdded);
@@ -98,9 +133,42 @@ public class CourseView extends ListActivity {
 		}
 	}
 
+	private int calcTotalClasses(Course course) {
+		int sum=0;
+		pref = getApplicationContext()
+				.getSharedPreferences(getString(R.string.semPrefs), 0);
+		String s1 = pref.getString(getString(R.string.dateStart), "1/1/2000");
+		String s2 = pref.getString(getString(R.string.dateEnd), "1/1/2000");
+		Date olderDate=UIHelper.getDateObjectFromText(s1);
+		Date newerDate=UIHelper.getDateObjectFromText(s2);
+		if(!course.getMonTimings().equals(getString(R.string.enterDate))){
+			sum+=UIHelper.calculateSpecificDay(olderDate, newerDate, Calendar.MONDAY);
+			sum-=holidayCount[Calendar.MONDAY];
+		}
+		if(!course.getTuesTimings().equals(getString(R.string.enterDate))){
+			sum+=UIHelper.calculateSpecificDay(olderDate, newerDate, Calendar.TUESDAY);
+			sum-=holidayCount[Calendar.TUESDAY];
+		}
+		if(!course.getWedTimings().equals(getString(R.string.enterDate))){
+			sum+=UIHelper.calculateSpecificDay(olderDate, newerDate, Calendar.WEDNESDAY);
+			sum-=holidayCount[Calendar.WEDNESDAY];
+		}
+		if(!course.getThursTimings().equals(getString(R.string.enterDate))){
+			sum+=UIHelper.calculateSpecificDay(olderDate, newerDate, Calendar.THURSDAY);
+			sum-=holidayCount[Calendar.THURSDAY];
+		}
+		if(!course.getFriTimings().equals(getString(R.string.enterDate))){
+			sum+=UIHelper.calculateSpecificDay(olderDate, newerDate, Calendar.FRIDAY);
+			sum-=holidayCount[Calendar.FRIDAY];
+		}
+		return sum;
+	}
+	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
+		holiDatasource.open();
 		datasource.open();
 		courses = datasource.findAll();
 		refreshDisplayAndUpdate();
@@ -110,6 +178,7 @@ public class CourseView extends ListActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
+		holiDatasource.open();
 		datasource.open();
 		courses = datasource.findAll();
 		refreshDisplayAndUpdate();
@@ -120,6 +189,7 @@ public class CourseView extends ListActivity {
 	protected void onPause() {
 		super.onPause();
 		datasource.close();
+		holiDatasource.close();
 	}
 
 	private void addCourseInDatabase() {
@@ -145,7 +215,7 @@ public class CourseView extends ListActivity {
 	 * 
 	 * }
 	 */
-
+	
 	public void refreshDisplayAndUpdate() {
 		Log.v(TAG, "in rdau");
 		adapter = new CourseListAdapter(this, courses);
