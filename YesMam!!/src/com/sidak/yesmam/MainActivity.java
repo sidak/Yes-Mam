@@ -48,6 +48,8 @@ public class MainActivity extends ListActivity {
 	private TextView tillNow;
 	private TextView ifAttend;
 	private TextView ifMiss;
+	private boolean attenFlag=false;
+	private boolean bunkFlag=false;
 	private int currentDay;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,10 +80,12 @@ public class MainActivity extends ListActivity {
 					tillNow.setText(getString(R.string.defaultAttenVal));
 				}
 				else{
-					tillNow.setText(tillNowVal+"%");
+					
+					tillNow.setText(String.format("%.2f",tillNowVal)+"%");
+					
 				}
-				ifAttend.setText(ifAttendVal+"%");
-				ifMiss.setText(ifMissVal+"%");
+				ifAttend.setText(String.format("%.2f",ifAttendVal)+"%");
+				ifMiss.setText(String.format("%.2f",ifMissVal)+"%");
 				
 			}
 		});
@@ -104,13 +108,32 @@ public class MainActivity extends ListActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if(selectedCourse!=null){
-					coursesDataSource.markPresent(selectedCourse.getAttendedClasses()+1, selectedCourse.getCourseCode());
-				}
-				else{
-					Toast.makeText(MainActivity.this, R.string.selectCourse, Toast.LENGTH_LONG).show();
-				}
 				
+				if(!attenFlag){
+					if(!bunkFlag){
+						if(selectedCourse!=null){
+							coursesDataSource.markPresent(selectedCourse.getAttendedClasses()+1, selectedCourse.getCourseCode());
+							attenFlag=true;
+							attend.setEnabled(false);
+						}
+						else{
+							Toast.makeText(MainActivity.this, R.string.selectCourse, Toast.LENGTH_LONG).show();
+						}
+					}
+					else{
+						if(selectedCourse!=null){
+							coursesDataSource.markPresent(selectedCourse.getAttendedClasses()+1, selectedCourse.getCourseCode());
+							attenFlag=true;
+							attend.setEnabled(false);
+							coursesDataSource.markAbsent(selectedCourse.getBunkedClasses(), selectedCourse.getCourseCode());
+							bunkFlag=false;
+							bunk.setEnabled(true);
+						}
+						else{
+							Toast.makeText(MainActivity.this, R.string.selectCourse, Toast.LENGTH_LONG).show();
+						}
+					}
+				}
 			}
 		});
 		bunk.setOnClickListener(new View.OnClickListener() {
@@ -118,13 +141,31 @@ public class MainActivity extends ListActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if(selectedCourse!=null){
-					coursesDataSource.markAbsent(selectedCourse.getBunkedClasses()+1, selectedCourse.getCourseCode());
+				if(!bunkFlag){
+					if(!attenFlag){
+						if(selectedCourse!=null){
+							coursesDataSource.markAbsent(selectedCourse.getBunkedClasses()+1, selectedCourse.getCourseCode());
+							bunkFlag=true;
+							bunk.setEnabled(false);
+						}
+						else{
+							Toast.makeText(MainActivity.this, R.string.selectCourse, Toast.LENGTH_LONG).show();
+						}
+					}
+					else{
+						if(selectedCourse!=null){
+							coursesDataSource.markAbsent(selectedCourse.getBunkedClasses()+1, selectedCourse.getCourseCode());
+							bunkFlag=true;
+							bunk.setEnabled(false);
+							coursesDataSource.markPresent(selectedCourse.getAttendedClasses(), selectedCourse.getCourseCode());
+							attenFlag=false;
+							attend.setEnabled(true);
+						}
+						else{
+							Toast.makeText(MainActivity.this, R.string.selectCourse, Toast.LENGTH_LONG).show();
+						}
+					}
 				}
-				else{
-					Toast.makeText(MainActivity.this, R.string.selectCourse, Toast.LENGTH_LONG).show();
-				}
-				
 			}
 		});
 		proxy.setOnClickListener(new View.OnClickListener() {

@@ -125,3 +125,13 @@ int days = Math.Abs((thisDate - thatDate).Days) + 1;
  Calendar.SATURDAY=7
  ###########
  
+while using a hashmap , do :
+HashMap<Integer, String> and not HashMap<int, String>
+
+When Java automatically converts a primitive type like int into
+ corresponding wrapper class object e.g. Integer than its called autoboxing
+   because primitive is boxed into wrapper class while in opposite case
+    is called unboxing, where an Integer object is converted into primitive int
+    
+
+

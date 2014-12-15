@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
                 android:text="@string/defaultAttenVal"
-                android:textSize="30sp" />
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -95,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
                 android:text="@string/defaultAttenVal"
-                android:textSize="30sp" />
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -118,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
                 android:text="@string/defaultAttenVal"
-                android:textSize="30sp" />
+                android:textSize="20sp" />
         </LinearLayout>
     </LinearLayout>
 
