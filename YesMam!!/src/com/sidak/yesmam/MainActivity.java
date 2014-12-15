@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -40,7 +42,11 @@ public class MainActivity extends ListActivity {
 	private Button bunk;
 	private Button proxy;
 	private ListView lv;
+	private Course selectedCourse;
 	ArrayAdapter<Course> adapter;
+	private TextView tillNow;
+	private TextView ifAttend;
+	private TextView ifMiss;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +57,34 @@ public class MainActivity extends ListActivity {
 		numWorkingDays = prefs.getInt(getString(R.string.numWorkingDays), 0);
 		Log.v(TAG, "" + numWorkingDays);
 		lv = (ListView) findViewById(android.R.id.list);// impt to initialise
+		lv.setOnItemClickListener(new OnItemClickListener() {
+			
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				//if(view.i)
+				//view.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
+				selectedCourse = todayCourses.get(position);
+				int total,attend,bunk;
+				total = selectedCourse.getTotalClasses();
+				attend=selectedCourse.getAttendedClasses();
+				bunk=selectedCourse.getBunkedClasses();
+				double tillNowVal= (double)attend*100.0/(attend+bunk);
+				
+				double ifAttendVal= (double)(attend+1)*100.0/(attend+1+bunk);
+				double ifMissVal= (double)(attend)*100.0/(attend+1+bunk);
+				if(Double.isNaN(tillNowVal)){
+					tillNow.setText(getString(R.string.defaultAttenVal));
+				}
+				else{
+					tillNow.setText(tillNowVal+"%");
+				}
+				ifAttend.setText(ifAttendVal+"%");
+				ifMiss.setText(ifMissVal+"%");
+				
+			}
+		});
+		
 		holiDatasource = new HolidaysDataSource(this);
 		holiDatasource.open();
 		Log.i(TAG, "after opening holiday databasse");
@@ -58,6 +92,9 @@ public class MainActivity extends ListActivity {
 		coursesDataSource.open();
 		Log.v(TAG, "after opnening courses database");
 		todayDate = (TextView) findViewById(R.id.todayDate);
+		tillNow = (TextView) findViewById(R.id.tillNow);
+		ifAttend = (TextView) findViewById(R.id.ifAttend);
+		ifMiss = (TextView) findViewById(R.id.ifMiss);
 		attend = (Button) findViewById(R.id.attendButton);
 		bunk = (Button) findViewById(R.id.bunkButton);
 		proxy = (Button) findViewById(R.id.proxyButton);
@@ -101,7 +138,7 @@ public class MainActivity extends ListActivity {
 
 	protected void markAttendance(int i) {
 		// mark the attendance of a particular course which is selected
-
+		
 	}
 
 	private boolean checkHoliday() {
@@ -201,7 +238,7 @@ public class MainActivity extends ListActivity {
 			Log.v(TAG, "in onresume "+todayCourses.size());
 			adapter = new ClassListAdapter(this, todayCourses);
 			setListAdapter(adapter);
-			// display them according to current time , with the course next or
+			
 			// in course time selectd or focussed
 			// show that particular course's attendance
 			// put today's classes in the log database

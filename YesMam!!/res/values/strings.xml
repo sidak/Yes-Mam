@@ -68,4 +68,5 @@
     <string name="numWed">wed</string>
     <string name="numThu">thu</string>
     <string name="numFri">fri</string>
+    <string name ="defaultAttenVal">-- %</string>
 </resources>

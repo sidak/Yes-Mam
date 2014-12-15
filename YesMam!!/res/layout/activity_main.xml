@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-   
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
@@ -41,7 +40,9 @@
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="50" >
+        android:layout_weight="50"
+        android:drawSelectorOnTop="false"
+        android:listSelector="#ff9900" >
     </ListView>
 
     <LinearLayout
@@ -66,10 +67,11 @@
                 android:textSize="20sp" />
 
             <TextView
+                android:id="@+id/tillNow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
-                android:text="88%"
+                android:text="@string/defaultAttenVal"
                 android:textSize="30sp" />
         </LinearLayout>
 
@@ -88,10 +90,11 @@
                 android:textSize="20sp" />
 
             <TextView
+                android:id="@+id/ifAttend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
-                android:text="90%"
+                android:text="@string/defaultAttenVal"
                 android:textSize="30sp" />
         </LinearLayout>
 
@@ -110,10 +113,11 @@
                 android:textSize="20sp" />
 
             <TextView
+                android:id="@+id/ifMiss"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
-                android:text="86%"
+                android:text="@string/defaultAttenVal"
                 android:textSize="30sp" />
         </LinearLayout>
     </LinearLayout>
@@ -145,7 +149,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
             android:text="Proxy" />
-
     </LinearLayout>
 
 </LinearLayout>
