@@ -2,6 +2,9 @@ package com.sidak.yesmam;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
@@ -133,12 +136,61 @@ public class MainActivity extends Activity {
 
 		} else {
 			// cache today's courses
-			todayCourses = coursesDataSource.getTodaysCourses(UIHelper
+			int currentDay=UIHelper
 					.getDayOfWeekFromDate(UIHelper
 							.getDateObjectFromText(todayDate.getText()
-									.toString())), getString(R.string.enterDate));
-			
-			
+									.toString()));
+			todayCourses = coursesDataSource.getTodaysCourses(currentDay, getString(R.string.enterDate));
+			if(currentDay==Calendar.MONDAY){
+				Collections.sort(todayCourses, new Comparator<Course>() {
+					public int compare(Course a, Course b){
+						Date d1,d2;
+						d1=UIHelper.getDateObjectFromText(a.getMonTimings());
+						d2=UIHelper.getDateObjectFromText(b.getMonTimings());
+						return d1.compareTo(d2);
+					}
+				});
+			}
+			else if(currentDay==Calendar.TUESDAY){
+				Collections.sort(todayCourses, new Comparator<Course>() {
+					public int compare(Course a, Course b){
+						Date d1,d2;
+						d1=UIHelper.getDateObjectFromText(a.getTuesTimings());
+						d2=UIHelper.getDateObjectFromText(b.getTuesTimings());
+						return d1.compareTo(d2);
+					}
+				});
+			}
+			else if(currentDay==Calendar.WEDNESDAY){
+				Collections.sort(todayCourses, new Comparator<Course>() {
+					public int compare(Course a, Course b){
+						Date d1,d2;
+						d1=UIHelper.getDateObjectFromText(a.getWedTimings());
+						d2=UIHelper.getDateObjectFromText(b.getWedTimings());
+						return d1.compareTo(d2);
+					}
+				});
+			}
+			else if(currentDay==Calendar.THURSDAY){
+				Collections.sort(todayCourses, new Comparator<Course>() {
+					public int compare(Course a, Course b){
+						Date d1,d2;
+						d1=UIHelper.getDateObjectFromText(a.getThursTimings());
+						d2=UIHelper.getDateObjectFromText(b.getThursTimings());
+						return d1.compareTo(d2);
+					}
+				});
+			}
+			else if(currentDay==Calendar.FRIDAY){
+				Collections.sort(todayCourses, new Comparator<Course>() {
+					public int compare(Course a, Course b){
+						Date d1,d2;
+						d1=UIHelper.getDateObjectFromText(a.getFriTimings());
+						d2=UIHelper.getDateObjectFromText(b.getFriTimings());
+						return d1.compareTo(d2);
+					}
+				});
+			}
 			// display them according to current time , with the course next or
 			// in course time selectd or focussed
 			// show that particular course's attendance
