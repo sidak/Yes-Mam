@@ -7,12 +7,15 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import android.app.Activity;
+import android.app.ListActivity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.sidak.yesmam.db.CoursesDataSource;
@@ -20,7 +23,7 @@ import com.sidak.yesmam.db.HolidaysDataSource;
 import com.sidak.yesmam.model.Course;
 import com.sidak.yesmam.model.Holiday;
 
-public class MainActivity extends Activity {
+public class MainActivity extends ListActivity {
 
 	public final String TAG = MainActivity.class.getSimpleName();
 	private SharedPreferences prefs;
@@ -36,6 +39,8 @@ public class MainActivity extends Activity {
 	private Button attend;
 	private Button bunk;
 	private Button proxy;
+	private ListView lv;
+	ArrayAdapter<Course> adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +50,7 @@ public class MainActivity extends Activity {
 				getString(R.string.semPrefs), 0);
 		numWorkingDays = prefs.getInt(getString(R.string.numWorkingDays), 0);
 		Log.v(TAG, "" + numWorkingDays);
-
+		lv = (ListView) findViewById(android.R.id.list);// impt to initialise
 		holiDatasource = new HolidaysDataSource(this);
 		holiDatasource.open();
 		Log.i(TAG, "after opening holiday databasse");
@@ -121,7 +126,7 @@ public class MainActivity extends Activity {
 		c = Calendar.getInstance();
 		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		String formattedDate = df.format(c.getTime());
-		todayDate.setText(formattedDate);
+		
 		Log.v(TAG, "current date " + formattedDate);
 		return formattedDate;
 	}
@@ -130,67 +135,72 @@ public class MainActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		holiDatasource.open();
+		todayDate.setText(getCurrentDate());
+		Date current = UIHelper.getDateObjectFromText(todayDate.getText()
+				.toString());
 		if (checkHoliday()) {
 			// change in ui to show today's classes
 			// cache the result
 
-		} else {
+		} else if (UIHelper.checkIfWeekend(todayDate.getText().toString())) {
+		
+		
+		}
+		else {
 			// cache today's courses
-			int currentDay=UIHelper
-					.getDayOfWeekFromDate(UIHelper
-							.getDateObjectFromText(todayDate.getText()
-									.toString()));
-			todayCourses = coursesDataSource.getTodaysCourses(currentDay, getString(R.string.enterDate));
-			if(currentDay==Calendar.MONDAY){
+			int currentDay = UIHelper.getDayOfWeekFromDate(current);
+			todayCourses = coursesDataSource.getTodaysCourses(currentDay,
+					getString(R.string.enterDate));
+			if (currentDay == Calendar.MONDAY) {
 				Collections.sort(todayCourses, new Comparator<Course>() {
-					public int compare(Course a, Course b){
-						Date d1,d2;
-						d1=UIHelper.getDateObjectFromText(a.getMonTimings());
-						d2=UIHelper.getDateObjectFromText(b.getMonTimings());
+					public int compare(Course a, Course b) {
+						Date d1, d2;
+						
+						d1 = UIHelper.getDateObjectFromTextTime(a.getMonTimings());
+						d2 = UIHelper.getDateObjectFromTextTime(b.getMonTimings());
+						return d1.compareTo(d2);
+					}
+				});
+			} else if (currentDay == Calendar.TUESDAY) {
+				Collections.sort(todayCourses, new Comparator<Course>() {
+					public int compare(Course a, Course b) {
+						Date d1, d2;
+						d1 = UIHelper.getDateObjectFromTextTime(a.getTuesTimings());
+						d2 = UIHelper.getDateObjectFromTextTime(b.getTuesTimings());
+						return d1.compareTo(d2);
+					}
+				});
+			} else if (currentDay == Calendar.WEDNESDAY) {
+				Collections.sort(todayCourses, new Comparator<Course>() {
+					public int compare(Course a, Course b) {
+						Date d1, d2;
+						d1 = UIHelper.getDateObjectFromTextTime(a.getWedTimings());
+						d2 = UIHelper.getDateObjectFromTextTime(b.getWedTimings());
+						return d1.compareTo(d2);
+					}
+				});
+			} else if (currentDay == Calendar.THURSDAY) {
+				Collections.sort(todayCourses, new Comparator<Course>() {
+					public int compare(Course a, Course b) {
+						Date d1, d2;
+						d1 = UIHelper.getDateObjectFromTextTime(a.getThursTimings());
+						d2 = UIHelper.getDateObjectFromTextTime(b.getThursTimings());
+						return d1.compareTo(d2);
+					}
+				});
+			} else if (currentDay == Calendar.FRIDAY) {
+				Collections.sort(todayCourses, new Comparator<Course>() {
+					public int compare(Course a, Course b) {
+						Date d1, d2;
+						d1 = UIHelper.getDateObjectFromTextTime(a.getFriTimings());
+						d2 = UIHelper.getDateObjectFromTextTime(b.getFriTimings());
 						return d1.compareTo(d2);
 					}
 				});
 			}
-			else if(currentDay==Calendar.TUESDAY){
-				Collections.sort(todayCourses, new Comparator<Course>() {
-					public int compare(Course a, Course b){
-						Date d1,d2;
-						d1=UIHelper.getDateObjectFromText(a.getTuesTimings());
-						d2=UIHelper.getDateObjectFromText(b.getTuesTimings());
-						return d1.compareTo(d2);
-					}
-				});
-			}
-			else if(currentDay==Calendar.WEDNESDAY){
-				Collections.sort(todayCourses, new Comparator<Course>() {
-					public int compare(Course a, Course b){
-						Date d1,d2;
-						d1=UIHelper.getDateObjectFromText(a.getWedTimings());
-						d2=UIHelper.getDateObjectFromText(b.getWedTimings());
-						return d1.compareTo(d2);
-					}
-				});
-			}
-			else if(currentDay==Calendar.THURSDAY){
-				Collections.sort(todayCourses, new Comparator<Course>() {
-					public int compare(Course a, Course b){
-						Date d1,d2;
-						d1=UIHelper.getDateObjectFromText(a.getThursTimings());
-						d2=UIHelper.getDateObjectFromText(b.getThursTimings());
-						return d1.compareTo(d2);
-					}
-				});
-			}
-			else if(currentDay==Calendar.FRIDAY){
-				Collections.sort(todayCourses, new Comparator<Course>() {
-					public int compare(Course a, Course b){
-						Date d1,d2;
-						d1=UIHelper.getDateObjectFromText(a.getFriTimings());
-						d2=UIHelper.getDateObjectFromText(b.getFriTimings());
-						return d1.compareTo(d2);
-					}
-				});
-			}
+			Log.v(TAG, "in onresume "+todayCourses.size());
+			adapter = new ClassListAdapter(this, todayCourses);
+			setListAdapter(adapter);
 			// display them according to current time , with the course next or
 			// in course time selectd or focussed
 			// show that particular course's attendance

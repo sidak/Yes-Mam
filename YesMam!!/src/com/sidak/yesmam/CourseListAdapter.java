@@ -61,7 +61,11 @@ public class CourseListAdapter extends ArrayAdapter<Course> {
 		viewVenue.setText(course.getCourseVenue());
 		viewDesiredAtten.setText(course.getCourseDesiredAttendance());
 		viewMinAtten.setText(course.getCourseReqAttendance());
-
+		
+		// in display it is "na" for a course's timing
+		// if there's no class on that date
+		// but in database it is "enter here"
+		
 		if (!(course.getMonTimings().equals(context
 				.getString(R.string.enterDate)))) {
 			monTime.setText(course.getMonTimings());

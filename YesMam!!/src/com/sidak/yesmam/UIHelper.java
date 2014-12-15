@@ -63,7 +63,16 @@ public class UIHelper {
 		}
 		return d;
 	}
-
+	public static Date getDateObjectFromTextTime(String dateString) {
+		// it is assumed that the dateString is validated before sending
+		Date d = null;
+		try {
+			d = new SimpleDateFormat("HH:mm").parse(dateString);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return d;
+	}
 	//
 	public static String getTextFromDateObject(Date date) {
 	    Calendar cal = new GregorianCalendar();
