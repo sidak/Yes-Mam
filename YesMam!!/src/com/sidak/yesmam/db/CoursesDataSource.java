@@ -2,7 +2,9 @@ package com.sidak.yesmam.db;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -14,7 +16,14 @@ import android.util.Log;
 import com.sidak.yesmam.model.Course;
 
 public class CoursesDataSource {
-
+	private static Map<Integer, String> days= new HashMap<Integer, String>();
+	static{
+		 days.put(Calendar.MONDAY, DBOpenHelper.MON_TIMINGS);
+		 days.put(Calendar.TUESDAY, DBOpenHelper.TUES_TIMINGS);
+		 days.put(Calendar.WEDNESDAY, DBOpenHelper.WED_TIMINGS);
+		 days.put(Calendar.THURSDAY, DBOpenHelper.THURS_TIMINGS);
+		 days.put(Calendar.FRIDAY, DBOpenHelper.FRI_TIMINGS);
+	};
 	public static final String TAG = CoursesDataSource.class.getSimpleName();
 
 	SQLiteOpenHelper dbhelper;
@@ -121,26 +130,43 @@ public class CoursesDataSource {
 
 	public List<Course> getTodaysCourses(int day, String defaultText) {
 		String sel;
-		if(day==Calendar.MONDAY){
-			sel = DBOpenHelper.MON_TIMINGS+ "!=?";
-		}
-		else if(day==Calendar.TUESDAY){
-			sel = DBOpenHelper.TUES_TIMINGS+ "!=?";
-		}
-		else if(day==Calendar.WEDNESDAY){
-			sel = DBOpenHelper.WED_TIMINGS+ "!=?";
-		}
-		else if(day==Calendar.THURSDAY){
-			sel = DBOpenHelper.THURS_TIMINGS+ "!=?";
-		}
-		else {
-			sel = DBOpenHelper.FRI_TIMINGS+ "!=?";
-		}
-		Cursor cursor = database.query(DBOpenHelper.TABLE_COURSES, allColumns,sel, new String[]{defaultText}, null, null,
-				null);
-		Log.i(TAG, "Returned for today's classes " + cursor.getCount() + " rows");
+		/*if (day == Calendar.MONDAY) {
+			sel = DBOpenHelper.MON_TIMINGS + "!=?";
+		} else if (day == Calendar.TUESDAY) {
+			sel = DBOpenHelper.TUES_TIMINGS + "!=?";
+		} else if (day == Calendar.WEDNESDAY) {
+			sel = DBOpenHelper.WED_TIMINGS + "!=?";
+		} else if (day == Calendar.THURSDAY) {
+			sel = DBOpenHelper.THURS_TIMINGS + "!=?";
+		} else {
+			sel = DBOpenHelper.FRI_TIMINGS + "!=?";
+		}*/
+		sel= days.get(day)+"!=?";
+		Cursor cursor = database.query(DBOpenHelper.TABLE_COURSES, allColumns,
+				sel, new String[] { defaultText }, null, null, null);
+		Log.i(TAG, "Returned for today's classes " + cursor.getCount()
+				+ " rows");
 		List<Course> courses = cursorToList(cursor);
 		return courses;
 	}
 
+	public void markPresent(int num, String key) {
+
+		ContentValues values = new ContentValues();
+		values.put(DBOpenHelper.NUM_ATTENDED_CLASSES,num );
+		// updating row
+		database.update(DBOpenHelper.TABLE_COURSES, values,DBOpenHelper.COURSE__CODE  + " = ?",
+				new String[] {key });
+		Log.v(TAG, key+ " " +num);
+	}
+
+	public void markAbsent(int num, String key) {
+
+		ContentValues values = new ContentValues();
+		values.put(DBOpenHelper.NUM_BUNKED_CLASSES,num );
+		// updating row
+		database.update(DBOpenHelper.TABLE_COURSES, values,DBOpenHelper.COURSE__CODE  + " = ?",
+				new String[] {key });
+		Log.v(TAG, key+ " " +num);
+	}
 }

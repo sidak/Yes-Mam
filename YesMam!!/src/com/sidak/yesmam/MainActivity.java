@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sidak.yesmam.db.CoursesDataSource;
 import com.sidak.yesmam.db.HolidaysDataSource;
@@ -47,7 +48,7 @@ public class MainActivity extends ListActivity {
 	private TextView tillNow;
 	private TextView ifAttend;
 	private TextView ifMiss;
-
+	private int currentDay;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -103,7 +104,13 @@ public class MainActivity extends ListActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				markAttendance(1);
+				if(selectedCourse!=null){
+					coursesDataSource.markPresent(selectedCourse.getAttendedClasses()+1, selectedCourse.getCourseCode());
+				}
+				else{
+					Toast.makeText(MainActivity.this, R.string.selectCourse, Toast.LENGTH_LONG).show();
+				}
+				
 			}
 		});
 		bunk.setOnClickListener(new View.OnClickListener() {
@@ -111,7 +118,13 @@ public class MainActivity extends ListActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				markAttendance(0);
+				if(selectedCourse!=null){
+					coursesDataSource.markAbsent(selectedCourse.getBunkedClasses()+1, selectedCourse.getCourseCode());
+				}
+				else{
+					Toast.makeText(MainActivity.this, R.string.selectCourse, Toast.LENGTH_LONG).show();
+				}
+				
 			}
 		});
 		proxy.setOnClickListener(new View.OnClickListener() {
@@ -134,11 +147,6 @@ public class MainActivity extends ListActivity {
 	protected void getHelp() {
 		// TODO Auto-generated method stub
 
-	}
-
-	protected void markAttendance(int i) {
-		// mark the attendance of a particular course which is selected
-		
 	}
 
 	private boolean checkHoliday() {
@@ -185,7 +193,7 @@ public class MainActivity extends ListActivity {
 		}
 		else {
 			// cache today's courses
-			int currentDay = UIHelper.getDayOfWeekFromDate(current);
+			currentDay = UIHelper.getDayOfWeekFromDate(current);
 			todayCourses = coursesDataSource.getTodaysCourses(currentDay,
 					getString(R.string.enterDate));
 			if (currentDay == Calendar.MONDAY) {

@@ -69,4 +69,5 @@
     <string name="numThu">thu</string>
     <string name="numFri">fri</string>
     <string name ="defaultAttenVal">-- %</string>
+    <string name="selectCourse">Please select some course.</string>
 </resources>
