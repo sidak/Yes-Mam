@@ -11,6 +11,7 @@
         android:orientation="horizontal" >
 
         <TextView
+            android:id="@+id/todayDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"
@@ -124,22 +125,26 @@
         android:orientation="horizontal" >
 
         <Button
+            android:id="@+id/attendButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
             android:text="Attend" />
 
         <Button
+            android:id="@+id/bunkButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
             android:text="Bunk" />
 
         <Button
+            android:id="@+id/proxyButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
             android:text="Proxy" />
+
     </LinearLayout>
 
 </LinearLayout>

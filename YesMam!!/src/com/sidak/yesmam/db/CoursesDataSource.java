@@ -1,10 +1,8 @@
 package com.sidak.yesmam.db;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
-
-import com.sidak.yesmam.model.Course;
-import com.sidak.yesmam.model.Holiday;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,6 +10,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.sidak.yesmam.model.Course;
 
 public class CoursesDataSource {
 
@@ -60,21 +60,23 @@ public class CoursesDataSource {
 		values.put(DBOpenHelper.WED_TIMINGS, course.getWedTimings());
 		values.put(DBOpenHelper.THURS_TIMINGS, course.getThursTimings());
 		values.put(DBOpenHelper.FRI_TIMINGS, course.getFriTimings());
-		values.put(DBOpenHelper.NUM_TOTAL_CLASSES,course.getTotalClasses());
-		values.put(DBOpenHelper.NUM_ATTENDED_CLASSES,course.getAttendedClasses());
-		values.put(DBOpenHelper.NUM_BUNKED_CLASSES,course.getBunkedClasses());
+		values.put(DBOpenHelper.NUM_TOTAL_CLASSES, course.getTotalClasses());
+		values.put(DBOpenHelper.NUM_ATTENDED_CLASSES,
+				course.getAttendedClasses());
+		values.put(DBOpenHelper.NUM_BUNKED_CLASSES, course.getBunkedClasses());
 
 		long insertid = database.insert(DBOpenHelper.TABLE_COURSES, null,
 				values);
 		Log.i(TAG, "in create in datasrc " + insertid);
 	}
+
 	public List<Course> findAll() {
-		
-		Cursor cursor = database.query(DBOpenHelper.TABLE_COURSES, allColumns, 
+
+		Cursor cursor = database.query(DBOpenHelper.TABLE_COURSES, allColumns,
 				null, null, null, null, null);
-				
+
 		Log.i(TAG, "Returned " + cursor.getCount() + " rows");
-		List<Course> courses  = cursorToList(cursor);
+		List<Course> courses = cursorToList(cursor);
 		return courses;
 	}
 
@@ -83,24 +85,61 @@ public class CoursesDataSource {
 		if (cursor.getCount() > 0) {
 			while (cursor.moveToNext()) {
 				Course course = new Course();
-				course.setCourseName(cursor.getString(cursor.getColumnIndex(DBOpenHelper.COURSE_NAME)));
-				course.setCourseVenue(cursor.getString(cursor.getColumnIndex(DBOpenHelper.COURSE_VENUE)));
-				course.setCourseCode(cursor.getString(cursor.getColumnIndex(DBOpenHelper.COURSE__CODE)));
-				course.setCourseReqAttendance(cursor.getString(cursor.getColumnIndex(DBOpenHelper.COURSE_REQ_ATTEND)));
-				course.setCourseDesiredAttendance(cursor.getString(cursor.getColumnIndex(DBOpenHelper.COURSE_DES_ATTEND)));
-				course.setMonTimings(cursor.getString(cursor.getColumnIndex(DBOpenHelper.MON_TIMINGS)));
-				course.setTuesTimings(cursor.getString(cursor.getColumnIndex(DBOpenHelper.TUES_TIMINGS)));
-				course.setWedTimings(cursor.getString(cursor.getColumnIndex(DBOpenHelper.WED_TIMINGS)));
-				course.setThursTimings(cursor.getString(cursor.getColumnIndex(DBOpenHelper.THURS_TIMINGS)));
-				course.setFriTimings(cursor.getString(cursor.getColumnIndex(DBOpenHelper.FRI_TIMINGS)));
-				course.setTotalClasses(cursor.getInt(cursor.getColumnIndex(DBOpenHelper.NUM_TOTAL_CLASSES)));
-				course.setAttendClasses(cursor.getInt(cursor.getColumnIndex(DBOpenHelper.NUM_ATTENDED_CLASSES)));
-				course.setBunkClasses(cursor.getInt(cursor.getColumnIndex(DBOpenHelper.NUM_BUNKED_CLASSES)));
+				course.setCourseName(cursor.getString(cursor
+						.getColumnIndex(DBOpenHelper.COURSE_NAME)));
+				course.setCourseVenue(cursor.getString(cursor
+						.getColumnIndex(DBOpenHelper.COURSE_VENUE)));
+				course.setCourseCode(cursor.getString(cursor
+						.getColumnIndex(DBOpenHelper.COURSE__CODE)));
+				course.setCourseReqAttendance(cursor.getString(cursor
+						.getColumnIndex(DBOpenHelper.COURSE_REQ_ATTEND)));
+				course.setCourseDesiredAttendance(cursor.getString(cursor
+						.getColumnIndex(DBOpenHelper.COURSE_DES_ATTEND)));
+				course.setMonTimings(cursor.getString(cursor
+						.getColumnIndex(DBOpenHelper.MON_TIMINGS)));
+				course.setTuesTimings(cursor.getString(cursor
+						.getColumnIndex(DBOpenHelper.TUES_TIMINGS)));
+				course.setWedTimings(cursor.getString(cursor
+						.getColumnIndex(DBOpenHelper.WED_TIMINGS)));
+				course.setThursTimings(cursor.getString(cursor
+						.getColumnIndex(DBOpenHelper.THURS_TIMINGS)));
+				course.setFriTimings(cursor.getString(cursor
+						.getColumnIndex(DBOpenHelper.FRI_TIMINGS)));
+				course.setTotalClasses(cursor.getInt(cursor
+						.getColumnIndex(DBOpenHelper.NUM_TOTAL_CLASSES)));
+				course.setAttendClasses(cursor.getInt(cursor
+						.getColumnIndex(DBOpenHelper.NUM_ATTENDED_CLASSES)));
+				course.setBunkClasses(cursor.getInt(cursor
+						.getColumnIndex(DBOpenHelper.NUM_BUNKED_CLASSES)));
 				courses.add(course);
 				Log.v(TAG, course.toString());
 
 			}
 		}
+		return courses;
+	}
+
+	public List<Course> getTodaysCourses(int day, String defaultText) {
+		String sel;
+		if(day==Calendar.MONDAY){
+			sel = DBOpenHelper.MON_TIMINGS+ "!=?";
+		}
+		else if(day==Calendar.TUESDAY){
+			sel = DBOpenHelper.TUES_TIMINGS+ "!=?";
+		}
+		else if(day==Calendar.WEDNESDAY){
+			sel = DBOpenHelper.WED_TIMINGS+ "!=?";
+		}
+		else if(day==Calendar.THURSDAY){
+			sel = DBOpenHelper.THURS_TIMINGS+ "!=?";
+		}
+		else {
+			sel = DBOpenHelper.FRI_TIMINGS+ "!=?";
+		}
+		Cursor cursor = database.query(DBOpenHelper.TABLE_COURSES, allColumns,sel, new String[]{defaultText}, null, null,
+				null);
+		Log.i(TAG, "Returned for today's classes " + cursor.getCount() + " rows");
+		List<Course> courses = cursorToList(cursor);
 		return courses;
 	}
 
