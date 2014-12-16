@@ -1,6 +1,7 @@
 package com.sidak.yesmam;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,11 +11,10 @@ import java.util.List;
 import android.app.ListActivity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -44,13 +44,22 @@ public class MainActivity extends ListActivity {
 	private Button proxy;
 	private ListView lv;
 	private Course selectedCourse;
+	private Course prevCourse=null;
 	ArrayAdapter<Course> adapter;
 	private TextView tillNow;
 	private TextView ifAttend;
 	private TextView ifMiss;
-	private boolean attenFlag=false;
-	private boolean bunkFlag=false;
+	private boolean attenFlag = false;
+	private boolean bunkFlag = false;
 	private int currentDay;
+	private boolean ifHoliday;
+	private String currentDate;
+	private TextView viewClassesLeft;
+	private TextView viewReqAtten;
+	private TextView viewDesAtten;
+	private TextView viewMsg;
+	private List<Integer> flags; 
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,35 +70,87 @@ public class MainActivity extends ListActivity {
 		Log.v(TAG, "" + numWorkingDays);
 		lv = (ListView) findViewById(android.R.id.list);// impt to initialise
 		lv.setOnItemClickListener(new OnItemClickListener() {
-			
+
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				//if(view.i)
-				//view.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
+				// if(view.i)
+				// view.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
+				
 				selectedCourse = todayCourses.get(position);
-				int total,attend,bunk;
+				if((prevCourse!=null && prevCourse!=selectedCourse)|| prevCourse==null){
+					attend.setEnabled(true);
+					bunk.setEnabled(true);
+				}
+				int total, attend, bunk, left;
 				total = selectedCourse.getTotalClasses();
-				attend=selectedCourse.getAttendedClasses();
-				bunk=selectedCourse.getBunkedClasses();
-				double tillNowVal= (double)attend*100.0/(attend+bunk);
-				
-				double ifAttendVal= (double)(attend+1)*100.0/(attend+1+bunk);
-				double ifMissVal= (double)(attend)*100.0/(attend+1+bunk);
-				if(Double.isNaN(tillNowVal)){
+				attend = selectedCourse.getAttendedClasses();
+				bunk = selectedCourse.getBunkedClasses();
+				left = total - attend - bunk;
+				double tillNowVal = (double) attend * 100.0 / (attend + bunk);
+
+				double ifAttendVal = (double) (attend + 1) * 100.0
+						/ (attend + 1 + bunk);
+				double ifMissVal = (double) (attend) * 100.0
+						/ (attend + 1 + bunk);
+				if (Double.isNaN(tillNowVal)) {
 					tillNow.setText(getString(R.string.defaultAttenVal));
+				} else {
+
+					tillNow.setText(String.format("%.2f", tillNowVal) + "%");
+
 				}
-				else{
-					
-					tillNow.setText(String.format("%.2f",tillNowVal)+"%");
-					
+				ifAttend.setText(String.format("%.2f", ifAttendVal) + "%");
+				ifMiss.setText(String.format("%.2f", ifMissVal) + "%");
+
+				viewDesAtten.setText("Des Atten :"
+						+ selectedCourse.getCourseDesiredAttendance()+"%");
+				viewReqAtten.setText("Req Atten :"
+						+ selectedCourse.getCourseReqAttendance()+"%");
+				viewClassesLeft.setText("Classes Left :" + (left));
+
+				double goEvery = (double) (attend + left) * 100.0 / total;
+				double goNone = (double) (attend * 100.0) / total;
+				double des = Double.parseDouble(selectedCourse
+						.getCourseDesiredAttendance());
+				double req = Double.parseDouble(selectedCourse
+						.getCourseReqAttendance());
+				int classesReq = (int) Math.ceil((req * total) / 100.0);
+				int classesDes = (int) Math.ceil((des * total) / 100.0);
+				int moreReqClasses = classesReq - attend;
+				int moreDesClasses = classesDes - attend;
+
+				if (goNone >= des) {
+					viewMsg.setText("Congrats for achieving your goal, you may not go to class from now");
+				} else if (goNone < des) {
+					if (goNone >= req) {
+						if (goEvery < des) {
+							viewMsg.setText("In SAFE ZONE but you won't get the desired attendance");
+						} else if (goEvery >= des) {
+							viewMsg.setText("In SAFE ZONE and you can achieve your goal");
+						}
+					} else {
+						if (goEvery < req) {
+							viewMsg.setText("Sorry, but you will get an attendance back ");
+						} else if (goEvery >= req) {
+							if (left == moreReqClasses) {
+								viewMsg.setText("In DANGER ZONE and don't skip even a single class");
+							} else if ((left - moreReqClasses) <= 2) {
+								viewMsg.setText("In DANGER ZONE , skip the class if very important");
+							} else if (moreReqClasses > (left / 2)) {
+								viewMsg.setText("In DANGER ZONE , think once more before skipping");
+							} else {
+								viewMsg.setText("In DANGER ZONE , but you can afford to skip a class");
+
+							}
+						}
+					}
 				}
-				ifAttend.setText(String.format("%.2f",ifAttendVal)+"%");
-				ifMiss.setText(String.format("%.2f",ifMissVal)+"%");
-				
+				prevCourse=selectedCourse;
 			}
+
 		});
-		
+
 		holiDatasource = new HolidaysDataSource(this);
 		holiDatasource.open();
 		Log.i(TAG, "after opening holiday databasse");
@@ -100,6 +161,12 @@ public class MainActivity extends ListActivity {
 		tillNow = (TextView) findViewById(R.id.tillNow);
 		ifAttend = (TextView) findViewById(R.id.ifAttend);
 		ifMiss = (TextView) findViewById(R.id.ifMiss);
+
+		viewClassesLeft = (TextView) findViewById(R.id.viewClassesLeft);
+		viewDesAtten = (TextView) findViewById(R.id.viewDesAtten);
+		viewReqAtten = (TextView) findViewById(R.id.viewReqAtten);
+		viewMsg = (TextView) findViewById(R.id.viewMsg);
+
 		attend = (Button) findViewById(R.id.attendButton);
 		bunk = (Button) findViewById(R.id.bunkButton);
 		proxy = (Button) findViewById(R.id.proxyButton);
@@ -108,29 +175,36 @@ public class MainActivity extends ListActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				
-				if(!attenFlag){
-					if(!bunkFlag){
-						if(selectedCourse!=null){
-							coursesDataSource.markPresent(selectedCourse.getAttendedClasses()+1, selectedCourse.getCourseCode());
-							attenFlag=true;
+
+				if (!attenFlag) {
+					if (!bunkFlag) {
+						if (selectedCourse != null) {
+							coursesDataSource.markPresent(
+									selectedCourse.getAttendedClasses() + 1,
+									selectedCourse.getCourseCode());
+							attenFlag = true;
 							attend.setEnabled(false);
+						} else {
+							Toast.makeText(MainActivity.this,
+									R.string.selectCourse, Toast.LENGTH_LONG)
+									.show();
 						}
-						else{
-							Toast.makeText(MainActivity.this, R.string.selectCourse, Toast.LENGTH_LONG).show();
-						}
-					}
-					else{
-						if(selectedCourse!=null){
-							coursesDataSource.markPresent(selectedCourse.getAttendedClasses()+1, selectedCourse.getCourseCode());
-							attenFlag=true;
+					} else {
+						if (selectedCourse != null) {
+							coursesDataSource.markPresent(
+									selectedCourse.getAttendedClasses() + 1,
+									selectedCourse.getCourseCode());
+							attenFlag = true;
 							attend.setEnabled(false);
-							coursesDataSource.markAbsent(selectedCourse.getBunkedClasses(), selectedCourse.getCourseCode());
-							bunkFlag=false;
+							coursesDataSource.markAbsent(
+									selectedCourse.getBunkedClasses(),
+									selectedCourse.getCourseCode());
+							bunkFlag = false;
 							bunk.setEnabled(true);
-						}
-						else{
-							Toast.makeText(MainActivity.this, R.string.selectCourse, Toast.LENGTH_LONG).show();
+						} else {
+							Toast.makeText(MainActivity.this,
+									R.string.selectCourse, Toast.LENGTH_LONG)
+									.show();
 						}
 					}
 				}
@@ -141,28 +215,35 @@ public class MainActivity extends ListActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if(!bunkFlag){
-					if(!attenFlag){
-						if(selectedCourse!=null){
-							coursesDataSource.markAbsent(selectedCourse.getBunkedClasses()+1, selectedCourse.getCourseCode());
-							bunkFlag=true;
+				if (!bunkFlag) {
+					if (!attenFlag) {
+						if (selectedCourse != null) {
+							coursesDataSource.markAbsent(
+									selectedCourse.getBunkedClasses() + 1,
+									selectedCourse.getCourseCode());
+							bunkFlag = true;
 							bunk.setEnabled(false);
+						} else {
+							Toast.makeText(MainActivity.this,
+									R.string.selectCourse, Toast.LENGTH_LONG)
+									.show();
 						}
-						else{
-							Toast.makeText(MainActivity.this, R.string.selectCourse, Toast.LENGTH_LONG).show();
-						}
-					}
-					else{
-						if(selectedCourse!=null){
-							coursesDataSource.markAbsent(selectedCourse.getBunkedClasses()+1, selectedCourse.getCourseCode());
-							bunkFlag=true;
+					} else {
+						if (selectedCourse != null) {
+							coursesDataSource.markAbsent(
+									selectedCourse.getBunkedClasses() + 1,
+									selectedCourse.getCourseCode());
+							bunkFlag = true;
 							bunk.setEnabled(false);
-							coursesDataSource.markPresent(selectedCourse.getAttendedClasses(), selectedCourse.getCourseCode());
-							attenFlag=false;
+							coursesDataSource.markPresent(
+									selectedCourse.getAttendedClasses(),
+									selectedCourse.getCourseCode());
+							attenFlag = false;
 							attend.setEnabled(true);
-						}
-						else{
-							Toast.makeText(MainActivity.this, R.string.selectCourse, Toast.LENGTH_LONG).show();
+						} else {
+							Toast.makeText(MainActivity.this,
+									R.string.selectCourse, Toast.LENGTH_LONG)
+									.show();
 						}
 					}
 				}
@@ -212,7 +293,7 @@ public class MainActivity extends ListActivity {
 		c = Calendar.getInstance();
 		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 		String formattedDate = df.format(c.getTime());
-		
+
 		Log.v(TAG, "current date " + formattedDate);
 		return formattedDate;
 	}
@@ -229,21 +310,26 @@ public class MainActivity extends ListActivity {
 			// cache the result
 
 		} else if (UIHelper.checkIfWeekend(todayDate.getText().toString())) {
-		
-		
-		}
-		else {
+
+		} else {
 			// cache today's courses
 			currentDay = UIHelper.getDayOfWeekFromDate(current);
 			todayCourses = coursesDataSource.getTodaysCourses(currentDay,
 					getString(R.string.enterDate));
+			flags = new ArrayList<Integer>(todayCourses.size());
+			for(int i=0; i<flags.size(); i++){
+				flags.set(i, 0);
+			}
+			
 			if (currentDay == Calendar.MONDAY) {
 				Collections.sort(todayCourses, new Comparator<Course>() {
 					public int compare(Course a, Course b) {
 						Date d1, d2;
-						
-						d1 = UIHelper.getDateObjectFromTextTime(a.getMonTimings());
-						d2 = UIHelper.getDateObjectFromTextTime(b.getMonTimings());
+
+						d1 = UIHelper.getDateObjectFromTextTime(a
+								.getMonTimings());
+						d2 = UIHelper.getDateObjectFromTextTime(b
+								.getMonTimings());
 						return d1.compareTo(d2);
 					}
 				});
@@ -251,8 +337,10 @@ public class MainActivity extends ListActivity {
 				Collections.sort(todayCourses, new Comparator<Course>() {
 					public int compare(Course a, Course b) {
 						Date d1, d2;
-						d1 = UIHelper.getDateObjectFromTextTime(a.getTuesTimings());
-						d2 = UIHelper.getDateObjectFromTextTime(b.getTuesTimings());
+						d1 = UIHelper.getDateObjectFromTextTime(a
+								.getTuesTimings());
+						d2 = UIHelper.getDateObjectFromTextTime(b
+								.getTuesTimings());
 						return d1.compareTo(d2);
 					}
 				});
@@ -260,8 +348,10 @@ public class MainActivity extends ListActivity {
 				Collections.sort(todayCourses, new Comparator<Course>() {
 					public int compare(Course a, Course b) {
 						Date d1, d2;
-						d1 = UIHelper.getDateObjectFromTextTime(a.getWedTimings());
-						d2 = UIHelper.getDateObjectFromTextTime(b.getWedTimings());
+						d1 = UIHelper.getDateObjectFromTextTime(a
+								.getWedTimings());
+						d2 = UIHelper.getDateObjectFromTextTime(b
+								.getWedTimings());
 						return d1.compareTo(d2);
 					}
 				});
@@ -269,8 +359,10 @@ public class MainActivity extends ListActivity {
 				Collections.sort(todayCourses, new Comparator<Course>() {
 					public int compare(Course a, Course b) {
 						Date d1, d2;
-						d1 = UIHelper.getDateObjectFromTextTime(a.getThursTimings());
-						d2 = UIHelper.getDateObjectFromTextTime(b.getThursTimings());
+						d1 = UIHelper.getDateObjectFromTextTime(a
+								.getThursTimings());
+						d2 = UIHelper.getDateObjectFromTextTime(b
+								.getThursTimings());
 						return d1.compareTo(d2);
 					}
 				});
@@ -278,24 +370,41 @@ public class MainActivity extends ListActivity {
 				Collections.sort(todayCourses, new Comparator<Course>() {
 					public int compare(Course a, Course b) {
 						Date d1, d2;
-						d1 = UIHelper.getDateObjectFromTextTime(a.getFriTimings());
-						d2 = UIHelper.getDateObjectFromTextTime(b.getFriTimings());
+						d1 = UIHelper.getDateObjectFromTextTime(a
+								.getFriTimings());
+						d2 = UIHelper.getDateObjectFromTextTime(b
+								.getFriTimings());
 						return d1.compareTo(d2);
 					}
 				});
 			}
-			Log.v(TAG, "in onresume "+todayCourses.size());
+			Log.v(TAG, "in onresume " + todayCourses.size());
 			adapter = new ClassListAdapter(this, todayCourses);
 			setListAdapter(adapter);
 			
-			// in course time selectd or focussed
-			// show that particular course's attendance
+			// save attendance val for each course 
+			// display when no classes or holiday or sat
+			// set selection for listview based on index closest to current time
+			// set the status
+			// format the time for courses
+			// set alarms for daily initialisation
 			// put today's classes in the log database
 			// cache todays' classes
 			// show notifications for classes whose attendance has not been done
 			// upto 3 classses, then just link to app
 			// make the notification sticky
 			// longpress to edit a particular class details
+			// editing other details
+			// in danger or safe zone
+			// ui improvements
+			// upload app on playstore
+			// about
+
+			// NEXT VERSION
+			// proxy
+			// tutorials, pracs
+			// extra class
+			// sat , sun enable
 		}
 	}
 

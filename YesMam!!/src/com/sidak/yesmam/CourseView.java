@@ -105,9 +105,9 @@ public class CourseView extends ListActivity {
 				courseAdded.setCourseVenue(data.getExtras().getString(
 						"courseVenue"));
 				courseAdded.setCourseDesiredAttendance(data.getExtras()
-						.getString("reqAttendance"));
+						.getString("desAttendance"));
 				courseAdded.setCourseReqAttendance(data.getExtras().getString(
-						"desAttendance"));
+						"reqAttendance"));
 
 				courseAdded.setMonTimings(data.getExtras().getString(
 						"monTimings"));
