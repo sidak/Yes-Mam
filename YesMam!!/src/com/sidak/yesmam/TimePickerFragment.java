@@ -33,6 +33,18 @@ public class TimePickerFragment extends DialogFragment implements
 	@Override
 	public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 		// TODO Auto-generated method stub
-		textView.setText(String.valueOf(hourOfDay)+":"+String.valueOf(minute));
+		String min,hr;
+		if(minute<10){
+			min="0"+minute;
+		}
+		else{
+			min=""+minute;
+		}
+		if(hourOfDay<10){
+			hr="0"+hourOfDay;
+		}else{
+			hr=""+hourOfDay;
+		}
+		textView.setText(hr+":"+min);
 	}
 }

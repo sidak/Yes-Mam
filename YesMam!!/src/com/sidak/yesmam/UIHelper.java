@@ -73,6 +73,7 @@ public class UIHelper {
 		}
 		return d;
 	}
+	
 	//
 	public static String getTextFromDateObject(Date date) {
 	    Calendar cal = new GregorianCalendar();
