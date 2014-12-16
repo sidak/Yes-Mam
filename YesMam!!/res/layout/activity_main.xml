@@ -28,12 +28,14 @@
             android:textStyle="bold" />
 
         <ImageButton
+            android:id="@+id/log"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
             android:layout_weight="0.30"
             android:background="@android:color/white"
             android:src="@drawable/ic_action_settings" />
+
     </LinearLayout>
 
     <ListView

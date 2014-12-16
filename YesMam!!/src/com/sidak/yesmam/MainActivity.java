@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,7 +61,7 @@ public class MainActivity extends ListActivity {
 	private TextView viewDesAtten;
 	private TextView viewMsg;
 	private List<Integer> flags; 
-
+	private ImageButton log;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -161,7 +163,16 @@ public class MainActivity extends ListActivity {
 		tillNow = (TextView) findViewById(R.id.tillNow);
 		ifAttend = (TextView) findViewById(R.id.ifAttend);
 		ifMiss = (TextView) findViewById(R.id.ifMiss);
-
+		log = (ImageButton)findViewById(R.id.log);
+		log.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent i = new Intent(MainActivity.this, WorkingDayList.class);
+				startActivity(i);
+			}
+		});
 		viewClassesLeft = (TextView) findViewById(R.id.viewClassesLeft);
 		viewDesAtten = (TextView) findViewById(R.id.viewDesAtten);
 		viewReqAtten = (TextView) findViewById(R.id.viewReqAtten);
@@ -386,7 +397,6 @@ public class MainActivity extends ListActivity {
 			// display when no classes or holiday or sat
 			// set selection for listview based on index closest to current time
 			// set the status
-			// format the time for courses
 			// set alarms for daily initialisation
 			// put today's classes in the log database
 			// cache todays' classes

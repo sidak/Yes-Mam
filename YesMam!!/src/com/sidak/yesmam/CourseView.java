@@ -1,8 +1,12 @@
 package com.sidak.yesmam;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -16,8 +20,10 @@ import android.widget.ListView;
 
 import com.sidak.yesmam.db.CoursesDataSource;
 import com.sidak.yesmam.db.HolidaysDataSource;
+import com.sidak.yesmam.db.WorkingDaysDataSource;
 import com.sidak.yesmam.model.Course;
 import com.sidak.yesmam.model.Holiday;
+import com.sidak.yesmam.model.WorkingDay;
 
 public class CourseView extends ListActivity {
 	public static final String TAG = CourseView.class.getSimpleName();
@@ -30,8 +36,19 @@ public class CourseView extends ListActivity {
 	private ListView lv;
 	ArrayAdapter<Course> adapter;
 	private Course courseAdded;
-	private SharedPreferences pref;
+	private SharedPreferences pref,coursePref;
 	private int[] holidayCount;
+	private String s1,s2;
+	private Date olderDate,newerDate;
+	private int NUM_COURSES;
+	private static Map<Integer, String> days= new HashMap<Integer, String>();
+	static{
+		 days.put(Calendar.MONDAY, "Monday");
+		 days.put(Calendar.TUESDAY, "Tuesday");
+		 days.put(Calendar.WEDNESDAY, "Wednesday");
+		 days.put(Calendar.THURSDAY, "Thursday");
+		 days.put(Calendar.FRIDAY, "Friday");
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +73,16 @@ public class CourseView extends ListActivity {
 		Log.v(TAG, "after open datscr");
 		courses = datasource.findAll();
 		Log.v(TAG, "in courseview constructor after find all");
-
+		
+		pref = getApplicationContext()
+				.getSharedPreferences(getString(R.string.semPrefs), 0);
+		coursePref=getApplicationContext()
+				.getSharedPreferences("course prefs", 0);
+		s1 = pref.getString(getString(R.string.dateStart), "1/1/2000");
+		s2 = pref.getString(getString(R.string.dateEnd), "1/1/2000");
+		olderDate=UIHelper.getDateObjectFromText(s1);
+		newerDate=UIHelper.getDateObjectFromText(s2);
+		
 		addCourse.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -71,17 +97,74 @@ public class CourseView extends ListActivity {
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
+					//DBOpenHelper.setNumCourses(courses.size());
+					// populate working days database 
+					// do it in a different thread
+					// create a spinner till work is done
+					NUM_COURSES=courses.size();
+					SharedPreferences.Editor e =coursePref.edit();
+					e.putInt("num courses", NUM_COURSES);
+					e.commit();
+					
+					WorkingDaysDataSource wdDataSource = new WorkingDaysDataSource(CourseView.this, NUM_COURSES);
+					wdDataSource.open();
+					
+					Calendar c1 = Calendar.getInstance();  
+			        c1.setTime(olderDate);  
+			   
+			        Calendar c2 = Calendar.getInstance();  
+			        c2.setTime(newerDate);  
+			        //int num = 0;  
+			   
+			        while(c2.after(c1)) {  
+			        	int day = c1.get(Calendar.DAY_OF_WEEK);
+			            if(!checkIfHoliday(c1) && (day!=1) && ( day!=7)){
+			            	WorkingDay wd = new WorkingDay();
+			            	wd.setDayString(""+days.get(day));
+			            	Date temp=c1.getTime();
+			            	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			            	String date = sdf.format(temp); 
+			            	wd.setDateString(date);
+			            	wd.courses = new ArrayList<Course>(NUM_COURSES);
+			            	wd.attendance= new ArrayList<Integer>(NUM_COURSES);
+			            	for(int i=0; i<NUM_COURSES; i++){
+			            		wd.courses.add(new Course(courses.get(i).getCourseCode()));
+			            		wd.attendance.add(2);
+			            	}
+			            	wdDataSource.create(wd);
+			            }
+			            c1.add(Calendar.DATE,1);  
+			        }  
+					
 					Intent intent = new Intent(CourseView.this, MainActivity.class);
 					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					startActivity(intent);
+					
+					wdDataSource.close();
 				}
 
 		});
 		refreshDisplayAndUpdate();
 		Log.v(TAG, "after rdau in const");
 	}
-
+	private boolean checkIfHoliday(Calendar c){
+		Holiday holiday;
+		String s;
+		Date d;
+		Calendar cal=Calendar.getInstance();
+		for(int i=0; i<holidays.size(); i++){
+			holiday= holidays.get(i);
+			s=holiday.toString();
+			d= UIHelper.getDateObjectFromText(s);
+			cal.setTime(d);
+			if(cal.equals(c)){
+				return true;
+			}
+		}
+		return false;
+		
+	}
 	private void countHolidays() {
 		holidayCount= new int[8];
 		for(int i=0; i<holidays.size(); i++){
@@ -135,12 +218,7 @@ public class CourseView extends ListActivity {
 
 	private int calcTotalClasses(Course course) {
 		int sum=0;
-		pref = getApplicationContext()
-				.getSharedPreferences(getString(R.string.semPrefs), 0);
-		String s1 = pref.getString(getString(R.string.dateStart), "1/1/2000");
-		String s2 = pref.getString(getString(R.string.dateEnd), "1/1/2000");
-		Date olderDate=UIHelper.getDateObjectFromText(s1);
-		Date newerDate=UIHelper.getDateObjectFromText(s2);
+		
 		if(!course.getMonTimings().equals(getString(R.string.enterDate))){
 			sum+=UIHelper.calculateSpecificDay(olderDate, newerDate, Calendar.MONDAY);
 			sum-=holidayCount[Calendar.MONDAY];

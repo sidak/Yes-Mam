@@ -1,23 +1,28 @@
 package com.sidak.yesmam.model;
 
 public class Course {
-	private String courseName;
-	private String courseCode;
-	private String courseVenue;
+	private String courseName="";
+	private String courseCode="";
+	private String courseVenue="";
 	// implement attendance var's as double and not int , since they wld be represented
 	// as percentage 
-	private String courseReqAttendance;
-	private String courseDesiredAttendance;
+	private String courseReqAttendance="";
+	private String courseDesiredAttendance="";
 	//private boolean[] isWeekDayClass;
-	private String monTimings;
-	private String tuesTimings;
-	private String wedTimings;
-	private String thursTimings;
-	private String friTimings;
-	private int totalClasses;
-	private int attendClasses;
-	private int bunkClasses;
-	
+	private String monTimings="";
+	private String tuesTimings="";
+	private String wedTimings="";
+	private String thursTimings="";
+	private String friTimings="";
+	private int totalClasses=0;
+	private int attendClasses=0;
+	private int bunkClasses=0;
+	public Course(String code){
+		courseCode=code;
+	}
+	public Course(){
+		
+	}
 	public String getCourseName(){
 		return courseName;
 	}

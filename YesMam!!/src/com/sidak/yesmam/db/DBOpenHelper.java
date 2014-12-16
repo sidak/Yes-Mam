@@ -8,9 +8,8 @@ import android.util.Log;
 public class DBOpenHelper extends SQLiteOpenHelper {
 	
 	public static final String TAG = "YES MAM DB";
-	
 	private static final String DATABASE_NAME = "semester.db";
-	private static final int DATABASE_VERSION = 4;
+	private static final int DATABASE_VERSION = 5;
 	
 	public static final String TABLE_COURSES="courses";
 	public static final String COURSE_ID = "courseId";
@@ -45,7 +44,9 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 			 NUM_ATTENDED_CLASSES+" INTEGER, "+
 			 NUM_BUNKED_CLASSES+" INTEGER " +
 			 ")";
-
+	
+	
+	
 	public static final String TABLE_HOLIDAYS="holidays";
 	public static final String COLUMN_ID = "holidayId";
 	public static final String COLUMN_DAY = "day";
@@ -67,7 +68,6 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 			
 
 	
-
 	
 	public DBOpenHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -90,7 +90,6 @@ public class DBOpenHelper extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_COURSES);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_HOLIDAYS);
-
 		onCreate(db);
 	}
 
