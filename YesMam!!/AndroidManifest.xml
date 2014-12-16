@@ -46,6 +46,10 @@
             android:name="com.sidak.yesmam.AddCourses"
             android:label="@string/title_activity_add_courses" >
         </activity>
+        <activity
+            android:name="com.sidak.yesmam.WorkingDayList"
+            android:label="working days" >
+        </activity>
     </application>
 
 </manifest>
