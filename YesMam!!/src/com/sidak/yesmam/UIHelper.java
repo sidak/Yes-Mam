@@ -8,6 +8,7 @@ import java.util.GregorianCalendar;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -105,6 +106,16 @@ public class UIHelper {
 		}
 		else return false;
 	}
+
+	public static String getCurrentDate() {
+		Calendar c = Calendar.getInstance();
+		SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		String formattedDate = df.format(c.getTime());
+
+		//Log.v(TAG, "current date " + formattedDate);
+		return formattedDate;
+	}
+
 	public static int calculateSpecificDay(Date d1, Date d2, int day) {
 		Calendar c1 = Calendar.getInstance();  
         c1.setTime(d1);  
