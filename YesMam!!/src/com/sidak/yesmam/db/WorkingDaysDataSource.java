@@ -37,7 +37,7 @@ public class WorkingDaysDataSource {
 		database = dbhelper.getWritableDatabase();
 			
 		for(int i=0; i<NUM_COURSES;i++){
-			allColumns[3+i]=WDBOpenHelper.COURSES[i];
+			allColumns[3+i]=WDBOpenHelper.CODES[i];
 		}
 		for(int i=0; i<NUM_COURSES;i++){
 			allColumns[3+NUM_COURSES+i]=WDBOpenHelper.ATTENDANCE[i];
@@ -55,7 +55,7 @@ public class WorkingDaysDataSource {
 		values.put(WDBOpenHelper.WDAY_DATE, w.getDateString());
 		values.put(WDBOpenHelper.WDAY_DAY, w.getDayString());
 		for(int i=0; i<NUM_COURSES;  i++){
-			values.put(WDBOpenHelper.COURSES[i],w.courses.get(i).getCourseCode());
+			values.put(WDBOpenHelper.CODES[i],w.codes.get(i));
 		}
 		for(int i=0; i<NUM_COURSES;  i++){
 			values.put(WDBOpenHelper.ATTENDANCE[i],w.attendance.get(i));
@@ -84,9 +84,9 @@ public class WorkingDaysDataSource {
 						.getColumnIndex(WDBOpenHelper.WDAY_DATE)));
 				wday.setDayString(cursor.getString(cursor
 						.getColumnIndex(WDBOpenHelper.WDAY_DAY)));
-				wday.courses = new ArrayList<Course>(NUM_COURSES);
+				wday.codes = new ArrayList<String>(NUM_COURSES);
 				for(int i=0; i<NUM_COURSES;  i++){
-					wday.courses.add(new Course(cursor.getString(cursor.getColumnIndex(WDBOpenHelper.COURSES[i]))));
+					wday.codes.add(cursor.getString(cursor.getColumnIndex(WDBOpenHelper.CODES[i])));
 				}
 				wday.attendance=new ArrayList<Integer>(NUM_COURSES);
 				for(int i=0; i<NUM_COURSES;  i++){

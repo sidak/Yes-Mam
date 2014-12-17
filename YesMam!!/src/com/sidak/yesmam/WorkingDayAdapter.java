@@ -43,5 +43,5 @@ public class WorkingDayAdapter extends ArrayAdapter<WorkingDay> {
 		
 		return convertView;
 	}
-
+	
 }

@@ -5,7 +5,7 @@ import java.util.List;
 public class WorkingDay {
 	private String dateString;
 	private String dayString;
-	public List<Course> courses;
+	public List<String> codes;
 	// 0 for bunk, 1 for attend , 2 for not calc
 	public List<Integer> attendance;
 	public String getDayString(){
@@ -23,8 +23,8 @@ public class WorkingDay {
 	}
 	public String toString(){
 		String temp =dateString +" "+dayString;
-		for(int i=0;i<courses.size(); i++){
-			temp+= courses.get(i).getCourseCode() + " " + attendance.get(i);
+		for(int i=0;i<codes.size(); i++){
+			temp+= codes.get(i) + " " + attendance.get(i);
 		}
 		return temp;
 	}
