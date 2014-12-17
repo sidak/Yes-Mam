@@ -43,11 +43,11 @@
     <string name="mondayCTVText">Monday</string>
     <string name="tuesdayCTVText">Tuesday</string>
     <string name="wednesdayCTVText">Wednesday</string>
-	<string name="thursdayCTVText">Thursday</string>
+    <string name="thursdayCTVText">Thursday</string>
     <string name="fridayCTVText">Friday</string>
     <string name="submitCourse">Submit Course</string>
-    <string name ="fillAllFields">Please enter all the fields</string>
-    <string name ="fillTimings">Please enter the course Timings</string>
+    <string name="fillAllFields">Please enter all the fields</string>
+    <string name="fillTimings">Please enter the course Timings</string>
     <string name="scheduleLabel">Schedule</string>
     <string name="desAttenLabel">Desired Attendance</string>
     <string name="minAttenLabel">Min. Attendance</string>
@@ -56,8 +56,8 @@
     <string name="wedLabel">Wed</string>
     <string name="thuLabel">Thu</string>
     <string name="friLabel">Fri</string>
-    <string name ="na">N/A</string>
-    <string name ="finishText">Finish</string>
+    <string name="na">N/A</string>
+    <string name="finishText">Finish</string>
     <string name="prefPreviouslyStarted">com.sidak.yesmam.PREFERENCE_PREV_STARTED</string>
     <string name="numWorkingDays">com.sidak.yesmam.PREFERENCE_WORKING_DAYS</string>
     <string name="dateStart">com.sidak.yesmam.PREFERENCE_START_DATE</string>
@@ -68,6 +68,8 @@
     <string name="numWed">wed</string>
     <string name="numThu">thu</string>
     <string name="numFri">fri</string>
-    <string name ="defaultAttenVal">-- %</string>
+    <string name="defaultAttenVal">-- %</string>
     <string name="selectCourse">Please select some course.</string>
+    <string name="title_activity_wday_template">WdayTemplateActivity</string>
+
 </resources>

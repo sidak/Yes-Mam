@@ -50,6 +50,10 @@
             android:name="com.sidak.yesmam.WorkingDayList"
             android:label="working days" >
         </activity>
+        <activity
+            android:name="com.sidak.yesmam.WdayTemplateActivity"
+            android:label="@string/title_activity_wday_template" >
+        </activity>
     </application>
 
 </manifest>
