@@ -155,7 +155,7 @@ public class CoursesDataSource {
 		ContentValues values = new ContentValues();
 		values.put(DBOpenHelper.NUM_ATTENDED_CLASSES,num );
 		// updating row
-		database.update(DBOpenHelper.TABLE_COURSES, values,DBOpenHelper.COURSE__CODE  + " = ?",
+		database.update(DBOpenHelper.TABLE_COURSES, values,DBOpenHelper.COURSE__CODE  + " =?",
 				new String[] {key });
 		Log.v(TAG, key+ " " +num);
 	}
@@ -165,7 +165,7 @@ public class CoursesDataSource {
 		ContentValues values = new ContentValues();
 		values.put(DBOpenHelper.NUM_BUNKED_CLASSES,num );
 		// updating row
-		database.update(DBOpenHelper.TABLE_COURSES, values,DBOpenHelper.COURSE__CODE  + " = ?",
+		database.update(DBOpenHelper.TABLE_COURSES, values,DBOpenHelper.COURSE__CODE  + " =?",
 				new String[] {key });
 		Log.v(TAG, key+ " " +num);
 	}

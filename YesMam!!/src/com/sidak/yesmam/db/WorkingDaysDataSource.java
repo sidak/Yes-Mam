@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -16,13 +17,17 @@ import com.sidak.yesmam.model.WorkingDay;
 public class WorkingDaysDataSource {
 	public static int NUM_COURSES;
 	public static final String TAG = WorkingDaysDataSource.class.getSimpleName();
-
+	private SharedPreferences coursePref;
+	
 	SQLiteOpenHelper dbhelper;
 	SQLiteDatabase database;
 	private static  String[] allColumns; 
-	public WorkingDaysDataSource(Context context, int n) {
-		NUM_COURSES=n;
-		WDBOpenHelper.setNumCourses(n);
+	public WorkingDaysDataSource(Context context) {
+		coursePref=context
+				.getSharedPreferences("course prefs", 0);
+		NUM_COURSES=coursePref.getInt("num courses", 0);
+		//NUM_COURSES=n;
+		WDBOpenHelper.setNumCourses(NUM_COURSES);
 		dbhelper = new WDBOpenHelper(context);
 		
 		allColumns= new String[3+2*NUM_COURSES];
@@ -100,5 +105,26 @@ public class WorkingDaysDataSource {
 		}
 		return wdays;
 	}
+	
+	public void markAttendance(int att, int i,String date) {
+
+		ContentValues values = new ContentValues();
+		values.put(WDBOpenHelper.ATTENDANCE[i],att );
+		// updating row
+		database.update(WDBOpenHelper.TABLE_WDAYS, values,WDBOpenHelper.WDAY_DATE  + " = ?",
+				new String[] {date});
+		Log.v(TAG, date+ " " +att);
+	}
+
+	public List<WorkingDay> findCurrent(String date) {
+		Cursor cursor = database.query(WDBOpenHelper.TABLE_WDAYS, allColumns,
+				WDBOpenHelper.WDAY_DATE + "=?", new String[]{date}, null, null, null);
+
+		Log.i(TAG, "Returned " + cursor.getCount() + " rows");
+		List<WorkingDay> w = cursorToList(cursor);
+		return w;
+	}
+
+
 
 }
