@@ -106,7 +106,7 @@ public class CourseView extends ListActivity {
 					e.putInt("num courses", NUM_COURSES);
 					e.commit();
 					
-					WorkingDaysDataSource wdDataSource = new WorkingDaysDataSource(CourseView.this, NUM_COURSES);
+					WorkingDaysDataSource wdDataSource = new WorkingDaysDataSource(CourseView.this);
 					wdDataSource.open();
 					
 					Calendar c1 = Calendar.getInstance();  
@@ -115,7 +115,7 @@ public class CourseView extends ListActivity {
 			        Calendar c2 = Calendar.getInstance();  
 			        c2.setTime(newerDate);  
 			        //int num = 0;  
-			   
+			        List<Course> todayCourses;
 			        while(c2.after(c1)) {  
 			        	int day = c1.get(Calendar.DAY_OF_WEEK);
 			            if(!checkIfHoliday(c1) && (day!=1) && ( day!=7)){
@@ -125,11 +125,27 @@ public class CourseView extends ListActivity {
 			            	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			            	String date = sdf.format(temp); 
 			            	wd.setDateString(date);
-			            	wd.courses = new ArrayList<Course>(NUM_COURSES);
+			            	todayCourses = datasource.getTodaysCourses(day,
+			    					getString(R.string.enterDate));
+			            	int NUM_CLASSES=todayCourses.size();
+			            	// this list contains codes of the courses which have  a class on that day
+			            	ArrayList<String> codes = new ArrayList<String>(NUM_CLASSES);
+			            	for(int i=0; i<NUM_CLASSES; i++){
+			            		codes.add(todayCourses.get(i).getCourseCode());
+			            	}
+			            	// wd.codes has codes of all the courses
+			            	wd.codes = new ArrayList<String>(NUM_COURSES);
 			            	wd.attendance= new ArrayList<Integer>(NUM_COURSES);
 			            	for(int i=0; i<NUM_COURSES; i++){
-			            		wd.courses.add(new Course(courses.get(i).getCourseCode()));
-			            		wd.attendance.add(2);
+			            		wd.codes.add(courses.get(i).getCourseCode());
+			            		wd.attendance.add(3);
+			            	}
+			            	for(int i=0; i<NUM_COURSES; i++){
+			            		// setting the attendance value to be 2 for courses which have classes 
+			            		// and 3 for which don't have classes
+			            		if(codes.contains(wd.codes.get(i))){
+			            			wd.attendance.set(i, 2);
+			            		}
 			            	}
 			            	wdDataSource.create(wd);
 			            }

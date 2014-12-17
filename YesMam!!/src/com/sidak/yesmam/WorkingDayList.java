@@ -3,11 +3,15 @@ package com.sidak.yesmam;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.sidak.yesmam.db.WorkingDaysDataSource;
 import com.sidak.yesmam.model.Holiday;
@@ -24,6 +28,7 @@ public class WorkingDayList extends ListActivity {
 	private ListView lv;
 	ArrayAdapter<WorkingDay> adapter;
 	private int NUM_COURSES;
+	private WorkingDay wday;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +43,7 @@ public class WorkingDayList extends ListActivity {
 		
 		Log.i(TAG, "in oncreate");
 		// num of courses
-		wDatasource = new WorkingDaysDataSource(this,NUM_COURSES);
+		wDatasource = new WorkingDaysDataSource(this);
 		wDatasource.open();
 		Log.i(TAG, "after opening databasse");
 
@@ -55,6 +60,18 @@ public class WorkingDayList extends ListActivity {
 			Log.i(TAG, "after findall and cretae data in if");
 
 		}*/
+		lv.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				wday = wdays.get(position);
+				Globals.workday=wday;
+				Intent i = new Intent(WorkingDayList.this, WdayTemplateActivity.class);
+				startActivity(i);
+				// use this working day to initialise the state of the next activity
+			}
+		});
 		
 		refreshDisplayAndUpdate();
 		
