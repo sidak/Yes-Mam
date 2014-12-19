@@ -72,6 +72,7 @@ public class WdayTemplateActivity extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.activity_main);
 		/*
 		prefs = getApplicationContext().getSharedPreferences(
@@ -308,6 +309,8 @@ public class WdayTemplateActivity extends ListActivity {
 		// then if none: check for todays' classes
 		currentDate=currentWday.getDateString();
 		todayDate.setText(currentDate);
+		
+		
 	}
 
 	protected void getHelp() {
@@ -347,9 +350,13 @@ public class WdayTemplateActivity extends ListActivity {
 		if (checkHoliday()) {
 			// change in ui to show today's classes
 			// cache the result
-
+			Intent i = new Intent(this, MainActivityHoliday.class);
+			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			startActivity(i);
 		} else if (UIHelper.checkIfWeekend(todayDate.getText().toString())) {
-		
+			Intent i = new Intent(this, MainActivityHoliday.class);
+			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			startActivity(i);
 		} else {
 			// cache today's courses
 			currentDay = UIHelper.getDayOfWeekFromDate(current);
@@ -431,7 +438,6 @@ public class WdayTemplateActivity extends ListActivity {
 			adapter = new ClassListAdapter(this, todayCourses);
 			setListAdapter(adapter);
 			// if a course is added again after pressing back
-			// filter working days which have no classes
 			// check that on a part day not more than two attendance possible
 			// save attendance val for each course
 			// display when no classes or holiday or sat

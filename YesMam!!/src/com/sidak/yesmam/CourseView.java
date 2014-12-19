@@ -9,7 +9,10 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.ListActivity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -128,33 +131,36 @@ public class CourseView extends ListActivity {
 			            	todayCourses = datasource.getTodaysCourses(day,
 			    					getString(R.string.enterDate));
 			            	int NUM_CLASSES=todayCourses.size();
-			            	// this list contains codes of the courses which have  a class on that day
-			            	ArrayList<String> codes = new ArrayList<String>(NUM_CLASSES);
-			            	for(int i=0; i<NUM_CLASSES; i++){
-			            		codes.add(todayCourses.get(i).getCourseCode());
+			            	if(NUM_CLASSES!=0){
+				            	// this list contains codes of the courses which have  a class on that day
+				            	ArrayList<String> codes = new ArrayList<String>(NUM_CLASSES);
+				            	for(int i=0; i<NUM_CLASSES; i++){
+				            		codes.add(todayCourses.get(i).getCourseCode());
+				            	}
+				            	// wd.codes has codes of all the courses
+				            	wd.codes = new ArrayList<String>(NUM_COURSES);
+				            	wd.attendance= new ArrayList<Integer>(NUM_COURSES);
+				            	for(int i=0; i<NUM_COURSES; i++){
+				            		wd.codes.add(courses.get(i).getCourseCode());
+				            		wd.attendance.add(3);
+				            	}
+				            	for(int i=0; i<NUM_COURSES; i++){
+				            		// setting the attendance value to be 2 for courses which have classes 
+				            		// and 3 for which don't have classes
+				            		if(codes.contains(wd.codes.get(i))){
+				            			wd.attendance.set(i, 2);
+				            		}
+				            	}
+				            	wdDataSource.create(wd);
 			            	}
-			            	// wd.codes has codes of all the courses
-			            	wd.codes = new ArrayList<String>(NUM_COURSES);
-			            	wd.attendance= new ArrayList<Integer>(NUM_COURSES);
-			            	for(int i=0; i<NUM_COURSES; i++){
-			            		wd.codes.add(courses.get(i).getCourseCode());
-			            		wd.attendance.add(3);
-			            	}
-			            	for(int i=0; i<NUM_COURSES; i++){
-			            		// setting the attendance value to be 2 for courses which have classes 
-			            		// and 3 for which don't have classes
-			            		if(codes.contains(wd.codes.get(i))){
-			            			wd.attendance.set(i, 2);
-			            		}
-			            	}
-			            	wdDataSource.create(wd);
 			            }
 			            c1.add(Calendar.DATE,1);  
 			        }  
-					
+					// try the broadcast thing over here too
 					Intent intent = new Intent(CourseView.this, MainActivity.class);
-					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+					//intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					//intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					startActivity(intent);
 					
 					wdDataSource.close();
@@ -163,6 +169,9 @@ public class CourseView extends ListActivity {
 		});
 		refreshDisplayAndUpdate();
 		Log.v(TAG, "after rdau in const");
+		
+		
+		
 	}
 	private boolean checkIfHoliday(Calendar c){
 		Holiday holiday;
