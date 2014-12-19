@@ -71,5 +71,6 @@
     <string name="defaultAttenVal">-- %</string>
     <string name="selectCourse">Please select some course.</string>
     <string name="title_activity_wday_template">WdayTemplateActivity</string>
+    <string name="title_activity_main_activity_holiday">MainActivityHoliday</string>
 
 </resources>

@@ -54,6 +54,10 @@
             android:name="com.sidak.yesmam.WdayTemplateActivity"
             android:label="@string/title_activity_wday_template" >
         </activity>
+        <activity
+            android:name="com.sidak.yesmam.MainActivityHoliday"
+            android:label="@string/title_activity_main_activity_holiday" >
+        </activity>
     </application>
 
 </manifest>
