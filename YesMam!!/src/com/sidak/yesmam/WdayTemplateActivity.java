@@ -11,6 +11,7 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -69,19 +70,33 @@ public class WdayTemplateActivity extends ListActivity {
 	private List<String> todayCodes;
 	private int selCodeIdx;
 	private int selAttVal;
+	private List<WorkingDay> wdays;
+	private boolean noClass;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		setContentView(R.layout.activity_main);
+
+		prefs = PreferenceManager
+				.getDefaultSharedPreferences(getApplicationContext());
 		/*
-		prefs = getApplicationContext().getSharedPreferences(
-				getString(R.string.semPrefs), 0);
-		numWorkingDays = prefs.getInt(getString(R.string.numWorkingDays), 0);
-		Log.v(TAG, "" + numWorkingDays);
-		*/
+		 * numWorkingDays = prefs.getInt(getString(R.string.numWorkingDays), 0);
+		 * Log.v(TAG, "" + numWorkingDays);
+		 */
 		// get the current working day from global class
-		currentWday = Globals.workday;
+		// if I am opening for the second Time
+		holiDatasource = new HolidaysDataSource(this);
+		holiDatasource.open();
+		Log.i(TAG, "after opening holiday databasse");
+		coursesDataSource = new CoursesDataSource(this);
+		coursesDataSource.open();
+		Log.v(TAG, "after opnening courses database");
+		wDataSource = new WorkingDaysDataSource(this);
+		wDataSource.open();
+		Log.v(TAG, "after opnening working days database");
+		
 		lv = (ListView) findViewById(android.R.id.list);// impt to initialise
 		lv.setOnItemClickListener(new OnItemClickListener() {
 
@@ -92,21 +107,19 @@ public class WdayTemplateActivity extends ListActivity {
 				// view.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
 
 				selectedCourse = todayCourses.get(position);
-				selCodeIdx= todayCodes.indexOf(selectedCourse.getCourseCode());
-				selAttVal=flags.get(selCodeIdx);
-				if(selAttVal==0){
+				selCodeIdx = todayCodes.indexOf(selectedCourse.getCourseCode());
+				selAttVal = flags.get(selCodeIdx);
+				if (selAttVal == 0) {
 					attend.setEnabled(true);
 					bunk.setEnabled(false);
-				}
-				else if (selAttVal==1){
+				} else if (selAttVal == 1) {
 					attend.setEnabled(false);
 					bunk.setEnabled(true);
-				}
-				else if (selAttVal==2){
+				} else if (selAttVal == 2) {
 					attend.setEnabled(true);
 					bunk.setEnabled(true);
 				}
-				
+
 				int total, attend, bunk, left;
 				total = selectedCourse.getTotalClasses();
 				attend = selectedCourse.getAttendedClasses();
@@ -144,7 +157,7 @@ public class WdayTemplateActivity extends ListActivity {
 				int classesDes = (int) Math.ceil((des * total) / 100.0);
 				int moreReqClasses = classesReq - attend;
 				int moreDesClasses = classesDes - attend;
-				//TODO: display desired classes number
+				// TODO: display desired classes number
 				if (goNone >= des) {
 					viewMsg.setText("Congrats for achieving your goal, you may not go to class from now");
 				} else if (goNone < des) {
@@ -175,15 +188,6 @@ public class WdayTemplateActivity extends ListActivity {
 
 		});
 
-		holiDatasource = new HolidaysDataSource(this);
-		holiDatasource.open();
-		Log.i(TAG, "after opening holiday databasse");
-		coursesDataSource = new CoursesDataSource(this);
-		coursesDataSource.open();
-		Log.v(TAG, "after opnening courses database");
-		wDataSource = new WorkingDaysDataSource(this);
-		wDataSource.open();
-		Log.v(TAG, "after opnening working days database");
 		todayDate = (TextView) findViewById(R.id.todayDate);
 		tillNow = (TextView) findViewById(R.id.tillNow);
 		ifAttend = (TextView) findViewById(R.id.ifAttend);
@@ -194,7 +198,8 @@ public class WdayTemplateActivity extends ListActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Intent i = new Intent(WdayTemplateActivity.this, WorkingDayList.class);
+				Intent i = new Intent(WdayTemplateActivity.this,
+						WorkingDayList.class);
 				startActivity(i);
 			}
 		});
@@ -211,39 +216,40 @@ public class WdayTemplateActivity extends ListActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				
-				if(selectedCourse==null){
+
+				if (selectedCourse == null) {
 					Toast.makeText(WdayTemplateActivity.this,
-							R.string.selectCourse, Toast.LENGTH_LONG)
-							.show();
-				}
-				else{
-					if(selAttVal==2){
+							R.string.selectCourse, Toast.LENGTH_LONG).show();
+				} else {
+					if (selAttVal == 2) {
 						coursesDataSource.markPresent(
 								selectedCourse.getAttendedClasses() + 1,
 								selectedCourse.getCourseCode());
-						
+
 						wDataSource.markAttendance(1, selCodeIdx, currentDate);
 						flags.set(selCodeIdx, 1);
-						selAttVal=1;
-						// update wday db containing record of today's date and attendance[i]=1 where i is index of selected course code
+						selAttVal = 1;
+						// update wday db containing record of today's date and
+						// attendance[i]=1 where i is index of selected course
+						// code
 						// update local copy i.e. flags(i)=1
 						// update selAttVal=1;
 						attend.setEnabled(false);
-					}
-					else if (selAttVal==0){
+					} else if (selAttVal == 0) {
 						coursesDataSource.markPresent(
 								selectedCourse.getAttendedClasses() + 1,
 								selectedCourse.getCourseCode());
 						coursesDataSource.markAbsent(
 								selectedCourse.getBunkedClasses(),
 								selectedCourse.getCourseCode());
-						// update wday db containing record of today's date and attendance[i]=1 where i is index of selected course code
+						// update wday db containing record of today's date and
+						// attendance[i]=1 where i is index of selected course
+						// code
 						// update local copy i.e. flags(i)=1
 						// update selAttVal=1;
 						wDataSource.markAttendance(1, selCodeIdx, currentDate);
 						flags.set(selCodeIdx, 1);
-						selAttVal=1;
+						selAttVal = 1;
 						attend.setEnabled(false);
 						bunk.setEnabled(true);
 					}
@@ -255,36 +261,37 @@ public class WdayTemplateActivity extends ListActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if(selectedCourse==null){
+				if (selectedCourse == null) {
 					Toast.makeText(WdayTemplateActivity.this,
-							R.string.selectCourse, Toast.LENGTH_LONG)
-							.show();
-				}
-				else{
-					if(selAttVal==2){
+							R.string.selectCourse, Toast.LENGTH_LONG).show();
+				} else {
+					if (selAttVal == 2) {
 						coursesDataSource.markAbsent(
 								selectedCourse.getBunkedClasses() + 1,
 								selectedCourse.getCourseCode());
 						wDataSource.markAttendance(0, selCodeIdx, currentDate);
 						flags.set(selCodeIdx, 0);
-						selAttVal=0;
-						// update wday db containing record of today's date and attendance[i]=0 where i is index of selected course code
+						selAttVal = 0;
+						// update wday db containing record of today's date and
+						// attendance[i]=0 where i is index of selected course
+						// code
 						// update local copy i.e. flags(i)=0
 						// update selAttVal=0;
 						bunk.setEnabled(false);
-					}
-					else if (selAttVal==1){
+					} else if (selAttVal == 1) {
 						coursesDataSource.markAbsent(
 								selectedCourse.getBunkedClasses() + 1,
 								selectedCourse.getCourseCode());
-						
+
 						coursesDataSource.markPresent(
 								selectedCourse.getAttendedClasses(),
 								selectedCourse.getCourseCode());
 						wDataSource.markAttendance(0, selCodeIdx, currentDate);
 						flags.set(selCodeIdx, 0);
-						selAttVal=0;
-						// update wday db containing record of today's date and attendance[i]=0 where i is index of selected course code
+						selAttVal = 0;
+						// update wday db containing record of today's date and
+						// attendance[i]=0 where i is index of selected course
+						// code
 						// update local copy i.e. flags(i)=0
 						// update selAttVal=0;
 						attend.setEnabled(true);
@@ -301,16 +308,24 @@ public class WdayTemplateActivity extends ListActivity {
 				getHelp();
 			}
 		});
-		// check if it is a holiday
-		// also cache the value for a particular day by checking the
-		// current date and the variable
-		// UIHelper.checkIfWeekend(s)
-		// check for extra class
-		// then if none: check for todays' classes
-		currentDate=currentWday.getDateString();
-		todayDate.setText(currentDate);
 		
-		
+
+	}
+
+	private void loadWday() {
+		Log.i(TAG, "after opening databasse");
+		String cDate = UIHelper.getCurrentDate();
+		wdays = wDataSource.findCurrent(cDate);
+		if (wdays.size() != 0) {
+			currentWday = wdays.get(0);
+			Globals.workday = currentWday;
+			
+
+		} else {
+			// it is neither a planned or insti holiday or sat or sun
+			noClass = true;
+
+		}
 	}
 
 	protected void getHelp() {
@@ -319,7 +334,8 @@ public class WdayTemplateActivity extends ListActivity {
 	}
 
 	private boolean checkHoliday() {
-		int date[] = UIHelper.getDateFromText(todayDate.getText().toString(), this);
+		int date[] = UIHelper.getDateFromText(todayDate.getText().toString(),
+				this);
 		Log.v(TAG, " " + date[0] + " " + date[1] + " " + date[2]);
 		holidays = holiDatasource.findWhereDatesMatch(new String[] {
 				"" + date[0], "" + date[1], "" + date[2] });
@@ -339,43 +355,49 @@ public class WdayTemplateActivity extends ListActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		currentDate=currentWday.getDateString();
-		todayDate.setText(currentDate);
 		
+
 		holiDatasource.open();
 		coursesDataSource.open();
 		wDataSource.open();
-		Date current = UIHelper.getDateObjectFromText(todayDate.getText()
-				.toString());
-		if (checkHoliday()) {
+
+		if (prefs.getBoolean(getString(R.string.toLoadWday), false)) {
+			loadWday();
+		} else {
+			// don't load just refer it
+			currentWday = Globals.workday;
+		}
+		setDateWday();
+		
+		Date current = UIHelper.getDateObjectFromText(currentDate);
+		if (checkHoliday() || noClass
+				|| UIHelper.checkIfWeekend(todayDate.getText().toString())) {
 			// change in ui to show today's classes
 			// cache the result
 			Intent i = new Intent(this, MainActivityHoliday.class);
-			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-			startActivity(i);
-		} else if (UIHelper.checkIfWeekend(todayDate.getText().toString())) {
-			Intent i = new Intent(this, MainActivityHoliday.class);
-			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+					| Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			startActivity(i);
 		} else {
 			// cache today's courses
 			currentDay = UIHelper.getDayOfWeekFromDate(current);
 			todayCourses = coursesDataSource.getTodaysCourses(currentDay,
 					getString(R.string.enterDate));
-			
-			todayCodes=new ArrayList<String>();
+
+			todayCodes = new ArrayList<String>();
 			flags = new ArrayList<Integer>();
-			
-			NUM_COURSES=currentWday.codes.size();
-			for(int i=0;i<NUM_COURSES; i++){
-				// if the courses's attendance is marked by 3, it means there is no class for that course
-				// today , so don't add it 
-				if(currentWday.attendance.get(i)!=3){
+
+			NUM_COURSES = currentWday.codes.size();
+			for (int i = 0; i < NUM_COURSES; i++) {
+				// if the courses's attendance is marked by 3, it means there is
+				// no class for that course
+				// today , so don't add it
+				if (currentWday.attendance.get(i) != 3) {
 					todayCodes.add(currentWday.codes.get(i));
-					flags.add(currentWday.attendance.get(i)); 
+					flags.add(currentWday.attendance.get(i));
 				}
 			}
-			NUM_CLASSES=todayCourses.size();
+			NUM_CLASSES = todayCourses.size();
 
 			if (currentDay == Calendar.MONDAY) {
 				Collections.sort(todayCourses, new Comparator<Course>() {
@@ -437,10 +459,10 @@ public class WdayTemplateActivity extends ListActivity {
 			Log.v(TAG, "in onresume " + todayCourses.size());
 			adapter = new ClassListAdapter(this, todayCourses);
 			setListAdapter(adapter);
-			// if a course is added again after pressing back
+			// check calculation of var values
+			// check the activities that open when you press back
 			// check that on a part day not more than two attendance possible
-			// save attendance val for each course
-			// display when no classes or holiday or sat
+			
 			// set selection for listview based on index closest to current time
 			// set the status
 			// cache todays' classes
@@ -458,6 +480,19 @@ public class WdayTemplateActivity extends ListActivity {
 			// tutorials, pracs
 			// extra class
 			// sat , sun enable
+			noClass=false;
+		}
+	}
+
+	private void setDateWday() {
+		// if it is a working day , but no class for you
+		if(noClass){
+		currentDate = UIHelper.getCurrentDate();
+		todayDate.setText(currentDate);
+		}
+		else{
+			currentDate = currentWday.getDateString();
+			todayDate.setText(currentDate);
 		}
 	}
 

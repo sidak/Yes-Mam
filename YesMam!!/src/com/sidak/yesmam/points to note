@@ -133,5 +133,14 @@ When Java automatically converts a primitive type like int into
    because primitive is boxed into wrapper class while in opposite case
     is called unboxing, where an Integer object is converted into primitive int
     
+######################
+killing all previous activities -
+
+Intent i = new Intent(OldActivity.this, NewActivity.class);
+// set the new task and clear flags
+i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
+startActivity(i);
+
+##############
 
 

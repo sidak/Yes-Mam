@@ -6,6 +6,7 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,7 +20,7 @@ import com.sidak.yesmam.model.WorkingDay;
 
 public class WorkingDayList extends ListActivity {
 	public static final String TAG=WorkingDayList.class.getSimpleName();
-	private SharedPreferences coursePref;
+	private SharedPreferences coursePref, wdayPref;
 	private List<WorkingDay> wdays;
 	private WorkingDaysDataSource wDatasource;
 	//private Button addWday;
@@ -39,6 +40,8 @@ public class WorkingDayList extends ListActivity {
 		
 		coursePref=getApplicationContext()
 				.getSharedPreferences("course prefs", 0);
+		wdayPref=PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		
 		NUM_COURSES=coursePref.getInt("num courses", 0);
 		
 		Log.i(TAG, "in oncreate");
@@ -67,6 +70,11 @@ public class WorkingDayList extends ListActivity {
 					int position, long id) {
 				wday = wdays.get(position);
 				Globals.workday=wday;
+				// don't load the wday itself, since this activity already stores for it 
+				SharedPreferences.Editor ed= wdayPref.edit();
+				ed.putBoolean(getString(R.string.toLoadWday), Boolean.FALSE);
+				ed.commit();
+				
 				Intent i = new Intent(WorkingDayList.this, WdayTemplateActivity.class);
 				startActivity(i);
 				// use this working day to initialise the state of the next activity

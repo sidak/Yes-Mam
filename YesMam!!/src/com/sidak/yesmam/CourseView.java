@@ -157,7 +157,7 @@ public class CourseView extends ListActivity {
 			            c1.add(Calendar.DATE,1);  
 			        }  
 					// try the broadcast thing over here too
-					Intent intent = new Intent(CourseView.this, MainActivity.class);
+					Intent intent = new Intent(CourseView.this, WdayTemplateActivity.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 					//intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					//intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
