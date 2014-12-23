@@ -96,7 +96,7 @@ public class WdayTemplateActivity extends ListActivity {
 		wDataSource = new WorkingDaysDataSource(this);
 		wDataSource.open();
 		Log.v(TAG, "after opnening working days database");
-		
+
 		lv = (ListView) findViewById(android.R.id.list);// impt to initialise
 		lv.setOnItemClickListener(new OnItemClickListener() {
 
@@ -308,7 +308,6 @@ public class WdayTemplateActivity extends ListActivity {
 				getHelp();
 			}
 		});
-		
 
 	}
 
@@ -319,7 +318,6 @@ public class WdayTemplateActivity extends ListActivity {
 		if (wdays.size() != 0) {
 			currentWday = wdays.get(0);
 			Globals.workday = currentWday;
-			
 
 		} else {
 			// it is neither a planned or insti holiday or sat or sun
@@ -355,7 +353,6 @@ public class WdayTemplateActivity extends ListActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
 
 		holiDatasource.open();
 		coursesDataSource.open();
@@ -368,7 +365,7 @@ public class WdayTemplateActivity extends ListActivity {
 			currentWday = Globals.workday;
 		}
 		setDateWday();
-		
+
 		Date current = UIHelper.getDateObjectFromText(currentDate);
 		if (checkHoliday() || noClass
 				|| UIHelper.checkIfWeekend(todayDate.getText().toString())) {
@@ -381,6 +378,7 @@ public class WdayTemplateActivity extends ListActivity {
 		} else {
 			// cache today's courses
 			currentDay = UIHelper.getDayOfWeekFromDate(current);
+			// load the data only after a day
 			todayCourses = coursesDataSource.getTodaysCourses(currentDay,
 					getString(R.string.enterDate));
 
@@ -456,13 +454,103 @@ public class WdayTemplateActivity extends ListActivity {
 					}
 				});
 			}
+
+			// set selection of listview as per the closest time
+			Calendar currentTime = Calendar.getInstance();
+			Calendar classTime = Calendar.getInstance();
+			int[] currentDateArray = UIHelper
+					.getDateFromText(currentDate, this);
+			
+			if (currentDay == 2) {
+				int idx = 0;
+				for (int i = 0; i < todayCourses.size(); i++) {
+					String[] currentTimeArray = todayCourses.get(i)
+							.getMonTimings().split(":");
+					classTime.set(currentDateArray[2], currentDateArray[1],
+							currentDateArray[0],
+							Integer.parseInt(currentTimeArray[0]),
+							Integer.parseInt(currentTimeArray[1]));
+					if (currentTime.after(classTime))
+						idx++;
+					else break;
+					currentTime = Calendar.getInstance();
+				}
+				lv.smoothScrollToPosition(idx);
+			}
+			else if (currentDay == 3) {
+				int idx = 0;
+				for (int i = 0; i < todayCourses.size(); i++) {
+					String[] currentTimeArray = todayCourses.get(i)
+							.getTuesTimings().split(":");
+					classTime.set(currentDateArray[2], currentDateArray[1],
+							currentDateArray[0],
+							Integer.parseInt(currentTimeArray[0]),
+							Integer.parseInt(currentTimeArray[1]));
+					if (currentTime.after(classTime))
+						idx++;
+					else break;
+					currentTime = Calendar.getInstance();
+				}
+				lv.smoothScrollToPosition(idx);
+			}
+			else if (currentDay == 4) {
+				int idx = 0;
+				for (int i = 0; i < todayCourses.size(); i++) {
+					String[] currentTimeArray = todayCourses.get(i)
+							.getWedTimings().split(":");
+					classTime.set(currentDateArray[2], currentDateArray[1],
+							currentDateArray[0],
+							Integer.parseInt(currentTimeArray[0]),
+							Integer.parseInt(currentTimeArray[1]));
+					if (currentTime.after(classTime))
+						idx++;
+					else break;
+					currentTime = Calendar.getInstance();
+				}
+				lv.smoothScrollToPosition(idx);
+			}
+			else if (currentDay == 5) {
+				int idx = 0;
+				for (int i = 0; i < todayCourses.size(); i++) {
+					String[] currentTimeArray = todayCourses.get(i)
+							.getThursTimings().split(":");
+					classTime.set(currentDateArray[2], currentDateArray[1],
+							currentDateArray[0],
+							Integer.parseInt(currentTimeArray[0]),
+							Integer.parseInt(currentTimeArray[1]));
+					if (currentTime.after(classTime))
+						idx++;
+					else break;
+					currentTime = Calendar.getInstance();
+				}
+				lv.smoothScrollToPosition(idx);
+			}
+			else if (currentDay == 6) {
+				int idx = 0;
+				for (int i = 0; i < todayCourses.size(); i++) {
+					String[] currentTimeArray = todayCourses.get(i)
+							.getFriTimings().split(":");
+					classTime.set(currentDateArray[2], currentDateArray[1],
+							currentDateArray[0],
+							Integer.parseInt(currentTimeArray[0]),
+							Integer.parseInt(currentTimeArray[1]));
+					if (currentTime.after(classTime))
+						idx++;
+					else break;
+					currentTime = Calendar.getInstance();
+				}
+				
+				lv.smoothScrollToPosition(idx);
+			}
+			
 			Log.v(TAG, "in onresume " + todayCourses.size());
 			adapter = new ClassListAdapter(this, todayCourses);
+			adapter.
 			setListAdapter(adapter);
 			// check calculation of var values
 			// check the activities that open when you press back
 			// check that on a part day not more than two attendance possible
-			
+
 			// set selection for listview based on index closest to current time
 			// set the status
 			// cache todays' classes
@@ -480,17 +568,16 @@ public class WdayTemplateActivity extends ListActivity {
 			// tutorials, pracs
 			// extra class
 			// sat , sun enable
-			noClass=false;
+			noClass = false;
 		}
 	}
 
 	private void setDateWday() {
 		// if it is a working day , but no class for you
-		if(noClass){
-		currentDate = UIHelper.getCurrentDate();
-		todayDate.setText(currentDate);
-		}
-		else{
+		if (noClass) {
+			currentDate = UIHelper.getCurrentDate();
+			todayDate.setText(currentDate);
+		} else {
 			currentDate = currentWday.getDateString();
 			todayDate.setText(currentDate);
 		}

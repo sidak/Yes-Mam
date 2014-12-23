@@ -59,7 +59,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="50"
-            android:text="classes left : 15" />
+            android:text="Classes Left : - -" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -72,13 +72,13 @@
                 android:id="@+id/viewReqAtten"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="req atten : 75%" />
+                android:text="req atten : - - %" />
 
             <TextView
                 android:id="@+id/viewDesAtten"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="desired atten : 90%" />
+                android:text="desired atten : - -%" />
 
         </LinearLayout>
     </LinearLayout>
