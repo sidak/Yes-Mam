@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
@@ -67,7 +68,7 @@ public class ClassListAdapter extends ArrayAdapter<Course> {
 		} else if (day == Calendar.FRIDAY) {
 			viewClassTime.setText(course.getFriTimings());
 		}
-
+		
 		return convertView;
 	}
 	

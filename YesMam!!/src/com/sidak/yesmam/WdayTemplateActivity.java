@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -187,7 +188,7 @@ public class WdayTemplateActivity extends ListActivity {
 			}
 
 		});
-
+		//lv.setOnFocusChangeListener(l)
 		todayDate = (TextView) findViewById(R.id.todayDate);
 		tillNow = (TextView) findViewById(R.id.tillNow);
 		ifAttend = (TextView) findViewById(R.id.ifAttend);
@@ -454,15 +455,15 @@ public class WdayTemplateActivity extends ListActivity {
 					}
 				});
 			}
-
+			
 			// set selection of listview as per the closest time
 			Calendar currentTime = Calendar.getInstance();
 			Calendar classTime = Calendar.getInstance();
 			int[] currentDateArray = UIHelper
 					.getDateFromText(currentDate, this);
-			
-			if (currentDay == 2) {
-				int idx = 0;
+			int idx;
+			if (currentDay == Calendar.MONDAY) {
+				idx = 0;
 				for (int i = 0; i < todayCourses.size(); i++) {
 					String[] currentTimeArray = todayCourses.get(i)
 							.getMonTimings().split(":");
@@ -475,10 +476,10 @@ public class WdayTemplateActivity extends ListActivity {
 					else break;
 					currentTime = Calendar.getInstance();
 				}
-				lv.smoothScrollToPosition(idx);
+				//lv.smoothScrollToPosition(idx);
 			}
-			else if (currentDay == 3) {
-				int idx = 0;
+			else if (currentDay == Calendar.TUESDAY) {
+				idx = 0;
 				for (int i = 0; i < todayCourses.size(); i++) {
 					String[] currentTimeArray = todayCourses.get(i)
 							.getTuesTimings().split(":");
@@ -491,10 +492,10 @@ public class WdayTemplateActivity extends ListActivity {
 					else break;
 					currentTime = Calendar.getInstance();
 				}
-				lv.smoothScrollToPosition(idx);
+				//lv.smoothScrollToPosition(idx);
 			}
-			else if (currentDay == 4) {
-				int idx = 0;
+			else if (currentDay == Calendar.WEDNESDAY) {
+				idx = 0;
 				for (int i = 0; i < todayCourses.size(); i++) {
 					String[] currentTimeArray = todayCourses.get(i)
 							.getWedTimings().split(":");
@@ -507,10 +508,10 @@ public class WdayTemplateActivity extends ListActivity {
 					else break;
 					currentTime = Calendar.getInstance();
 				}
-				lv.smoothScrollToPosition(idx);
+				//lv.smoothScrollToPosition(idx);
 			}
-			else if (currentDay == 5) {
-				int idx = 0;
+			else if (currentDay == Calendar.THURSDAY) {
+				idx = 0;
 				for (int i = 0; i < todayCourses.size(); i++) {
 					String[] currentTimeArray = todayCourses.get(i)
 							.getThursTimings().split(":");
@@ -523,10 +524,10 @@ public class WdayTemplateActivity extends ListActivity {
 					else break;
 					currentTime = Calendar.getInstance();
 				}
-				lv.smoothScrollToPosition(idx);
+				//lv.smoothScrollToPosition(idx);
 			}
-			else if (currentDay == 6) {
-				int idx = 0;
+			else if (currentDay == Calendar.FRIDAY) {
+				idx = 0;
 				for (int i = 0; i < todayCourses.size(); i++) {
 					String[] currentTimeArray = todayCourses.get(i)
 							.getFriTimings().split(":");
@@ -540,13 +541,32 @@ public class WdayTemplateActivity extends ListActivity {
 					currentTime = Calendar.getInstance();
 				}
 				
-				lv.smoothScrollToPosition(idx);
+			}
+			else{
+				Log.v(TAG, "sjrbwdc");
+				idx=0;
 			}
 			
 			Log.v(TAG, "in onresume " + todayCourses.size());
 			adapter = new ClassListAdapter(this, todayCourses);
-			adapter.
 			setListAdapter(adapter);
+			Log.v(TAG, "position "+idx);
+			final int scroll=idx;
+			//lv.smoothScrollToPosition(1);
+			lv.post(new Runnable() {
+				
+				@SuppressLint("NewApi")
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					//lv.smoothScrollToPosition(1);
+					lv.setSelection(2);
+					lv.setSelected(true);
+					//lv.callOnClick();
+				}
+			});
+			
+			
 			// check calculation of var values
 			// check the activities that open when you press back
 			// check that on a part day not more than two attendance possible

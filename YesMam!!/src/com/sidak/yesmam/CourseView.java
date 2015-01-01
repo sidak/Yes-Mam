@@ -181,6 +181,7 @@ public class CourseView extends ListActivity {
 		for(int i=0; i<holidays.size(); i++){
 			holiday= holidays.get(i);
 			s=holiday.toString();
+			Log.v(TAG, s);
 			d= UIHelper.getDateObjectFromText(s);
 			cal.setTime(d);
 			if(cal.equals(c)){
