@@ -124,7 +124,23 @@ public class WorkingDaysDataSource {
 		List<WorkingDay> w = cursorToList(cursor);
 		return w;
 	}
+	public  String findFirstDate(){
+		List<WorkingDay> list = findAll();
+		return list.get(0).getDateString();
+	}
+	public List<WorkingDay> findBeforeToday(String last, String current) {
+		
+		Cursor cursor = database.query(WDBOpenHelper.TABLE_WDAYS, allColumns,
+				WDBOpenHelper.WDAY_DATE + " BETWEEN '"+last+"' AND '"+current+"'", null, null, null, null);
 
-
+		Log.i(TAG, "Returned " + cursor.getCount() + " rows");
+		List<WorkingDay> w = cursorToList(cursor);
+		// to filter out the working day corresponding to current date
+		if(w.size()>0){
+			w.remove(w.size()-1);
+		}
+		return w;
+	}
+	
 
 }
