@@ -58,6 +58,14 @@
             android:name="com.sidak.yesmam.MainActivityHoliday"
             android:label="@string/title_activity_main_activity_holiday" >
         </activity>
+        <activity
+            android:name="com.sidak.yesmam.UnmarkedClassListActivity"
+            android:label="@string/title_activity_unmarked_class_list" >
+        </activity>
+        <activity
+            android:name="com.sidak.yesmam.PastWdayActivity"
+            android:label="@string/title_activity_past_wday" >
+        </activity>
     </application>
 
 </manifest>
