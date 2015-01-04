@@ -149,7 +149,27 @@ public class CoursesDataSource {
 		List<Course> courses = cursorToList(cursor);
 		return courses;
 	}
+	
+	public Course getCourseWithCode(String code) {
+		String sel= DBOpenHelper.COURSE__CODE+"=?";
+		Cursor cursor = database.query(DBOpenHelper.TABLE_COURSES, allColumns,
+				sel, new String[] { code }, null, null, null);
+		Log.i(TAG, "Returned classes with code - num = " + cursor.getCount()
+				+ " rows");
+		List<Course> courses = cursorToList(cursor);
+		return courses.get(0);
+	}
+	
+	public void changeNumClasses(int num, String key) {
 
+		ContentValues values = new ContentValues();
+		values.put(DBOpenHelper.NUM_TOTAL_CLASSES,num );
+		// updating row
+		database.update(DBOpenHelper.TABLE_COURSES, values,DBOpenHelper.COURSE__CODE  + " =?",
+				new String[] {key });
+		Log.v(TAG, key+ " " +num);
+	}
+	
 	public void markPresent(int num, String key) {
 
 		ContentValues values = new ContentValues();
