@@ -20,7 +20,7 @@ import com.sidak.yesmam.model.WorkingDay;
 
 public class WorkingDayList extends ListActivity {
 	public static final String TAG=WorkingDayList.class.getSimpleName();
-	private SharedPreferences coursePref, wdayPref;
+	private SharedPreferences coursePref, loadWdayPref,wdayPref;
 	private List<WorkingDay> wdays;
 	private WorkingDaysDataSource wDatasource;
 	//private Button addWday;
@@ -40,7 +40,7 @@ public class WorkingDayList extends ListActivity {
 		
 		coursePref=getApplicationContext()
 				.getSharedPreferences("course prefs", 0);
-		wdayPref=PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		loadWdayPref=PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		
 		NUM_COURSES=coursePref.getInt("num courses", 0);
 		
@@ -49,8 +49,9 @@ public class WorkingDayList extends ListActivity {
 		wDatasource = new WorkingDaysDataSource(this);
 		wDatasource.open();
 		Log.i(TAG, "after opening databasse");
-
-		wdays = wDatasource.findAll();
+		// display only working days that have passed already from the first working day
+		
+		wdays = wDatasource.findBeforeToday(wDatasource.findFirstDate(), UIHelper.getCurrentDate());
 		Log.i(TAG, "after dtasrc.findall w/o if");
 
 		/*if (holidays.size() == 0) {
@@ -71,11 +72,11 @@ public class WorkingDayList extends ListActivity {
 				wday = wdays.get(position);
 				Globals.workday=wday;
 				// don't load the wday itself, since this activity already stores for it 
-				SharedPreferences.Editor ed= wdayPref.edit();
+				/*SharedPreferences.Editor ed= loadWdayPref.edit();
 				ed.putBoolean(getString(R.string.toLoadWday), Boolean.FALSE);
-				ed.commit();
-				
-				Intent i = new Intent(WorkingDayList.this, WdayTemplateActivity.class);
+				ed.commit();*/
+				// open a new activity for showing log template activity 
+				Intent i = new Intent(WorkingDayList.this, PastWdayActivity.class);
 				startActivity(i);
 				// use this working day to initialise the state of the next activity
 			}
