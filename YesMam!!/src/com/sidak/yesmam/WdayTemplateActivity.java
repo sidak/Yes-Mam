@@ -34,9 +34,6 @@ import com.sidak.yesmam.model.WorkingDay;
 public class WdayTemplateActivity extends ListActivity {
 
 	public final String TAG = WdayTemplateActivity.class.getSimpleName();
-	private SharedPreferences prefs;
-	private int numWorkingDays;
-	private Calendar c;
 	private List<Holiday> holidays;
 	private List<Course> todayCourses;
 	private HolidaysDataSource holiDatasource;
@@ -47,7 +44,7 @@ public class WdayTemplateActivity extends ListActivity {
 	private TextView todayDate;
 	private Button attend;
 	private Button bunk;
-	private Button proxy;
+	private Button cancel;
 	private ListView lv;
 	private Course selectedCourse;
 	ArrayAdapter<Course> adapter;
@@ -55,10 +52,7 @@ public class WdayTemplateActivity extends ListActivity {
 	private TextView ifAttend;
 
 	private TextView ifMiss;
-	private boolean attenFlag = false;
-	private boolean bunkFlag = false;
 	private int currentDay;
-	private boolean ifHoliday;
 	private String currentDate;
 	private TextView viewClassesLeft;
 	private TextView viewReqAtten;
@@ -73,6 +67,8 @@ public class WdayTemplateActivity extends ListActivity {
 	private int selAttVal;
 	private List<WorkingDay> wdays;
 	private boolean noClass;
+	private SharedPreferences wdayPrefs;
+	private int selListIdx;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +76,12 @@ public class WdayTemplateActivity extends ListActivity {
 
 		setContentView(R.layout.activity_main);
 
-		prefs = PreferenceManager
-				.getDefaultSharedPreferences(getApplicationContext());
+		/*
+		 * prefs = PreferenceManager
+		 * .getDefaultSharedPreferences(getApplicationContext());
+		 */
+		wdayPrefs = getApplicationContext().getSharedPreferences(
+				getString(R.string.wday_prefs), 0);
 		/*
 		 * numWorkingDays = prefs.getInt(getString(R.string.numWorkingDays), 0);
 		 * Log.v(TAG, "" + numWorkingDays);
@@ -108,8 +108,11 @@ public class WdayTemplateActivity extends ListActivity {
 				// view.setBackgroundColor(getResources().getColor(android.R.color.holo_orange_light));
 
 				selectedCourse = todayCourses.get(position);
-				selCodeIdx = todayCodes.indexOf(selectedCourse.getCourseCode());
-				selAttVal = flags.get(selCodeIdx);
+				selCodeIdx = currentWday.codes.indexOf(selectedCourse
+						.getCourseCode());
+				selListIdx = todayCodes.indexOf(selectedCourse.getCourseCode());
+
+				selAttVal = flags.get(selListIdx);
 				if (selAttVal == 0) {
 					attend.setEnabled(true);
 					bunk.setEnabled(false);
@@ -188,7 +191,7 @@ public class WdayTemplateActivity extends ListActivity {
 			}
 
 		});
-		//lv.setOnFocusChangeListener(l)
+		// lv.setOnFocusChangeListener(l)
 		todayDate = (TextView) findViewById(R.id.todayDate);
 		tillNow = (TextView) findViewById(R.id.tillNow);
 		ifAttend = (TextView) findViewById(R.id.ifAttend);
@@ -211,48 +214,57 @@ public class WdayTemplateActivity extends ListActivity {
 
 		attend = (Button) findViewById(R.id.attendButton);
 		bunk = (Button) findViewById(R.id.bunkButton);
-		proxy = (Button) findViewById(R.id.proxyButton);
+		cancel = (Button) findViewById(R.id.cancelButton);
 		attend.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-
+				// if no course has been selected
 				if (selectedCourse == null) {
 					Toast.makeText(WdayTemplateActivity.this,
 							R.string.selectCourse, Toast.LENGTH_LONG).show();
 				} else {
+					// if the attendance of that class has not been marked
+					// earlier
 					if (selAttVal == 2) {
-						coursesDataSource.markPresent(
-								selectedCourse.getAttendedClasses() + 1,
-								selectedCourse.getCourseCode());
+						// increase the NUM_ATTENDED_CLASSES field in course db
+						// mark the class with attendance val of 1 , indicating
+						// it has been attended
 
 						wDataSource.markAttendance(1, selCodeIdx, currentDate);
-						flags.set(selCodeIdx, 1);
+
+						flags.set(selListIdx, 1);
 						selAttVal = 1;
+
 						// update wday db containing record of today's date and
 						// attendance[i]=1 where i is index of selected course
 						// code
 						// update local copy i.e. flags(i)=1
 						// update selAttVal=1;
 						attend.setEnabled(false);
+
+						// if the class selected was marked with bunk earlier
 					} else if (selAttVal == 0) {
-						coursesDataSource.markPresent(
-								selectedCourse.getAttendedClasses() + 1,
-								selectedCourse.getCourseCode());
-						coursesDataSource.markAbsent(
-								selectedCourse.getBunkedClasses(),
-								selectedCourse.getCourseCode());
 						// update wday db containing record of today's date and
 						// attendance[i]=1 where i is index of selected course
 						// code
 						// update local copy i.e. flags(i)=1
 						// update selAttVal=1;
 						wDataSource.markAttendance(1, selCodeIdx, currentDate);
-						flags.set(selCodeIdx, 1);
+						flags.set(selListIdx, 1);
 						selAttVal = 1;
 						attend.setEnabled(false);
 						bunk.setEnabled(true);
+					} else if (selAttVal == 4) {
+						// inc the num of classes by one
+						// inc the num of attended classes by one
+
+						wDataSource.markAttendance(1, selCodeIdx, currentDate);
+						flags.set(selListIdx, 1);
+						selAttVal = 1;
+						attend.setEnabled(false);
+						cancel.setEnabled(true);
 					}
 				}
 			}
@@ -267,11 +279,9 @@ public class WdayTemplateActivity extends ListActivity {
 							R.string.selectCourse, Toast.LENGTH_LONG).show();
 				} else {
 					if (selAttVal == 2) {
-						coursesDataSource.markAbsent(
-								selectedCourse.getBunkedClasses() + 1,
-								selectedCourse.getCourseCode());
+
 						wDataSource.markAttendance(0, selCodeIdx, currentDate);
-						flags.set(selCodeIdx, 0);
+						flags.set(selListIdx, 0);
 						selAttVal = 0;
 						// update wday db containing record of today's date and
 						// attendance[i]=0 where i is index of selected course
@@ -280,15 +290,9 @@ public class WdayTemplateActivity extends ListActivity {
 						// update selAttVal=0;
 						bunk.setEnabled(false);
 					} else if (selAttVal == 1) {
-						coursesDataSource.markAbsent(
-								selectedCourse.getBunkedClasses() + 1,
-								selectedCourse.getCourseCode());
 
-						coursesDataSource.markPresent(
-								selectedCourse.getAttendedClasses(),
-								selectedCourse.getCourseCode());
 						wDataSource.markAttendance(0, selCodeIdx, currentDate);
-						flags.set(selCodeIdx, 0);
+						flags.set(selListIdx, 0);
 						selAttVal = 0;
 						// update wday db containing record of today's date and
 						// attendance[i]=0 where i is index of selected course
@@ -297,19 +301,75 @@ public class WdayTemplateActivity extends ListActivity {
 						// update selAttVal=0;
 						attend.setEnabled(true);
 						bunk.setEnabled(false);
+					} else if (selAttVal == 4) {
+						// inc the num of classes by one
+						// inc the num of bunk classes by one
+
+						wDataSource.markAttendance(0, selCodeIdx, currentDate);
+						flags.set(selListIdx, 0);
+						selAttVal = 0;
+						bunk.setEnabled(false);
+						cancel.setEnabled(true);
 					}
 				}
 			}
+
 		});
-		proxy.setOnClickListener(new View.OnClickListener() {
+		cancel.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				getHelp();
+				if (selectedCourse == null) {
+					Toast.makeText(WdayTemplateActivity.this,
+							R.string.selectCourse, Toast.LENGTH_LONG).show();
+				} else {
+					if (selAttVal == 2) {
+						// dec the num of classes by 1
+
+						wDataSource.markAttendance(4, selCodeIdx, currentDate);
+						flags.set(selListIdx, 4);
+						selAttVal = 4;
+						// update wday db containing record of today's date and
+						// attendance[i]=0 where i is index of selected course
+						// code
+						// update local copy i.e. flags(i)=0
+						// update selAttVal=0;
+						cancel.setEnabled(false);
+					} else if (selAttVal == 0) {
+						wDataSource.markAttendance(4, selCodeIdx, currentDate);
+						flags.set(selListIdx, 4);
+						selAttVal = 4;
+						// update wday db containing record of today's date and
+						// attendance[i]=0 where i is index of selected course
+						// code
+						// update local copy i.e. flags(i)=0
+						// update selAttVal=0;
+						bunk.setEnabled(true);
+						cancel.setEnabled(false);
+					} else if (selAttVal == 1) {
+
+						wDataSource.markAttendance(4, selCodeIdx, currentDate);
+						flags.set(selListIdx, 4);
+						selAttVal = 4;
+						// update wday db containing record of today's date and
+						// attendance[i]=0 where i is index of selected course
+						// code
+						// update local copy i.e. flags(i)=0
+						// update selAttVal=0;
+						attend.setEnabled(true);
+						cancel.setEnabled(false);
+					}
+				}
 			}
+
 		});
 
+		// update the last date in the shared preferences
+		String lastDate = UIHelper.getCurrentDate();
+		SharedPreferences.Editor ed = wdayPrefs.edit();
+		ed.putString(getString(R.string.last_date), lastDate);
+		ed.commit();
 	}
 
 	private void loadWday() {
@@ -325,11 +385,6 @@ public class WdayTemplateActivity extends ListActivity {
 			noClass = true;
 
 		}
-	}
-
-	protected void getHelp() {
-		// TODO Auto-generated method stub
-
 	}
 
 	private boolean checkHoliday() {
@@ -359,12 +414,8 @@ public class WdayTemplateActivity extends ListActivity {
 		coursesDataSource.open();
 		wDataSource.open();
 
-		if (prefs.getBoolean(getString(R.string.toLoadWday), false)) {
-			loadWday();
-		} else {
-			// don't load just refer it
-			currentWday = Globals.workday;
-		}
+		loadWday();
+
 		setDateWday();
 
 		Date current = UIHelper.getDateObjectFromText(currentDate);
@@ -455,7 +506,7 @@ public class WdayTemplateActivity extends ListActivity {
 					}
 				});
 			}
-			
+
 			// set selection of listview as per the closest time
 			Calendar currentTime = Calendar.getInstance();
 			Calendar classTime = Calendar.getInstance();
@@ -473,12 +524,12 @@ public class WdayTemplateActivity extends ListActivity {
 							Integer.parseInt(currentTimeArray[1]));
 					if (currentTime.after(classTime))
 						idx++;
-					else break;
+					else
+						break;
 					currentTime = Calendar.getInstance();
 				}
-				//lv.smoothScrollToPosition(idx);
-			}
-			else if (currentDay == Calendar.TUESDAY) {
+				// lv.smoothScrollToPosition(idx);
+			} else if (currentDay == Calendar.TUESDAY) {
 				idx = 0;
 				for (int i = 0; i < todayCourses.size(); i++) {
 					String[] currentTimeArray = todayCourses.get(i)
@@ -489,12 +540,12 @@ public class WdayTemplateActivity extends ListActivity {
 							Integer.parseInt(currentTimeArray[1]));
 					if (currentTime.after(classTime))
 						idx++;
-					else break;
+					else
+						break;
 					currentTime = Calendar.getInstance();
 				}
-				//lv.smoothScrollToPosition(idx);
-			}
-			else if (currentDay == Calendar.WEDNESDAY) {
+				// lv.smoothScrollToPosition(idx);
+			} else if (currentDay == Calendar.WEDNESDAY) {
 				idx = 0;
 				for (int i = 0; i < todayCourses.size(); i++) {
 					String[] currentTimeArray = todayCourses.get(i)
@@ -505,12 +556,12 @@ public class WdayTemplateActivity extends ListActivity {
 							Integer.parseInt(currentTimeArray[1]));
 					if (currentTime.after(classTime))
 						idx++;
-					else break;
+					else
+						break;
 					currentTime = Calendar.getInstance();
 				}
-				//lv.smoothScrollToPosition(idx);
-			}
-			else if (currentDay == Calendar.THURSDAY) {
+				// lv.smoothScrollToPosition(idx);
+			} else if (currentDay == Calendar.THURSDAY) {
 				idx = 0;
 				for (int i = 0; i < todayCourses.size(); i++) {
 					String[] currentTimeArray = todayCourses.get(i)
@@ -521,12 +572,12 @@ public class WdayTemplateActivity extends ListActivity {
 							Integer.parseInt(currentTimeArray[1]));
 					if (currentTime.after(classTime))
 						idx++;
-					else break;
+					else
+						break;
 					currentTime = Calendar.getInstance();
 				}
-				//lv.smoothScrollToPosition(idx);
-			}
-			else if (currentDay == Calendar.FRIDAY) {
+				// lv.smoothScrollToPosition(idx);
+			} else if (currentDay == Calendar.FRIDAY) {
 				idx = 0;
 				for (int i = 0; i < todayCourses.size(); i++) {
 					String[] currentTimeArray = todayCourses.get(i)
@@ -537,36 +588,35 @@ public class WdayTemplateActivity extends ListActivity {
 							Integer.parseInt(currentTimeArray[1]));
 					if (currentTime.after(classTime))
 						idx++;
-					else break;
+					else
+						break;
 					currentTime = Calendar.getInstance();
 				}
-				
-			}
-			else{
+
+			} else {
 				Log.v(TAG, "sjrbwdc");
-				idx=0;
+				idx = 0;
 			}
-			
+
 			Log.v(TAG, "in onresume " + todayCourses.size());
 			adapter = new ClassListAdapter(this, todayCourses);
 			setListAdapter(adapter);
-			Log.v(TAG, "position "+idx);
-			final int scroll=idx;
-			//lv.smoothScrollToPosition(1);
+			Log.v(TAG, "position " + idx);
+			final int scroll = idx;
+			// lv.smoothScrollToPosition(1);
 			lv.post(new Runnable() {
-				
+
 				@SuppressLint("NewApi")
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
-					//lv.smoothScrollToPosition(1);
+					// lv.smoothScrollToPosition(1);
 					lv.setSelection(2);
 					lv.setSelected(true);
-					//lv.callOnClick();
+					// lv.callOnClick();
 				}
 			});
-			
-			
+
 			// check calculation of var values
 			// check the activities that open when you press back
 			// check that on a part day not more than two attendance possible
@@ -583,13 +633,12 @@ public class WdayTemplateActivity extends ListActivity {
 			// upload app on playstore
 			// about
 
-			// NEXT VERSION
-			// proxy
-			// tutorials, pracs
-			// extra class
-			// sat , sun enable
 			noClass = false;
 		}
+		String lastDate = UIHelper.getCurrentDate();
+		SharedPreferences.Editor ed = wdayPrefs.edit();
+		ed.putString(getString(R.string.last_date), lastDate);
+		ed.commit();
 	}
 
 	private void setDateWday() {
