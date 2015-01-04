@@ -36,7 +36,7 @@ public class HolidayListAdapter extends ArrayAdapter<Holiday> {
         holiday = holidays.get(position);
         
         viewType = (TextView) convertView.findViewById(R.id.viewType);
-        viewDate = (TextView) convertView.findViewById(R.id.viewDate);
+        viewDate = (TextView) convertView.findViewById(R.id.viewDateString);
         viewDesc = (TextView) convertView.findViewById(R.id.viewDesc);
 
         viewType.setText(holiday.getType());

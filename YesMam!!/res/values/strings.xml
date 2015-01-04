@@ -72,6 +72,12 @@
     <string name="selectCourse">Please select some course.</string>
     <string name="title_activity_wday_template">WdayTemplateActivity</string>
     <string name="title_activity_main_activity_holiday">MainActivityHoliday</string>
-    <string name ="toLoadWday">loadWday</string>
+    <string name="toLoadWday">loadWday</string>
+    <string name="wday_prefs">wday_prefs</string>
+    <string name="wday_isset">wda_set</string>
+    <string name="last_date">last_date</string>
+    <string name="title_activity_unmarked_class_list">UnmarkedClassListActivity</string>
+    <string name="title_activity_past_wday">PastWdayActivity</string>
+    <string name="selectUClass">Please select some class.</string>
 
 </resources>
