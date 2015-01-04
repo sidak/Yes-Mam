@@ -39,7 +39,7 @@ public class CourseView extends ListActivity {
 	private ListView lv;
 	ArrayAdapter<Course> adapter;
 	private Course courseAdded;
-	private SharedPreferences pref,coursePref;
+	private SharedPreferences pref,coursePref,wdayPref ;
 	private int[] holidayCount;
 	private String s1,s2;
 	private Date olderDate,newerDate;
@@ -81,6 +81,7 @@ public class CourseView extends ListActivity {
 				.getSharedPreferences(getString(R.string.semPrefs), 0);
 		coursePref=getApplicationContext()
 				.getSharedPreferences("course prefs", 0);
+		wdayPref=getApplicationContext().getSharedPreferences(getString(R.string.wday_prefs), 0);
 		s1 = pref.getString(getString(R.string.dateStart), "1/1/2000");
 		s2 = pref.getString(getString(R.string.dateEnd), "1/1/2000");
 		olderDate=UIHelper.getDateObjectFromText(s1);
@@ -156,6 +157,9 @@ public class CourseView extends ListActivity {
 			            }
 			            c1.add(Calendar.DATE,1);  
 			        }  
+					e =wdayPref.edit();
+					e.putBoolean(getString(R.string.wday_isset), true);
+					e.commit();
 					// try the broadcast thing over here too
 					Intent intent = new Intent(CourseView.this, WdayTemplateActivity.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
