@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 public class UIHelper {
 
+	private static final String TAG = UIHelper.class.getSimpleName();
 	public static void displayText(Activity activity, int id, String text) {
 		TextView tv = (TextView) activity.findViewById(id);
 		tv.setText(text);
@@ -115,7 +116,14 @@ public class UIHelper {
 		//Log.v(TAG, "current date " + formattedDate);
 		return formattedDate;
 	}
-
+	public static String getDateForSqlite(String d) {
+		
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		String formattedDate = df.format(getDateObjectFromText(d));
+		
+		Log.v(TAG, "current date " + formattedDate);
+		return formattedDate;
+	}
 	public static int calculateSpecificDay(Date d1, Date d2, int day) {
 		Calendar c1 = Calendar.getInstance();  
         c1.setTime(d1);  
