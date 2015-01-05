@@ -39,7 +39,7 @@ public class CourseView extends ListActivity {
 	private ListView lv;
 	ArrayAdapter<Course> adapter;
 	private Course courseAdded;
-	private SharedPreferences pref,coursePref,wdayPref ;
+	private SharedPreferences pref,coursePref,wdayPref ,firstWdayPref;
 	private int[] holidayCount;
 	private String s1,s2;
 	private Date olderDate,newerDate;
@@ -82,6 +82,8 @@ public class CourseView extends ListActivity {
 		coursePref=getApplicationContext()
 				.getSharedPreferences("course prefs", 0);
 		wdayPref=getApplicationContext().getSharedPreferences(getString(R.string.wday_prefs), 0);
+		firstWdayPref=getApplicationContext().getSharedPreferences("firstWdayPrefs", 0);
+
 		s1 = pref.getString(getString(R.string.dateStart), "1/1/2000");
 		s2 = pref.getString(getString(R.string.dateEnd), "1/1/2000");
 		olderDate=UIHelper.getDateObjectFromText(s1);
@@ -120,8 +122,10 @@ public class CourseView extends ListActivity {
 			        c2.setTime(newerDate);  
 			        //int num = 0;  
 			        List<Course> todayCourses;
+			        int flag=0;
 			        while(c2.after(c1)) {  
 			        	int day = c1.get(Calendar.DAY_OF_WEEK);
+			        	
 			            if(!checkIfHoliday(c1) && (day!=1) && ( day!=7)){
 			            	WorkingDay wd = new WorkingDay();
 			            	wd.setDayString(""+days.get(day));
@@ -129,6 +133,11 @@ public class CourseView extends ListActivity {
 			            	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			            	String date = sdf.format(temp); 
 			            	wd.setDateString(date);
+			            	if(flag==0){
+				            	SharedPreferences.Editor ed =firstWdayPref.edit();
+				        		ed.putString("firstWdayDate",date);
+				        		ed.commit();
+				            }
 			            	todayCourses = datasource.getTodaysCourses(day,
 			    					getString(R.string.enterDate));
 			            	int NUM_CLASSES=todayCourses.size();
@@ -155,7 +164,9 @@ public class CourseView extends ListActivity {
 				            	wdDataSource.create(wd);
 			            	}
 			            }
-			            c1.add(Calendar.DATE,1);  
+			            
+			            c1.add(Calendar.DATE,1);
+			            flag++;
 			        }  
 					e =wdayPref.edit();
 					e.putBoolean(getString(R.string.wday_isset), true);
@@ -184,7 +195,7 @@ public class CourseView extends ListActivity {
 		Calendar cal=Calendar.getInstance();
 		for(int i=0; i<holidays.size(); i++){
 			holiday= holidays.get(i);
-			s=holiday.toString();
+			s=holiday.toDateString();
 			Log.v(TAG, s);
 			d= UIHelper.getDateObjectFromText(s);
 			cal.setTime(d);
