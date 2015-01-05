@@ -52,6 +52,7 @@ public class PastWdayActivity extends ListActivity {
 	private int selCodeIdx;
 	private int selListIdx;
 	private int selAttVal;
+	private int prevDay;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -343,11 +344,14 @@ public class PastWdayActivity extends ListActivity {
 
 		// just refer the wday , referred by the workingListActivity
 		currentWday = Globals.workday;
-
+		
+		// sets the date of this activity as the past working day's date
 		setDateWday();
 
 		Date current = UIHelper.getDateObjectFromText(currentDate);
-
+		Calendar c = Calendar.getInstance();
+		c.setTime(current);
+		prevDay=c.get(Calendar.DAY_OF_WEEK);
 		// cache today's courses
 		currentDay = UIHelper.getDayOfWeekFromDate(current);
 		// load the data only after a day
@@ -416,7 +420,7 @@ public class PastWdayActivity extends ListActivity {
 		}
 
 		Log.v(TAG, "in onresume " + pastCourses.size());
-		adapter = new ClassListAdapter(this, pastCourses);
+		adapter = new ClassListAdapter(this, pastCourses,prevDay);
 		setListAdapter(adapter);
 	}
 
@@ -435,7 +439,7 @@ public class PastWdayActivity extends ListActivity {
 	private void updateCourses(){
 		pastCourses = coursesDataSource.getTodaysCourses(currentDay,
 				getString(R.string.enterDate));
-		adapter = new ClassListAdapter(this, pastCourses);
+		adapter = new ClassListAdapter(this, pastCourses,prevDay);
 		setListAdapter(adapter);
 	}
 }

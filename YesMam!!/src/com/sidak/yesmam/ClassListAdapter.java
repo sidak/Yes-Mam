@@ -4,10 +4,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
@@ -20,19 +18,27 @@ public class ClassListAdapter extends ArrayAdapter<Course> {
 	private TextView viewCode1;
 	private TextView viewVenue1;
 	private TextView viewName1;
-	private TextView viewDesiredAtten;
-	private TextView viewMinAtten;
 	private TextView viewClassTime;
 	private TextView viewStatus;
 	private Course course;
+	private boolean prevWday;
+	private int prevDay;
 
 	public ClassListAdapter(Context context, List<Course> courses) {
 		super(context, android.R.id.content, courses);
 		this.context = context;
 		this.courses = courses;
+		prevWday=false;
 
 	}
+	public ClassListAdapter(Context context, List<Course> courses, int day) {
+		super(context, android.R.id.content, courses);
+		this.context = context;
+		this.courses = courses;
+		this.prevDay=day;
+		prevWday=true;
 
+	}
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
@@ -53,10 +59,22 @@ public class ClassListAdapter extends ArrayAdapter<Course> {
 		viewCode1.setText(course.getCourseCode());
 		viewName1.setText(course.getCourseName());
 		viewVenue1.setText(course.getCourseVenue());
+		viewStatus.setText(course.getStatus());
 		//viewDesiredAtten.setText(course.getCourseDesiredAttendance());
 		//viewMinAtten.setText(course.getCourseReqAttendance());
 		Calendar c = Calendar.getInstance();
 		int day = c.get(Calendar.DAY_OF_WEEK);
+		if(prevWday){
+			setClassTime(prevDay);
+		}
+		else{
+			setClassTime(day);
+		}
+		
+		return convertView;
+	}
+	private void setClassTime(int day) {
+		// TODO Auto-generated method stub
 		if (day == Calendar.MONDAY) {
 			viewClassTime.setText(course.getMonTimings());
 		} else if (day == Calendar.TUESDAY) {
@@ -69,7 +87,6 @@ public class ClassListAdapter extends ArrayAdapter<Course> {
 			viewClassTime.setText(course.getFriTimings());
 		}
 		
-		return convertView;
 	}
 	
 }
