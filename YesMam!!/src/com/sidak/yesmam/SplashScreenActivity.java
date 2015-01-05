@@ -209,7 +209,7 @@ public class SplashScreenActivity extends Activity {
 			}
 			// then after the above operation is done, check if list of
 			// leftCourses is not empty
-			if (!noWday && !unmarkedClasses.isEmpty()) {
+			if (!noWday && unmarkedClasses!=null && !unmarkedClasses.isEmpty()) {
 				// make a model class for leftover classes and then
 				// if not empty, then open an activity containing the left
 				// Classes

@@ -20,7 +20,7 @@ import com.sidak.yesmam.model.WorkingDay;
 
 public class WorkingDayList extends ListActivity {
 	public static final String TAG=WorkingDayList.class.getSimpleName();
-	private SharedPreferences coursePref, loadWdayPref,wdayPref;
+	private SharedPreferences coursePref, loadWdayPref,firstWdayPref;
 	private List<WorkingDay> wdays;
 	private WorkingDaysDataSource wDatasource;
 	//private Button addWday;
@@ -41,7 +41,7 @@ public class WorkingDayList extends ListActivity {
 		coursePref=getApplicationContext()
 				.getSharedPreferences("course prefs", 0);
 		loadWdayPref=PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		
+		firstWdayPref=getApplicationContext().getSharedPreferences("firstWdayPrefs", 0);
 		NUM_COURSES=coursePref.getInt("num courses", 0);
 		
 		Log.i(TAG, "in oncreate");
@@ -51,7 +51,7 @@ public class WorkingDayList extends ListActivity {
 		Log.i(TAG, "after opening databasse");
 		// display only working days that have passed already from the first working day
 		
-		wdays = wDatasource.findBeforeToday(wDatasource.findFirstDate(), UIHelper.getCurrentDate());
+		wdays = wDatasource.findBeforeToday1(wDatasource.findFirstDate(), UIHelper.getCurrentDate());
 		Log.i(TAG, "after dtasrc.findall w/o if");
 
 		/*if (holidays.size() == 0) {
