@@ -55,7 +55,47 @@ public class AddCourses extends Activity {
 		wedTV = (TextView) findViewById(R.id.wednesdayTimings);
 		thursTV = (TextView) findViewById(R.id.thursdayTimings);
 		friTV = (TextView) findViewById(R.id.fridayTimings);
+		
+		monTV.setOnClickListener(new View.OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				showTimePickerDialog(monTV);
+			}
+		});
+		tuesTV.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				showTimePickerDialog(tuesTV);
+			}
+		});
+		wedTV.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				showTimePickerDialog(wedTV);
+			}
+		});
+		thursTV.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				showTimePickerDialog(thursTV);
+			}
+		});
+		friTV.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				showTimePickerDialog(friTV);
+			}
+		});
 		monCB.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override
@@ -142,26 +182,59 @@ public class AddCourses extends Activity {
 
 	private void sendCourseData() {
 		Intent sendIntent = new Intent();
-		
-		// if any of the timings are not set , they will be equal to "enter here"
-		sendIntent.putExtra("courseName", UIHelper.getTextFromEditext(this, courseName.getId()));
-		sendIntent.putExtra("courseCode", UIHelper.getTextFromEditext(this, courseCode.getId()));
-		sendIntent.putExtra("courseVenue", UIHelper.getTextFromEditext(this, courseVenue.getId()));
-		sendIntent.putExtra("reqAttendance", UIHelper.getTextFromEditext(this, reqAttendance.getId()));
-		sendIntent.putExtra("desAttendance", UIHelper.getTextFromEditext(this, desAttendance.getId()));
-		String monText=(String) monTV.getText();
-		String tuesText=(String) tuesTV.getText();
-		String wedText=(String) wedTV.getText();
-		String thursText=(String) thursTV.getText();
-		String friText=(String) friTV.getText();
+
+		// if any of the timings are not set , they will be equal to
+		// "enter here"
+		sendIntent.putExtra("courseName",
+				UIHelper.getTextFromEditext(this, courseName.getId()));
+		sendIntent.putExtra("courseCode",
+				UIHelper.getTextFromEditext(this, courseCode.getId()));
+		sendIntent.putExtra("courseVenue",
+				UIHelper.getTextFromEditext(this, courseVenue.getId()));
+		sendIntent.putExtra("reqAttendance",
+				UIHelper.getTextFromEditext(this, reqAttendance.getId()));
+		sendIntent.putExtra("desAttendance",
+				UIHelper.getTextFromEditext(this, desAttendance.getId()));
+		//
+		String monText,tuesText,wedText,thursText,friText;
+		if(monCB.isChecked()){
+			 monText = (String) monTV.getText();
+		}
+		else{
+			 monText = getString(R.string.enterDate);
+		}
+		if(tuesCB.isChecked()){
+			 tuesText = (String) tuesTV.getText();
+		}
+		else{
+			 tuesText = getString(R.string.enterDate);
+		}
+		if(wedCB.isChecked()){
+			 wedText = (String) wedTV.getText();
+		}
+		else{
+			 wedText = getString(R.string.enterDate);
+		}
+		if(thursCB.isChecked()){
+			 thursText = (String) thursTV.getText();
+		}
+		else{
+			 thursText = getString(R.string.enterDate);
+		}
+		if(friCB.isChecked()){
+			 friText = (String) friTV.getText();
+		}
+		else{
+			 friText = getString(R.string.enterDate);
+		}
 		sendIntent.putExtra("monTimings", monText);
 		sendIntent.putExtra("tuesTimings", tuesText);
 		sendIntent.putExtra("wedTimings", wedText);
 		sendIntent.putExtra("thursTimings", thursText);
 		sendIntent.putExtra("friTimings", friText);
-		setResult( RESULT_OK,sendIntent);
+		setResult(RESULT_OK, sendIntent);
 		finish();
-		
+
 	}
 
 	private boolean validateData() {
@@ -170,28 +243,49 @@ public class AddCourses extends Activity {
 				|| ifEmptyEdittext(courseVenue)
 				|| ifEmptyEdittext(reqAttendance)
 				|| ifEmptyEdittext(desAttendance)) {
-			Log.v(TAG, "in the if cond checking if fields are mpty in course add ");
+			Log.v(TAG,
+					"in the if cond checking if fields are mpty in course add ");
 			Toast.makeText(this, R.string.fillAllFields, Toast.LENGTH_LONG)
 					.show();
 			return false;
 		}
+		if(!(reqAttendance.getText().toString()).matches("[0-9]+")){
+			Toast.makeText(this, "Required Attendance should be a numeric field", Toast.LENGTH_LONG)
+			.show();
+			return false;
+		}
+		if(!(desAttendance.getText().toString()).matches("[0-9]+")){
+			Toast.makeText(this, "Desired Attendance should be a numeric field", Toast.LENGTH_LONG)
+			.show();
+			return false;
+		}
+		Log.v(TAG, ""+Integer.parseInt(desAttendance.getText().toString())+"<"+
+				Integer.parseInt(reqAttendance.getText().toString()));
+		if(Integer.parseInt(desAttendance.getText().toString()) <
+				Integer.parseInt(reqAttendance.getText().toString())){
+			Toast.makeText(this, "Desired Attendance should be greater than equal to Required Attendance value", Toast.LENGTH_LONG)
+			.show();
+			return false;
+		}
 		if (monCB.isChecked() || tuesCB.isChecked() || wedCB.isChecked()
 				|| thursCB.isChecked() || friCB.isChecked()) {
-			// check if those checkboxes which are checked have corresponding 
+			// check if those checkboxes which are checked have corresponding
 			// dates along with it.
 			return true;
-			
-		}else {
-			Toast.makeText(this, R.string.fillTimings, Toast.LENGTH_LONG).show();
-		} 
+
+		} else {
+			Toast.makeText(this, R.string.fillTimings, Toast.LENGTH_LONG)
+					.show();
+		}
 		return false;
 	}
 
 	private boolean ifEmptyEdittext(EditText ed) {
-		
+
 		return (ed.getText().toString()).equals("");
-		// because the "enter here" appearing in the edittext is the label and not the text
-		
+		// because the "enter here" appearing in the edittext is the label and
+		// not the text
+
 	}
 
 	private void showTimePickerDialog(TextView tv) {
