@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.app.ListActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,13 +37,13 @@ public class UnmarkedClassListActivity extends ListActivity {
 	ArrayAdapter<UnmarkedClass> adapter;
 
 	private List<Integer> flags;
-	private ImageButton log;
 	private int NUM_UNMARKED_CLASSES;
 	private List<String> uClassCodes;
 	private int uClassIndex;
 	private int selAttVal;
 	private int selCodeIdx;
 	private WorkingDay currentWday;
+	private SharedPreferences firstWdayPref;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,7 +57,11 @@ public class UnmarkedClassListActivity extends ListActivity {
 		wDataSource = new WorkingDaysDataSource(this);
 		wDataSource.open();
 		Log.v(TAG, "after opnening working days database");
-		currentWday= wDataSource.findCurrent(UIHelper.getCurrentDate()).get(0);
+		
+		firstWdayPref=getApplicationContext().getSharedPreferences("firstWdayPrefs", 0);
+		String firstDate=firstWdayPref.getString("firstWdayDate", "21/01/2000");
+		Log.v(TAG, firstDate);
+		currentWday= wDataSource.findFirstWday();
 		
 		lv = (ListView) findViewById(android.R.id.list);// impt to initialise
 		lv.setOnItemClickListener(new OnItemClickListener() {
@@ -99,18 +104,6 @@ public class UnmarkedClassListActivity extends ListActivity {
 
 		});
 
-		log = (ImageButton) findViewById(R.id.log);
-		// open the list of previous working days
-		log.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent i = new Intent(UnmarkedClassListActivity.this,
-						WorkingDayList.class);
-				startActivity(i);
-			}
-		});
 
 		attend = (Button) findViewById(R.id.attendButton);
 		bunk = (Button) findViewById(R.id.bunkButton);

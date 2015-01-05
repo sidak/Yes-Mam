@@ -8,7 +8,9 @@
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="80" >
+        android:layout_weight="80"
+        android:drawSelectorOnTop="false"
+        android:listSelector="#ff9900" >
     </ListView>
 	<LinearLayout
         android:layout_width="match_parent"
