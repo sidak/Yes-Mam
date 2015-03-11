@@ -522,11 +522,25 @@ public class WdayTemplateActivity extends ListActivity {
 							currentDateArray[0],
 							Integer.parseInt(currentTimeArray[0]),
 							Integer.parseInt(currentTimeArray[1]));
-					if (currentTime.after(classTime))
+					if (currentTime.after(classTime)){
 						idx++;
+						Calendar classEndTime = classTime;
+						classEndTime.add(Calendar.MINUTE, 60);
+						if(currentTime.before(classEndTime)){
+							todayCourses.get(i).setStatus("Current");
+							idx--;
+							break;
+						}
+						else{
+							todayCourses.get(i).setStatus("Past");
+						}
+					}
 					else
 						break;
 					currentTime = Calendar.getInstance();
+				}
+				for(int i=idx; i<todayCourses.size(); i++){
+					todayCourses.get(i).setStatus("Next");
 				}
 				// lv.smoothScrollToPosition(idx);
 			} else if (currentDay == Calendar.TUESDAY) {
@@ -538,8 +552,19 @@ public class WdayTemplateActivity extends ListActivity {
 							currentDateArray[0],
 							Integer.parseInt(currentTimeArray[0]),
 							Integer.parseInt(currentTimeArray[1]));
-					if (currentTime.after(classTime))
+					if (currentTime.after(classTime)){
 						idx++;
+						Calendar classEndTime = classTime;
+						classEndTime.add(Calendar.MINUTE, 60);
+						if(currentTime.before(classEndTime)){
+							todayCourses.get(i).setStatus("Current");
+							idx--;
+							break;
+						}
+						else{
+							todayCourses.get(i).setStatus("Past");
+						}
+					}
 					else
 						break;
 					currentTime = Calendar.getInstance();
@@ -554,8 +579,19 @@ public class WdayTemplateActivity extends ListActivity {
 							currentDateArray[0],
 							Integer.parseInt(currentTimeArray[0]),
 							Integer.parseInt(currentTimeArray[1]));
-					if (currentTime.after(classTime))
+					if (currentTime.after(classTime)){
 						idx++;
+						Calendar classEndTime = classTime;
+						classEndTime.add(Calendar.MINUTE, 60);
+						if(currentTime.before(classEndTime)){
+							todayCourses.get(i).setStatus("Current");
+							idx--;
+							break;
+						}
+						else{
+							todayCourses.get(i).setStatus("Past");
+						}
+					}
 					else
 						break;
 					currentTime = Calendar.getInstance();
@@ -570,8 +606,19 @@ public class WdayTemplateActivity extends ListActivity {
 							currentDateArray[0],
 							Integer.parseInt(currentTimeArray[0]),
 							Integer.parseInt(currentTimeArray[1]));
-					if (currentTime.after(classTime))
+					if (currentTime.after(classTime)){
 						idx++;
+						Calendar classEndTime = classTime;
+						classEndTime.add(Calendar.MINUTE, 60);
+						if(currentTime.before(classEndTime)){
+							todayCourses.get(i).setStatus("Current");
+							idx--;
+							break;
+						}
+						else{
+							todayCourses.get(i).setStatus("Past");
+						}
+					}
 					else
 						break;
 					currentTime = Calendar.getInstance();
@@ -586,8 +633,19 @@ public class WdayTemplateActivity extends ListActivity {
 							currentDateArray[0],
 							Integer.parseInt(currentTimeArray[0]),
 							Integer.parseInt(currentTimeArray[1]));
-					if (currentTime.after(classTime))
+					if (currentTime.after(classTime)){
 						idx++;
+						Calendar classEndTime = classTime;
+						classEndTime.add(Calendar.MINUTE, 60);
+						if(currentTime.before(classEndTime)){
+							todayCourses.get(i).setStatus("Current");
+							idx--;
+							break;
+						}
+						else{
+							todayCourses.get(i).setStatus("Past");
+						}
+					}
 					else
 						break;
 					currentTime = Calendar.getInstance();
@@ -597,8 +655,69 @@ public class WdayTemplateActivity extends ListActivity {
 				Log.v(TAG, "sjrbwdc");
 				idx = 0;
 			}
-
+			/*
 			Log.v(TAG, "in onresume " + todayCourses.size());
+			todayCourses = coursesDataSource.getTodaysCourses(currentDay,
+					getString(R.string.enterDate));
+			
+			if (currentDay == Calendar.MONDAY) {
+				Collections.sort(todayCourses, new Comparator<Course>() {
+					public int compare(Course a, Course b) {
+						Date d1, d2;
+
+						d1 = UIHelper.getDateObjectFromTextTime(a
+								.getMonTimings());
+						d2 = UIHelper.getDateObjectFromTextTime(b
+								.getMonTimings());
+						return d1.compareTo(d2);
+					}
+				});
+			} else if (currentDay == Calendar.TUESDAY) {
+				Collections.sort(todayCourses, new Comparator<Course>() {
+					public int compare(Course a, Course b) {
+						Date d1, d2;
+						d1 = UIHelper.getDateObjectFromTextTime(a
+								.getTuesTimings());
+						d2 = UIHelper.getDateObjectFromTextTime(b
+								.getTuesTimings());
+						return d1.compareTo(d2);
+					}
+				});
+			} else if (currentDay == Calendar.WEDNESDAY) {
+				Collections.sort(todayCourses, new Comparator<Course>() {
+					public int compare(Course a, Course b) {
+						Date d1, d2;
+						d1 = UIHelper.getDateObjectFromTextTime(a
+								.getWedTimings());
+						d2 = UIHelper.getDateObjectFromTextTime(b
+								.getWedTimings());
+						return d1.compareTo(d2);
+					}
+				});
+			} else if (currentDay == Calendar.THURSDAY) {
+				Collections.sort(todayCourses, new Comparator<Course>() {
+					public int compare(Course a, Course b) {
+						Date d1, d2;
+						d1 = UIHelper.getDateObjectFromTextTime(a
+								.getThursTimings());
+						d2 = UIHelper.getDateObjectFromTextTime(b
+								.getThursTimings());
+						return d1.compareTo(d2);
+					}
+				});
+			} else if (currentDay == Calendar.FRIDAY) {
+				Collections.sort(todayCourses, new Comparator<Course>() {
+					public int compare(Course a, Course b) {
+						Date d1, d2;
+						d1 = UIHelper.getDateObjectFromTextTime(a
+								.getFriTimings());
+						d2 = UIHelper.getDateObjectFromTextTime(b
+								.getFriTimings());
+						return d1.compareTo(d2);
+					}
+				});
+			}
+			*/
 			adapter = new ClassListAdapter(this, todayCourses);
 			setListAdapter(adapter);
 			Log.v(TAG, "position " + idx);

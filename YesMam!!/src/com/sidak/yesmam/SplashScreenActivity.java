@@ -1,6 +1,5 @@
 package com.sidak.yesmam;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,7 +28,7 @@ public class SplashScreenActivity extends Activity {
 	private CoursesDataSource courseDataSource;
 	private WorkingDaysDataSource wDataSource;
 	private List<WorkingDay> wdays;
-	private List<UnmarkedClass> unmarkedClasses=null;
+	private List<UnmarkedClass> unmarkedClasses;
 	private WorkingDay wday;
 	private SharedPreferences wdayPrefs;
 	private Map<String, Integer> attend, bunk;
@@ -229,3 +228,20 @@ public class SplashScreenActivity extends Activity {
 
 	}
 }
+/*
+if I am using the app for the first time and as per my data
+there have been a few classes in the past , whose attendance I have not marked 
+then after CourseView it should open the past wdays activity and display a list of prveious 
+classes. Also since , once I open the WdayTemplate , my last date is updated 
+and even if I open my app the next time , it is not shown
+*/
+/*
+ implement mte feature
+ */
+/*
+ think how to update the statuses. The problem arises because the local copies of the   
+ */
+/*
+ Also while displaying the past classes , the update button should at least check 
+ if there isn't a class 
+ */	

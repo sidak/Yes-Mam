@@ -14,6 +14,7 @@ public class Course {
 	private String wedTimings="";
 	private String thursTimings="";
 	private String friTimings="";
+	private String status="Next";
 	private int totalClasses=0;
 	private int attendClasses=0;
 	private int bunkClasses=0;
@@ -25,6 +26,9 @@ public class Course {
 	}
 	public String getCourseName(){
 		return courseName;
+	}
+	public String getStatus(){
+		return status;
 	}
 	public String getCourseCode(){
 		return courseCode;
@@ -63,6 +67,9 @@ public class Course {
 	
 	public void setCourseName(String name){
 		courseName= name;
+	}
+	public void setStatus(String s){
+		status= s;
 	}
 	public void setCourseCode(String code){
 		courseCode= code;

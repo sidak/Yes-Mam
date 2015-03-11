@@ -180,7 +180,7 @@ public class MainActivity extends ListActivity {
 
 		attend = (Button) findViewById(R.id.attendButton);
 		bunk = (Button) findViewById(R.id.bunkButton);
-		proxy = (Button) findViewById(R.id.proxyButton);
+		proxy = (Button) findViewById(R.id.cancelButton);
 		attend.setOnClickListener(new View.OnClickListener() {
 
 			@Override
